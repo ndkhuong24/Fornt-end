@@ -84,7 +84,16 @@ CREATE TABLE [Address](
 	district_id INT,
 	province_id INT,
 )
-
+CREATE TABLE CartDetail(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	product_id INT,
+	quantity INT,
+)
+CREATE TABLE Cart(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	cart_detail_id INT,
+	customer_id INT
+)
 CREATE TABLE Customer(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(200),
@@ -114,3 +123,52 @@ CREATE TABLE GoogleAssociate(
 	create_date DATETIME
 )
 	
+
+CREATE TABLE Roles(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	[name] NVARCHAR(10)
+)
+CREATE TABLE Users(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	fullname NVARCHAR(100),
+	email VARCHAR(100),
+	gender INT,
+	phone VARCHAR(30),
+	address_id INT,
+	username VARCHAR(100),
+	[password] VARCHAR(100),
+	role_id INT,
+	[status] INT
+)
+CREATE TABLE Voucher(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	code VARCHAR(10),
+	[name] NVARCHAR(100),
+	[type] INT,
+	[value] FLOAT,
+	[start_date] DATE,
+	[end_date] DATE,
+	[start_time] TIME,
+	[end_time] TIME,
+	[release_datetime] DATETIME,
+	[status] INT
+)
+CREATE TABLE [Order](
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	customer_id INT,
+	[user_id] INT,
+	date_create DATETIME,
+	total_price INT,
+	transport_fee INT,
+	[description] NVARCHAR(100),
+	voucher_id INT,
+	discount_price INT,
+	final_price INT
+)
+CREATE TABLE OrderDetail(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	product_id INT,
+	order_id INT,
+	quantity INT,
+	price INT
+)
