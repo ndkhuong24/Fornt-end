@@ -8,28 +8,28 @@ go
 CREATE TABLE Category(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
-	status INT
+	[status] INT
 )
 CREATE TABLE Brand(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] VARCHAR(100),
-	status INT
+	[status] INT
 )
 CREATE TABLE Size(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
-	status INT
+	[status] INT
 )
 CREATE TABLE Color(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
-	status INT
+	[status] INT
 )
 CREATE TABLE [Image](
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] VARCHAR(500),
 	image_url VARCHAR(500),
-	status INT
+	[status] INT
 )
 CREATE TABLE Review(
 	id INT IDENTITY(1,1) PRIMARY KEY,
@@ -41,7 +41,13 @@ CREATE TABLE Review(
 CREATE TABLE ProductDiscount(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] VARCHAR(500),
-
+	[value] INT,
+	[start_date] DATE,
+	[end_date] DATE,
+	[start_time] TIME,
+	[end_time] TIME,
+	[release_datetime] DATETIME,
+	[status] INT
 )
 CREATE TABLE Product(
 	id INT IDENTITY(1,1) PRIMARY KEY,
@@ -62,15 +68,15 @@ CREATE TABLE Product(
 
 CREATE TABLE Commune(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	name VARCHAR(100) 
+	[name] VARCHAR(100) 
 )
 CREATE TABLE District (
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	name VARCHAR(100) 
+	[name] VARCHAR(100) 
 )
 CREATE TABLE Province(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	name VARCHAR(100) 
+	[name] VARCHAR(100) 
 )
 CREATE TABLE [Address](
 	id INT IDENTITY(1,1) PRIMARY KEY,
@@ -83,14 +89,14 @@ CREATE TABLE Customer(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(200),
 	username VARCHAR(100),
-	password VARCHAR(100),
+	[password] VARCHAR(100),
 	email VARCHAR(100),
 	phone VARCHAR(100),
 	birthday DATE,
 	gender INT,
 	customer_style INT,
 	address_id INT,
-	status INT
+	[status] INT
 )
 GO
 INSERT INTO Customer([name]) VALUES ('Khách lẻ')
