@@ -25,58 +25,68 @@ CREATE TABLE Color(
 	[name] NVARCHAR(100),
 	[status] INT
 )
-CREATE TABLE [Image](
+CREATE TABLE Sole(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] VARCHAR(500),
-	image_url VARCHAR(500),
+	[name] NVARCHAR(100),
 	[status] INT
 )
-CREATE TABLE Review(
+CREATE TABLE Material(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	customer_id INT,
-	product_id INT,
-	point INT,
-	comment NVARCHAR(500)
+	[name] NVARCHAR(100),
+	[status] INT
 )
-CREATE TABLE ProductDiscount(
+
+CREATE TABLE Style(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] VARCHAR(500),
-	[value] INT,
-	[start_date] DATE,
-	[end_date] DATE,
-	[start_time] TIME,
-	[end_time] TIME,
-	[release_datetime] DATETIME,
+	[name] NVARCHAR(100),
 	[status] INT
 )
 CREATE TABLE Product(
 	id INT IDENTITY(1,1) PRIMARY KEY,
+	code VARCHAR(20),
 	[name] VARCHAR(500),
+	style_id INT,
 	[description] NVARCHAR(500),
 	create_date DATETIME,
-	size_id INT,
+	[status] INT
+)
+CREATE TABLE ProductDetail(
+	id INT IDENTITY(1,1) PRIMARY KEY,
 	category_id INT,
 	brand_id INT,
+	product_id INT,
+	size_id INT,
 	color_id INT,
-	image_id INT,
-	review_id INT,
-	price INT,
+	sole_id INT,
+	material_id INT,
 	quantity INT,
-	product_discount_id INT,
+	price INT,
+	[status] INT
+)
+CREATE TABLE [Image](
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	[name] NVARCHAR(100),
+	[url] VARCHAR(500),
+	product_detail_id INT,
 	[status] INT
 )
 
+
 CREATE TABLE Commune(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] VARCHAR(100) 
+	[name] VARCHAR(100),
+	district_id INT,
+	province_id INT
 )
 CREATE TABLE District (
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] VARCHAR(100) 
+	[name] VARCHAR(100),
+	province_id INT
 )
 CREATE TABLE Province(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] VARCHAR(100) 
+	[name] VARCHAR(100),
+	province_code INT
 )
 CREATE TABLE [Address](
 	id INT IDENTITY(1,1) PRIMARY KEY,
@@ -84,6 +94,24 @@ CREATE TABLE [Address](
 	district_id INT,
 	province_id INT,
 )
+CREATE TABLE Customer(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	[name] NVARCHAR(200),
+	username VARCHAR(100),
+	[password] VARCHAR(100),
+	email VARCHAR(100),
+	phone VARCHAR(20),
+	birthday DATE,
+	gender INT,
+	address_id INT,
+	[status] INT
+)
+GO
+INSERT INTO Customer([name]) VALUES ('Khách lẻ')
+GO
+
+
+
 CREATE TABLE CartDetail(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	product_id INT,
@@ -94,36 +122,6 @@ CREATE TABLE Cart(
 	cart_detail_id INT,
 	customer_id INT
 )
-CREATE TABLE Customer(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] NVARCHAR(200),
-	username VARCHAR(100),
-	[password] VARCHAR(100),
-	email VARCHAR(100),
-	phone VARCHAR(100),
-	birthday DATE,
-	gender INT,
-	customer_style INT,
-	address_id INT,
-	[status] INT
-)
-GO
-INSERT INTO Customer([name]) VALUES ('Khách lẻ')
-GO
-CREATE TABLE FacebookAssociate(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	customer_id INT,
-	fb_scope VARCHAR(100),
-	create_date DATETIME
-)
-CREATE TABLE GoogleAssociate(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	customer_id INT,
-	fb_scope VARCHAR(100),
-	create_date DATETIME
-)
-	
-
 CREATE TABLE Roles(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(10)
@@ -140,17 +138,19 @@ CREATE TABLE Users(
 	role_id INT,
 	[status] INT
 )
+
+	
+
+
+
 CREATE TABLE Voucher(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	code VARCHAR(10),
 	[name] NVARCHAR(100),
 	[type] INT,
 	[value] FLOAT,
-	[start_date] DATE,
-	[end_date] DATE,
-	[start_time] TIME,
-	[end_time] TIME,
-	[release_datetime] DATETIME,
+	[start_date] DATETIME,
+	[end_date] DATETIME,
 	[status] INT
 )
 CREATE TABLE [Order](
@@ -171,4 +171,11 @@ CREATE TABLE OrderDetail(
 	order_id INT,
 	quantity INT,
 	price INT
+)
+CREATE TABLE Review(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	customer_id INT,
+	product_detail_id INT,
+	point INT,
+	comment NVARCHAR(500)
 )
