@@ -1,4 +1,4 @@
-﻿use [master]
+﻿﻿use [master]
 go
 CREATE DATABASE DATN
 go
@@ -75,8 +75,7 @@ CREATE TABLE [Image](
 CREATE TABLE Commune(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] VARCHAR(100),
-	district_id INT,
-	province_id INT
+	district_id INT
 )
 CREATE TABLE District (
 	id INT IDENTITY(1,1) PRIMARY KEY,
@@ -90,6 +89,7 @@ CREATE TABLE Province(
 )
 CREATE TABLE [Address](
 	id INT IDENTITY(1,1) PRIMARY KEY,
+	detail_address nvarchar(100),
 	commune_id INT,
 	district_id INT,
 	province_id INT,
@@ -114,6 +114,7 @@ GO
 
 CREATE TABLE CartDetail(
 	id INT IDENTITY(1,1) PRIMARY KEY,
+	customer_id
 	product_id INT,
 	quantity INT,
 )
@@ -131,7 +132,7 @@ CREATE TABLE Users(
 	fullname NVARCHAR(100),
 	email VARCHAR(100),
 	gender INT,
-	phone VARCHAR(30),
+	phone_number VARCHAR(30),
 	address_id INT,
 	username VARCHAR(100),
 	[password] VARCHAR(100),
@@ -160,7 +161,7 @@ CREATE TABLE [Order](
 	date_create DATETIME,
 	total_price INT,
 	transport_fee INT,
-	[description] NVARCHAR(100),
+	[description_order] NVARCHAR(100),
 	voucher_id INT,
 	discount_price INT,
 	final_price INT
@@ -177,5 +178,17 @@ CREATE TABLE Review(
 	customer_id INT,
 	product_detail_id INT,
 	point INT,
-	comment NVARCHAR(500)
+	comment NVARCHAR(500))
+
+CREATE TABLE UserAddress(
+	id INT IDENTITY(1,1)PRIMARY KEY,
+	[user_id] int,
+	address_id int,
+	[status] int
+)
+CREATE TABLE CustomerAddress(
+	id INT IDENTITY(1,1)PRIMARY KEY,
+	customer_id int,
+	address_id int,
+	[status] int
 )
