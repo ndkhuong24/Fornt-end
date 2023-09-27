@@ -114,7 +114,7 @@ GO
 
 CREATE TABLE CartDetail(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	customer_id
+	customer_id INT,
 	product_id INT,
 	quantity INT,
 )
@@ -182,13 +182,13 @@ CREATE TABLE Review(
 
 CREATE TABLE UserAddress(
 	id INT IDENTITY(1,1)PRIMARY KEY,
-	[user_id] int,
-	address_id int,
-	[status] int
+	[user_id] INT,
+	address_id INT,
+	[status] INT
 )
 CREATE TABLE CustomerAddress(
 	id INT IDENTITY(1,1)PRIMARY KEY,
-	customer_id int,
-	address_id int,
-	[status] int
+	customer_id INT,
+	address_id INT,
+	[status] INT
 )
