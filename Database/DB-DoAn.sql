@@ -4,42 +4,40 @@ CREATE DATABASE DATN
 go
 use DATN
 go
-
 CREATE TABLE Category(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
-	[status] INT
+	[status] INT DEFAULT 1
 )
 CREATE TABLE Brand(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] VARCHAR(100),
-	[status] INT
+	[status] INT DEFAULT 1
 )
 CREATE TABLE Size(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
-	[status] INT
+	[status] INT DEFAULT 1
 )
 CREATE TABLE Color(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
-	[status] INT
+	[status] INT DEFAULT 1
 )
 CREATE TABLE Sole(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
-	[status] INT
+	[status] INT DEFAULT 1
 )
 CREATE TABLE Material(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
-	[status] INT
+	[status] INT DEFAULT 1
 )
-
 CREATE TABLE Style(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
-	[status] INT
+	[status] INT DEFAULT 1
 )
 CREATE TABLE Product(
 	id INT IDENTITY(1,1) PRIMARY KEY,
@@ -47,8 +45,8 @@ CREATE TABLE Product(
 	[name] VARCHAR(500),
 	style_id INT,
 	[description] NVARCHAR(500),
-	create_date DATETIME,
-	[status] INT
+	create_date DATETIME DEFAULT GETDATE(),
+	[status] INT DEFAULT 1
 )
 CREATE TABLE ProductDetail(
 	id INT IDENTITY(1,1) PRIMARY KEY,
@@ -61,17 +59,15 @@ CREATE TABLE ProductDetail(
 	material_id INT,
 	quantity INT,
 	price INT,
-	[status] INT
+	[status] INT DEFAULT 1
 )
 CREATE TABLE [Image](
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
 	[url] VARCHAR(500),
 	product_detail_id INT,
-	[status] INT
+	[status] INT DEFAULT 1
 )
-
-
 CREATE TABLE Commune(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] VARCHAR(100),
@@ -103,25 +99,29 @@ CREATE TABLE Customer(
 	phone VARCHAR(20),
 	birthday DATE,
 	gender INT,
-	address_id INT,
-	[status] INT
+	[status] INT DEFAULT 1
 )
 GO
 INSERT INTO Customer([name]) VALUES ('Khách lẻ')
 GO
-
-
-
+CREATE TABLE CustomerAddress(
+	id INT IDENTITY(1,1)PRIMARY KEY,
+	customer_id INT,
+	address_id INT,
+	[status] INT DEFAULT 1
+)
+CREATE TABLE Review(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	customer_id INT,
+	product_detail_id INT,
+	point INT,
+	comment NVARCHAR(500)
+)
 CREATE TABLE CartDetail(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	customer_id INT,
-	product_id INT,
+	product_detail_id INT,
 	quantity INT,
-)
-CREATE TABLE Cart(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	cart_detail_id INT,
-	customer_id INT
 )
 CREATE TABLE Roles(
 	id INT IDENTITY(1,1) PRIMARY KEY,
@@ -133,17 +133,17 @@ CREATE TABLE Users(
 	email VARCHAR(100),
 	gender INT,
 	phone_number VARCHAR(30),
-	address_id INT,
 	username VARCHAR(100),
 	[password] VARCHAR(100),
 	role_id INT,
-	[status] INT
+	[status] INT DEFAULT 1
 )
-
-	
-
-
-
+CREATE TABLE UserAddress(
+	id INT IDENTITY(1,1)PRIMARY KEY,
+	[user_id] INT,
+	address_id INT,
+	[status] INT DEFAULT 1
+)
 CREATE TABLE Voucher(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	code VARCHAR(10),
@@ -158,37 +158,18 @@ CREATE TABLE [Order](
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	customer_id INT,
 	[user_id] INT,
-	date_create DATETIME,
+	date_create DATETIME DEFAULT GETDATE(),
 	total_price INT,
 	transport_fee INT,
 	[description_order] NVARCHAR(100),
 	voucher_id INT,
-	discount_price INT,
+	discount_price INT DEFAULT 0,
 	final_price INT
 )
 CREATE TABLE OrderDetail(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	product_id INT,
+	product_detail_id INT,
 	order_id INT,
 	quantity INT,
 	price INT
-)
-CREATE TABLE Review(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	customer_id INT,
-	product_detail_id INT,
-	point INT,
-	comment NVARCHAR(500))
-
-CREATE TABLE UserAddress(
-	id INT IDENTITY(1,1)PRIMARY KEY,
-	[user_id] INT,
-	address_id INT,
-	[status] INT
-)
-CREATE TABLE CustomerAddress(
-	id INT IDENTITY(1,1)PRIMARY KEY,
-	customer_id INT,
-	address_id INT,
-	[status] INT
 )
