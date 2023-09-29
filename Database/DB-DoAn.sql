@@ -192,4 +192,38 @@ END;
 
 exec Style_Get @Id=1
 
-SELECT * FROM Style WHERE Id=1
+CREATE PROCEDURE PostStyle
+(
+	@Name NVARCHAR(100),
+	@Status INT = NULL
+)
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	IF @Status IS NOT NULL
+    BEGIN
+        -- Trường hợp có giá trị cho @Status, kiểm tra xem @Name đã tồn tại hay chưa
+        IF NOT EXISTS (SELECT 1 FROM YourTable WHERE Name = @Name)
+        BEGIN
+            -- Nếu @Name chưa tồn tại, chèn cả hai tham số vào bảng
+            INSERT INTO YourTable (Name, Status)
+            VALUES (@Name, @Status);
+        END
+        ELSE
+        BEGIN
+            -- Nếu @Name đã tồn tại, không thực hiện thêm dữ liệu mới
+            PRINT 'Tên đã tồn tại trong bảng.';
+        END;
+    END
+    ELSE
+    BEGIN
+        -- Trường hợp không có giá trị cho @Status, chỉ chèn @Name vào bảng
+        INSERT INTO YourTable (Name)
+        VALUES (@Name);
+    END
+END
+
+EXEC PostStyle @Name='Test'
+
+DROP PROCEDURE PostStyle;
