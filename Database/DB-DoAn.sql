@@ -173,3 +173,23 @@ CREATE TABLE OrderDetail(
 	quantity INT,
 	price INT
 )
+
+CREATE PROCEDURE Style_Get
+    @Id INT = NULL
+AS
+BEGIN
+    -- Nếu tham số @Id không null, lấy bản ghi theo ID
+    IF @Id IS NOT NULL
+    BEGIN
+        SELECT * FROM Style WHERE Id = @Id;
+    END
+    ELSE
+    -- Ngược lại, trả về tất cả các bản ghi
+    BEGIN
+        SELECT * FROM Style;
+    END
+END;
+
+exec Style_Get @Id=1
+
+SELECT * FROM Style WHERE Id=1
