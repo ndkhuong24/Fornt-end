@@ -215,6 +215,7 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
+<<<<<<< HEAD
 	-- Kiểm tra xem tên đã tồn tại hay chưa
     IF NOT EXISTS (SELECT 1 FROM Style WHERE name = @Name)
     BEGIN
@@ -237,3 +238,31 @@ EXEC Brand_Get
 DROP PROCEDURE PostStyle;
 
 Delete from Style where [name]='Test'
+=======
+	IF @Status IS NOT NULL
+    BEGIN
+        -- Trường hợp có giá trị cho @Status, kiểm tra xem @Name đã tồn tại hay chưa
+        IF NOT EXISTS (SELECT 1 FROM YourTable WHERE Name = @Name)
+        BEGIN
+            -- Nếu @Name chưa tồn tại, chèn cả hai tham số vào bảng
+            INSERT INTO YourTable (Name, Status)
+            VALUES (@Name, @Status);
+        END
+        ELSE
+        BEGIN
+            -- Nếu @Name đã tồn tại, không thực hiện thêm dữ liệu mới
+            PRINT 'Tên đã tồn tại trong bảng.';
+        END;
+    END
+    ELSE
+    BEGIN
+        -- Trường hợp không có giá trị cho @Status, chỉ chèn @Name vào bảng
+        INSERT INTO YourTable (Name)
+        VALUES (@Name);
+    END
+END
+
+EXEC PostStyle @Name='Test'
+
+DROP PROCEDURE PostStyle;
+>>>>>>> 82728548dea9a6c9133634eca502eb376d0d3bd7
