@@ -174,6 +174,7 @@ CREATE TABLE OrderDetail(
 	price INT
 )
 
+--PROCEDURE GET Style
 CREATE PROCEDURE Style_Get
     @Id INT = NULL
 AS
@@ -189,25 +190,10 @@ BEGIN
         SELECT * FROM Style;
     END
 END;
-
-CREATE PROCEDURE Brand_Get
-    @Id INT = NULL
-AS
-BEGIN
-    -- Nếu tham số @Id không null, lấy bản ghi theo ID
-    IF @Id IS NOT NULL
-    BEGIN
-        SELECT * FROM Brand WHERE id = @Id;
-    END
-    ELSE
-    -- Ngược lại, trả về tất cả các bản ghi
-    BEGIN
-        SELECT * FROM Brand;
-    END
-END;
-
+--PROCEDURE INSERT Style
 CREATE PROCEDURE PostStyle
 (
+	@Id INT,
 	@Name NVARCHAR(100),
 	@Status INT = NULL
 )
@@ -216,24 +202,22 @@ BEGIN
 	SET NOCOUNT ON
 
 	-- Kiểm tra xem tên đã tồn tại hay chưa
-    IF NOT EXISTS (SELECT 1 FROM Style WHERE name = @Name)
-    BEGIN
-        -- Nếu tên chưa tồn tại, thực hiện thêm dữ liệu vào bảng
-        INSERT INTO Style(name)
-        VALUES (@Name);
-    END
-    ELSE
-    BEGIN
-        -- Nếu tên đã tồn tại, không thực hiện thêm dữ liệu mới
-        PRINT 'Tên đã tồn tại trong bảng Employee.';
-    END;
+	IF NOT EXISTS (SELECT 1 FROM Style WHERE name = @Name)
+	BEGIN
+	-- Nếu tên chưa tồn tại, thực hiện thêm dữ liệu vào bảng
+	INSERT INTO Style(name,status)
+	VALUES (@Name,@Status);
+	END
+	ELSE
+	BEGIN
+		-- Nếu tên đã tồn tại, không thực hiện thêm dữ liệu mới
+			PRINT 'Tên đã tồn tại trong bảng.';
+		END
 END
 
-EXEC PostStyle @Name='Test'
-EXEC PostStyle @Name='Test',@Status='0'
+EXEC PostStyle @Name='Test',@Status=''
+EXEC PostStyle @Name='Test-1',@Status='0'
 EXEC Style_Get
-EXEC Brand_Get
 
 DROP PROCEDURE PostStyle;
-
-Delete from Style where [name]='Test'
+Delete from Style where name='Test'
