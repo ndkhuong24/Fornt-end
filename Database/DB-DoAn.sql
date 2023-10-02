@@ -150,6 +150,8 @@ CREATE TABLE Voucher(
 	[name] NVARCHAR(100),
 	[type] INT,
 	[value] FLOAT,
+	maximum_value INT,
+	condition INT,
 	[start_date] DATETIME,
 	[end_date] DATETIME,
 	[status] INT
@@ -257,6 +259,35 @@ BEGIN
     END
 END;
 
+
+--PROCEDURE INSERT PRODUCT
+CREATE PROCEDURE PostProduct
+(
+	@Code VARCHAR(20),
+	@Name NVARCHAR(100),
+	@Style_id INT,
+	@Description NVARCHAR(500),
+	@Status INT = NULL
+)
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	-- Kiểm tra xem tên đã tồn tại hay chưa
+	IF NOT EXISTS (SELECT 1 FROM Product WHERE [name] = @Name)
+	BEGIN
+	-- Nếu tên chưa tồn tại, thực hiện thêm dữ liệu vào bảng
+	INSERT INTO Product(code,[name],style_id,[description],[status])
+	VALUES (@Code,@Name,@Style_id,@Description,@Status);
+	END
+	ELSE
+	BEGIN
+		-- Nếu tên đã tồn tại, không thực hiện thêm dữ liệu mới
+		PRINT 'Tên đã tồn tại trong bảng.';
+	END
+END
+
+EXEC PostProduct @Code='Hello',@Name='Adidas Nike',@Style_id=1,@Description=N'Cực đẹp',@Status=1
 
 --INSERT Style
 EXEC PostStyle @Name='Classic Sneakers',@Status='1'
