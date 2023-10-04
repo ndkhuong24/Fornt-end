@@ -82,15 +82,10 @@ BEGIN
 END;
 
 --INSERT Style
-EXEC PostStyle @Name='Classic Sneakers',@Status='1'
-EXEC PostStyle @Name='Retro Sneakers',@Status='1'
-EXEC PostStyle @Name='Running Sneakers',@Status='1'
-EXEC PostStyle @Name='Skateboard Sneakers',@Status='1'
+
 EXEC PostStyle @Name='High-Top Sneakers',@Status='1'
 EXEC PostStyle @Name='Low-Top Sneakers',@Status='1'
-EXEC PostStyle @Name='Fashion Sneakers',@Status='1'
-EXEC PostStyle @Name='Dad Sneakers',@Status='1'
-EXEC PostStyle @Name='Test',@Status=''
+
 
 DROP PROCEDURE PostStyle;
 
