@@ -70,17 +70,19 @@ CREATE TABLE [Image](
 )
 CREATE TABLE Commune(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] VARCHAR(100),
+	[name] NVARCHAR(200),
+	commune_code INT,
 	district_id INT
 )
 CREATE TABLE District (
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] VARCHAR(100),
+	[name] NVARCHAR(200),
+	district_code INT,
 	province_id INT
 )
 CREATE TABLE Province(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] VARCHAR(100),
+	[name] NVARCHAR(200),
 	province_code INT
 )
 CREATE TABLE [Address](
