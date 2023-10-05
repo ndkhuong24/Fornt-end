@@ -177,4 +177,9 @@ CREATE TABLE OrderDetail(
 	quantity INT,
 	price INT
 )
+CREATE TABLE Authority (
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	user_id INT,
+	role_id INT,
+)
 
