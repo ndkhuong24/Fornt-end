@@ -66,7 +66,7 @@ CREATE TABLE [Image](
 	[name] NVARCHAR(100),
 	[url] VARCHAR(500),
 	product_detail_id INT,
-	[status] INT DEFAULT 1
+	[status] INT DEFAULT 0
 )
 CREATE TABLE Commune(
 	id INT IDENTITY(1,1) PRIMARY KEY,
