@@ -32,6 +32,8 @@ BEGIN -- Nếu tham số @Id không null, lấy bản ghi theo ID
 			JOIN Product AS P ON PD.product_id = P.id
 		WHERE
 			PD.id=@Id
+			AND
+			I.status=1
 		GROUP BY 
 			PD.id,PD.category_id,PD.brand_id,PD.product_id,PD.size_id,PD.color_id,PD.sole_id,PD.material_id,PD.quantity,PD.price,PD.status,P.name
 	
@@ -63,6 +65,7 @@ BEGIN -- Nếu tham số @Id không null, lấy bản ghi theo ID
 			JOIN Material AS M ON PD.material_id = M.id
 			JOIN [Image] AS I ON I.product_detail_id = PD.id
 			JOIN Product AS P ON PD.product_id = P.id
+		WHERE I.status=1
 		GROUP BY 
 			PD.id,PD.category_id,PD.brand_id,PD.product_id,PD.size_id,PD.color_id,PD.sole_id,PD.material_id,PD.quantity,PD.price,PD.status,P.name
 	
