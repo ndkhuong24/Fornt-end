@@ -158,7 +158,7 @@ CREATE TABLE Voucher(
 	[end_date] DATETIME,
 	[status] INT
 )
-CREATE TABLE [Order](
+CREATE TABLE [Orders](
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	customer_id INT,
 	[user_id] INT,
@@ -168,7 +168,8 @@ CREATE TABLE [Order](
 	[description_order] NVARCHAR(100),
 	voucher_id INT,
 	discount_price INT DEFAULT 0,
-	final_price INT
+	final_price INT,
+	[status] INT
 )
 CREATE TABLE OrderDetail(
 	id INT IDENTITY(1,1) PRIMARY KEY,
