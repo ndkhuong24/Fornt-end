@@ -94,6 +94,7 @@ CREATE TABLE [Address](
 )
 CREATE TABLE Customer(
 	id INT IDENTITY(1,1) PRIMARY KEY,
+	role_id INT,
 	[name] NVARCHAR(200),
 	username VARCHAR(100),
 	[password] VARCHAR(100),
