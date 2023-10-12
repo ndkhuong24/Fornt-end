@@ -303,7 +303,26 @@
 
 }());
 
+  // Tạo một đối tượng đại diện cho các route và nội dung tương ứng.
+  const routes = '/nike.html';
 
+  // Hàm để cập nhật nội dung trang dựa trên URL hiện tại.
+  function updateContent() {
+	  const path = window.location.pathname;
+	  const contentDiv = document.getElementById('content');
+
+	  if (routes[path]) {
+		  contentDiv.textContent = routes[path];
+	  } else {
+		  contentDiv.textContent = 'Page not found.';
+	  }
+  }
+
+  // Sử dụng sự kiện "popstate" để theo dõi sự thay đổi URL.
+  window.addEventListener('popstate', updateContent);
+
+  // Ban đầu, gọi hàm updateContent để hiển thị nội dung cho URL ban đầu.
+  updateContent();
 
 
 
