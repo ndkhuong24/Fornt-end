@@ -74,4 +74,3 @@ END;
 
 EXEC GetProductDetail
 DROP PROCEDURE GetProductDetail
-

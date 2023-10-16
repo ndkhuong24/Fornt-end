@@ -17,7 +17,7 @@ CREATE PROCEDURE InsertProductAndImages
     @MaterialID INT,
     @Quantity INT,
     @Price INT,
-    @Images ImageType READONLY -- Tham số cho danh sách các ảnh
+    @Images ImageType READONLY -- Tham số cho danh sách các ảnh 
 AS
 BEGIN
     BEGIN TRY
@@ -34,7 +34,7 @@ BEGIN
         -- Chèn dữ liệu từ bảng tạm thời @Images vào bảng Image
         INSERT INTO [Image] ([name], [url], product_detail_id, [status])
         SELECT [name], [url], @ProductDetailID, [status]
-        FROM @Images;
+        FROM @Images;    
 
         COMMIT; -- Hoàn thành giao dịch
 
@@ -48,10 +48,15 @@ BEGIN
     END CATCH;
 END;
 
+DROP PROCEDURE InsertProductAndImages
+DROP TYPE ImageType
+
 DELETE FROM Image
 DELETE FROM ProductDetail
 
 SELECT*FROM Image
 SELECT*FROM ProductDetail
+
+DELETE FROM ProductDetail
 
 
