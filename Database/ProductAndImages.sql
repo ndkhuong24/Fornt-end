@@ -51,12 +51,8 @@ END;
 DROP PROCEDURE InsertProductAndImages
 DROP TYPE ImageType
 
-DELETE FROM Image
+DELETE FROM [Image]
 DELETE FROM ProductDetail
 
-SELECT*FROM Image
-SELECT*FROM ProductDetail
-
-DELETE FROM ProductDetail
-
-
+SELECT * FROM [Image]
+SELECT * FROM ProductDetail
