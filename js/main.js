@@ -314,7 +314,7 @@
 	  if (routes[path]) {
 		  contentDiv.textContent = routes[path];
 	  } else {
-		  contentDiv.textContent = 'Page not found.';
+		//  contentDiv.textContent = 'Page not found.';
 	  }
   }
 

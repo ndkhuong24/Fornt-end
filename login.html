@@ -116,14 +116,14 @@
           
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                      <input style="font-weight: 500;" type="email" id="form3Example3" class="form-control form-control-lg"
-                        placeholder="Nhập Địa Chỉ Email hoặc SĐT" />
+                      <input style="font-weight: 500;" id="username" class="form-control form-control-lg"
+                        placeholder="Nhập Usernme" />
                 
                     </div>
           
                     <!-- Password input -->
                     <div class="form-outline mb-3">
-                      <input style="font-weight: 500;" type="password" id="form3Example4" class="form-control form-control-lg"
+                      <input style="font-weight: 500;" type="password" id="password" class="form-control form-control-lg"
                         placeholder="Nhập Mật Khẩu" />
                       
                     </div>
@@ -140,7 +140,7 @@
                     </div>
           
                     <div class="text-center text-lg-start mt-4 pt-2">
-                      <button type="button" class="btn btn-primary btn-lg"
+                      <button type="button" class="btn btn-primary btn-lg" id="login"
                         style="padding-left: 2.5rem; padding-right: 2.5rem;background-color:#88c8bc;border: 0px solid;font-weight: 500;">Đăng Nhập</button>
                       <p class="small fw-bold mt-2 pt-1 mb-0">Bạn chưa có tài khoản ? <a href="signup.html"
                           class="link-danger" style="color: rgb(20, 108, 216);font-size: larger;font-weight: 500;"> Đăng Ký</a></p>
@@ -239,6 +239,65 @@
 	<script src="js/jquery.stellar.min.js"></script>
 	<!-- Main -->
 	<script src="js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+	<script>
+		 async function login(username, password) {
+            alert('Login')
+            localStorage.clear()
+
+            try {
+                // Gửi thông tin đăng nhập lên server
+                const res = await axios.post('http://localhost:8081/api/auth/login', { username, password })
+                const { accessToken } = await res.data
+
+                //Nếu token tồn tại => set vào local storage
+                if(accessToken) {
+					localStorage.setItem('token', accessToken)
+                await getUserInfo()
+               window.location.href="/index.html";
+				}
+            } catch (err) {alert('Không đăng nhập được')
+                console.log(err)
+            }
+        }
+ 
+        async function getUserInfo() {
+            alert('Get thông tin user')
+            //Lấy token từ local storage
+            const token = localStorage.getItem('token')
+            //Token không tồn tại => trả về lỗi, ngắt toàn bộ code đằng sau
+            if (!token) return alert('Chưa đăng nhập')
+
+            //Token tồn tại => get thông tin user
+            try {
+                const res = await axios.get('http://localhost:8081/api/User', {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                console.log(res.data)
+                localStorage.setItem('userInfo', JSON.stringify(res.data))
+            } catch (err) {
+                console.log(err.response)
+            }
+        }
+
+        // Lắng nghe sự kiện nút "Đăng nhập" được nhấn
+        document.getElementById("login").addEventListener("click", async (event) => {
+            // Lấy giá trị từ các trường nhập liệu
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+
+            try {
+                await login(username, password)
+                console.log('Login success')
+
+            
+            } catch (err) {
+                alert('Lỗi')
+                console.log(err)
+            }
+        });
+	</script>
 
 </body>
 
