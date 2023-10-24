@@ -61,13 +61,23 @@ CREATE TABLE ProductDetail(
 	price INT,
 	[status] INT DEFAULT 1
 )
-CREATE TABLE [Image](
+CREATE TABLE ImageChinh(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	[path] NVARCHAR(MAX),
+	product_detail_id INT
+)
+CREATE TABLE ImagePhu(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	[path] NVARCHAR(MAX),
+	product_detail_id INT
+)
+/*CREATE TABLE [Image](
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
-	[url] VARCHAR(500),
+	[url] NVARCHAR(MAX),
 	product_detail_id INT,
 	[status] INT DEFAULT 0
-)
+)*/
 CREATE TABLE Commune(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(200),

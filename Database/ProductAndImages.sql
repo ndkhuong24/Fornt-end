@@ -1,13 +1,15 @@
 ﻿-- Định nghĩa kiểu dữ liệu bảng tạm thời dbo.ImageType
-CREATE TYPE ImageType AS TABLE
+CREATE TYPE AnhChinhType AS TABLE
 (
-    [name] NVARCHAR(100),
-    [url] VARCHAR(500),
-	[status] INT
+    [path] NVARCHAR(MAX)
 );
 GO
-
-CREATE PROCEDURE InsertProductAndImages
+CREATE TYPE AnhPhuType AS TABLE
+(
+    [path] NVARCHAR(MAX)
+); 
+GO
+CREATE PROCEDURE InsertProductDetail
     @CategoryID INT,
     @BrandID INT,
     @ProductID INT,
@@ -17,7 +19,8 @@ CREATE PROCEDURE InsertProductAndImages
     @MaterialID INT,
     @Quantity INT,
     @Price INT,
-    @Images ImageType READONLY -- Tham số cho danh sách các ảnh 
+    @ImageAnhChinh AnhChinhType READONLY, -- Tham số cho danh sách các ảnh 
+	@ImageAnhPhu AnhPhuType READONLY -- Tham số cho danh sách các ảnh 
 AS
 BEGIN
     BEGIN TRY
@@ -31,10 +34,18 @@ BEGIN
 
         SET @ProductDetailID = SCOPE_IDENTITY();
 
-        -- Chèn dữ liệu từ bảng tạm thời @Images vào bảng Image
+		INSERT INTO ImageChinh ([path],product_detail_id)
+		SELECT [path],@ProductDetailID
+		FROM @ImageAnhChinh
+
+		INSERT INTO ImagePhu([path],product_detail_id)
+		SELECT [path],@ProductDetailID
+		FROM @ImageAnhPhu
+
+       /* -- Chèn dữ liệu từ bảng tạm thời @Images vào bảng Image
         INSERT INTO [Image] ([name], [url], product_detail_id, [status])
         SELECT [name], [url], @ProductDetailID, [status]
-        FROM @Images;    
+        FROM @Images; */   
 
         COMMIT; -- Hoàn thành giao dịch
 
@@ -48,11 +59,15 @@ BEGIN
     END CATCH;
 END;
 
-DROP PROCEDURE InsertProductAndImages
-DROP TYPE ImageType
+DROP PROCEDURE InsertProductDetail
+DROP TYPE AnhChinhType
+DROP TYPE AnhPhuType
 
-DELETE FROM [Image]
+
+DELETE FROM ImageChinh
+DELETE FROM ImagePhu
 DELETE FROM ProductDetail
 
-SELECT * FROM [Image]
+SELECT * FROM ImageChinh
+SELECT * FROM ImagePhu
 SELECT * FROM ProductDetail
