@@ -71,29 +71,22 @@ CREATE TABLE ImagePhu(
 	[path] NVARCHAR(MAX),
 	product_detail_id INT
 )
-/*CREATE TABLE [Image](
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] NVARCHAR(100),
-	[url] NVARCHAR(MAX),
-	product_detail_id INT,
-	[status] INT DEFAULT 0
-)*/
 CREATE TABLE Commune(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] NVARCHAR(200),
-	commune_code INT,
-	district_id INT
+	CommuneCode INT,
+	CommuneName NVARCHAR(200),
+	DistrictID INT
 )
 CREATE TABLE District (
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] NVARCHAR(200),
-	district_code INT,
-	province_id INT
+	DistrictName NVARCHAR(200),
+	ProvinceID INT,
+	DistrictID INT
 )
 CREATE TABLE Province(
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	[name] NVARCHAR(200),
-	province_code INT
+	ProvinceName NVARCHAR(200),
+	ProvinceID INT
 )
 CREATE TABLE [Address](
 	id INT IDENTITY(1,1) PRIMARY KEY,
@@ -102,7 +95,7 @@ CREATE TABLE [Address](
 	district_id INT,
 	province_id INT,
 )
-CREATE TABLE Customer(
+/*CREATE TABLE Customer(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	role_id INT,
 	[name] NVARCHAR(200),
@@ -113,9 +106,7 @@ CREATE TABLE Customer(
 	birthday DATE,
 	gender INT,
 	[status] INT DEFAULT 1
-)
-GO
-INSERT INTO Customer([name]) VALUES (N'Khách lẻ')
+)*/
 GO
 CREATE TABLE CustomerAddress(
 	id INT IDENTITY(1,1)PRIMARY KEY,
