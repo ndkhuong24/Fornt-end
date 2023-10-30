@@ -14,6 +14,22 @@ BEGIN
         SELECT * FROM Style;
     END
 END;
+
+CREATE PROCEDURE Style_Get_Active
+    @Id INT = NULL
+AS
+BEGIN
+    -- Nếu tham số @Id không null, lấy bản ghi theo ID
+    IF @Id IS NOT NULL
+    BEGIN
+        SELECT * FROM Style WHERE Id = @Id;
+    END
+    ELSE
+    -- Ngược lại, trả về tất cả các bản ghi
+    BEGIN
+        SELECT * FROM Style WHERE [status]=1;
+    END
+END;
 --PROCEDURE INSERT Style
 CREATE PROCEDURE PostStyle
 (
@@ -86,6 +102,10 @@ END;
 EXEC PostStyle @Name='High-Top Sneakers',@Status='1'
 EXEC PostStyle @Name='Low-Top Sneakers',@Status='1'
 
+EXEC Style_Get_Active
+
+EXEC Style_Get
 
 DROP PROCEDURE PostStyle;
 
+DELETE FROM Style where id=21
