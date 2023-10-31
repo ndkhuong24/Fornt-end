@@ -84,6 +84,30 @@ BEGIN
 	ELSE
 	BEGIN
 		-- Nếu tên không tồn tại, không thực hiện xóa
-		PRINT 'Tên đã tồn tại trong bảng.';
+		PRINT N'Tên đã tồn tại trong bảng.';
 	END
 END
+
+--PROCEDURE GET Product
+CREATE PROCEDURE GetProductByName
+    @Name NVARCHAR(200)
+AS
+BEGIN
+	SET NOCOUNT ON
+	IF EXISTS (SELECT 1 FROM Product WHERE name = @Name)
+	BEGIN
+		SELECT * FROM Product WHERE [name]=@Name
+	END
+	ELSE
+	BEGIN
+		PRINT N'NOT FOUND';
+	END
+END;
+
+DROP PROCEDURE GetProductByName
+
+SELECT*FROM Product 
+
+EXEC GetProductByName @Name=N'Converse Star Player'
+
+DELETE FROM Product WHERE id=12

@@ -97,14 +97,29 @@ BEGIN
     END
 END;
 
+--PROCEDURE GET Product
+CREATE PROCEDURE GetStyleByName
+    @Name NVARCHAR(200)
+AS
+BEGIN
+	SET NOCOUNT ON
+	IF EXISTS (SELECT 1 FROM Style WHERE [name] = @Name)
+	BEGIN
+		SELECT * FROM Style WHERE [name]=@Name
+	END
+	ELSE
+	BEGIN
+		PRINT N'NOT FOUND';
+	END
+END;
+
 --INSERT Style
 
 EXEC PostStyle @Name='High-Top Sneakers',@Status='1'
 EXEC PostStyle @Name='Low-Top Sneakers',@Status='1'
 
 EXEC Style_Get_Active
-
-EXEC Style_Get
+EXEC GetStyleByName @Name='High-Top Sneakers'
 
 DROP PROCEDURE PostStyle;
 
