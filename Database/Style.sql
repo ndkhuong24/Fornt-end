@@ -97,6 +97,25 @@ BEGIN
     END
 END;
 
+CREATE PROCEDURE GetStyleByName
+	@Name NVARCHAR(250)
+AS
+BEGIN
+    SET NOCOUNT ON
+
+	-- Kiểm tra xem tên đã tồn tại hay chưa
+	IF EXISTS (SELECT 1 FROM Style WHERE [name] = @Name)
+	BEGIN
+	-- Nếu Id tồn tại trong Table, thì sẽ xóa
+	SELECT * FROM Style WHERE [name] = @Name
+	END
+	ELSE
+	BEGIN
+		-- Nếu tên không tồn tại, không thực hiện xóa
+		PRINT 'Tên đã tồn tại trong bảng.';
+	END
+END;
+
 --PROCEDURE GET Style By Name 
 CREATE PROCEDURE SearchStylesByName
     @searchPattern NVARCHAR(255)
@@ -127,7 +146,7 @@ END;
 EXEC PostStyle @Name='High-Top Sneakers',@Status='1'
 EXEC PostStyle @Name='Low-Top Sneakers',@Status='1'
 
-EXEC Style_Get_Active
-EXEC SearchStylesByName @searchPattern='E'
+EXEC GetStyleByName @Name='Eco-Friendly Sneakers'
+EXEC SearchStylesByName @searchPattern='Eco'
 
 DROP PROCEDURE SearchStylesByName;

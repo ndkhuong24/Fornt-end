@@ -26,3 +26,44 @@ FROM
 GROUP BY 
 	PD.id,PD.category_id,PD.brand_id,PD.product_id,PD.size_id,PD.color_id,PD.sole_id,PD.material_id,PD.quantity,PD.price,PD.status,P.name
 
+
+
+
+
+
+
+--PROCEDURE GET ProductDetail
+CREATE PROCEDURE GetProductDetail
+    @Id INT = NULL
+AS
+BEGIN
+    -- Nếu tham số @Id không null, lấy bản ghi theo ID
+    IF @Id IS NOT NULL
+    BEGIN
+        SELECT
+			PD.id AS ProductID,IC.[path] AS Path,P.[name] AS ProductName,S.[name] AS StyleName,PD.quantity AS Quantity,PD.price AS Price,PD.[status] AS Status
+		FROM
+			ProductDetail AS PD
+			JOIN ImageChinh AS IC ON PD.id=IC.product_detail_id
+			JOIN Product AS P ON PD.product_id=P.id
+			JOIN Style AS S ON S.id=P.style_id
+		WHERE 
+			PD.id = @Id
+    END
+    ELSE
+    -- Ngược lại, trả về tất cả các bản ghi
+    BEGIN
+        SELECT
+			PD.id AS ProductID,IC.[path] AS Path,P.[name] AS ProductName,S.[name] AS StyleName,PD.quantity AS Quantity,PD.price AS Price,PD.[status] AS Status
+		FROM
+			ProductDetail AS PD
+			JOIN ImageChinh AS IC ON PD.id=IC.product_detail_id
+			JOIN Product AS P ON PD.product_id=P.id
+			JOIN Style AS S ON S.id=P.style_id
+    END
+END;
+
+DROP PROCEDURE GetProductDetail
+
+EXEC GetProductDetail @Id=123
+

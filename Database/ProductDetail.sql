@@ -6,17 +6,17 @@ BEGIN -- Nếu tham số @Id không null, lấy bản ghi theo ID
 	IF @Id IS NOT NULL 
 	BEGIN
 		SELECT
-			PD.id,
-			PD.category_id,
-			PD.brand_id,
-			PD.product_id,
-			PD.size_id,
-			PD.color_id,
-			PD.sole_id,
-			PD.material_id,
-			PD.quantity,
-			PD.price,
-			PD.status,
+			PD.id AS ProductId,
+			PD.category_id AS CategoryId,
+			PD.brand_id AS BrandId,
+			PD.product_id AS ProductId,
+			PD.size_id AS SizeId,
+			PD.color_id AS ColorId,
+			PD.sole_id AS SoleId,
+			PD.material_id AS MaterialId,
+			PD.quantity AS Quantity,
+			PD.price AS Price,
+			PD.[status] AS Status,
 			MAX(I.url) as singerURL,
 			P.name AS product_name,
 			COUNT(I.url) AS N'Số ảnh'
