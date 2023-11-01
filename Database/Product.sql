@@ -88,26 +88,35 @@ BEGIN
 	END
 END
 
---PROCEDURE GET Product
-CREATE PROCEDURE GetProductByName
-    @Name NVARCHAR(200)
+--PROCEDURE GET Product By Name 
+CREATE PROCEDURE SearchProductByName
+    @searchPattern NVARCHAR(255)
 AS
 BEGIN
-	SET NOCOUNT ON
-	IF EXISTS (SELECT 1 FROM Product WHERE name = @Name)
-	BEGIN
-		SELECT * FROM Product WHERE [name]=@Name
-	END
-	ELSE
-	BEGIN
-		PRINT N'NOT FOUND';
-	END
+    -- Tạo một tạm thời bảng để lưu kết quả tìm kiếm
+    CREATE TABLE #SearchResults (
+        id INT IDENTITY(1,1) PRIMARY KEY,
+		code VARCHAR(20),
+		[name] VARCHAR(500),
+		style_id INT,
+		[description] NVARCHAR(500),
+		create_date DATETIME DEFAULT GETDATE(),
+		[status] INT DEFAULT 1
+    );
+
+    -- Thực hiện tìm kiếm và chèn kết quả vào bảng tạm thời
+    INSERT INTO #SearchResults (id, code, [name],style_id,[description],create_date,[status])
+    SELECT id, code, [name],style_id,[description],create_date,[status]
+    FROM Product
+    WHERE [name] LIKE '%' + @searchPattern + '%';
+
+    -- Trả về kết quả từ bảng tạm thời
+    SELECT * FROM #SearchResults;
+
+    -- Xóa bảng tạm thời sau khi sử dụng
+    DROP TABLE #SearchResults;
 END;
 
-DROP PROCEDURE GetProductByName
+SELECT * FROM Product 
 
-SELECT*FROM Product 
-
-EXEC GetProductByName @Name=N'Converse Star Player'
-
-DELETE FROM Product WHERE id=12
+DELETE FROM Product WHERE id=15	
