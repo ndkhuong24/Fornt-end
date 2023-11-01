@@ -97,20 +97,29 @@ BEGIN
     END
 END;
 
---PROCEDURE GET Product
-CREATE PROCEDURE GetStyleByName
-    @Name NVARCHAR(200)
+--PROCEDURE GET Style By Name 
+CREATE PROCEDURE SearchStylesByName
+    @searchPattern NVARCHAR(255)
 AS
 BEGIN
-	SET NOCOUNT ON
-	IF EXISTS (SELECT 1 FROM Style WHERE [name] = @Name)
-	BEGIN
-		SELECT * FROM Style WHERE [name]=@Name
-	END
-	ELSE
-	BEGIN
-		PRINT N'NOT FOUND';
-	END
+    -- Tạo một tạm thời bảng để lưu kết quả tìm kiếm
+    CREATE TABLE #SearchResults (
+        id INT,
+        [name] NVARCHAR(255),
+        [status] INT
+    );
+
+    -- Thực hiện tìm kiếm và chèn kết quả vào bảng tạm thời
+    INSERT INTO #SearchResults (id, [name], [status])
+    SELECT id, [name], [status]
+    FROM Style
+    WHERE Name LIKE '%' + @searchPattern + '%';
+
+    -- Trả về kết quả từ bảng tạm thời
+    SELECT * FROM #SearchResults;
+
+    -- Xóa bảng tạm thời sau khi sử dụng
+    DROP TABLE #SearchResults;
 END;
 
 --INSERT Style
@@ -119,8 +128,6 @@ EXEC PostStyle @Name='High-Top Sneakers',@Status='1'
 EXEC PostStyle @Name='Low-Top Sneakers',@Status='1'
 
 EXEC Style_Get_Active
-EXEC GetStyleByName @Name='High-Top Sneakers'
+EXEC SearchStylesByName @searchPattern='E'
 
-DROP PROCEDURE PostStyle;
-
-DELETE FROM Style where id=21
+DROP PROCEDURE SearchStylesByName;
