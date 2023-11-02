@@ -95,23 +95,14 @@ AS
 BEGIN
     -- Tạo một tạm thời bảng để lưu kết quả tìm kiếm
     CREATE TABLE #SearchResults (
-<<<<<<< HEAD
         id INT,
-=======
-        id INT IDENTITY(1,1) PRIMARY KEY,
->>>>>>> 09f2ac4ec97ab7d79f61a60416031df5f0ff3393
 		code VARCHAR(20),
 		[name] VARCHAR(500),
 		style_id INT,
 		[description] NVARCHAR(500),
-<<<<<<< HEAD
 		create_date DATETIME,
 		[status] INT
-=======
-		create_date DATETIME DEFAULT GETDATE(),
-		[status] INT DEFAULT 1
->>>>>>> 09f2ac4ec97ab7d79f61a60416031df5f0ff3393
-    );
+	);
 
     -- Thực hiện tìm kiếm và chèn kết quả vào bảng tạm thời
     INSERT INTO #SearchResults (id, code, [name],style_id,[description],create_date,[status])
@@ -128,12 +119,10 @@ END;
 
 SELECT * FROM Product 
 
-<<<<<<< HEAD
 DELETE FROM Product WHERE id=15	
 
 DROP PROCEDURE SearchProductByName
 
 EXEC SearchProductByName @searchPattern='H'
-=======
+
 DELETE FROM Product WHERE id=15	
->>>>>>> 09f2ac4ec97ab7d79f61a60416031df5f0ff3393
