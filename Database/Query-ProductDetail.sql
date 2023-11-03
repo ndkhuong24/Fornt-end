@@ -65,6 +65,19 @@ BEGIN
     DROP TABLE #SearchResults;
 END;
 
-EXEC GetProductDetail
+CREATE PROCEDURE SearchProductDetailById
+	@Id INT
+AS
+BEGIN 
+	SELECT
+		PD.id,IC.[path],PD.price
+	FROM 
+		ProductDetail AS PD
+		JOIN ImageChinh AS IC ON PD.id=IC.product_detail_id
+	WHERE
+		PD.id=@Id
+END
 
-EXEC SearchProductDetailByName @searchPattern='All'
+SELECT*FROM ProductDetail
+
+EXEC SearchProductDetailById @Id='135'
