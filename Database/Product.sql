@@ -44,19 +44,19 @@ END;
 --PROCEDURE Update Product
 CREATE PROCEDURE UpdateProduct
     @Id INT,
-    @Code VARCHAR(20),
-	@Name NVARCHAR(100),
-	@Style_id INT,
-	@Description NVARCHAR(500),
-	@Status INT = NULL
+    @NewCode VARCHAR(20),
+	@NewName NVARCHAR(100),
+	@NewStyleId INT,
+	@NewDescription NVARCHAR(500),
+	@NewStatus INT
 AS
 BEGIN
     -- Kiểm tra xem Id truyền vào có tồn tại trong bảng Style không
-    IF EXISTS (SELECT 1 FROM Style WHERE Id = @Id)
+    IF EXISTS (SELECT 1 FROM Product WHERE id = @Id)
     BEGIN
         -- Thực hiện cập nhật Style
         UPDATE Product
-        SET code = @Code,[name]=@Name,style_id=@Style_id,[description]=@Description,[status]=@Status
+        SET code = @NewCode,[name]=@NewName,style_id=@NewStyleId,[description]=@NewDescription,[status]=@NewStatus
         WHERE Id = @Id;
 
         PRINT 'Cập nhật thành công';
@@ -66,6 +66,8 @@ BEGIN
         PRINT 'Id không tồn tại trong bảng';
     END
 END;
+
+
 --PROCEDURE Delete Product
 CREATE PROCEDURE DeleteProduct
 (
