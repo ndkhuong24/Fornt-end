@@ -156,6 +156,7 @@ CREATE TABLE Voucher(
 	[value] FLOAT,
 	maximum_value INT,
 	condition INT,
+	quantity INT,
 	[start_date] DATETIME,
 	[end_date] DATETIME,
 	[status] INT
