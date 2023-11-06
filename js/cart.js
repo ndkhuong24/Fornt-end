@@ -2,7 +2,7 @@ const cart = {
     items: [],
     add(id) {
        
-        const item = this.items.find(item => item.id == id);
+        const item = this.items.find(item => item.id ==id);
         if (item) {
             if(item.qty==item.quantity){
                 alert("Số lượng trong kho ko đủ ")
@@ -59,7 +59,14 @@ const cart = {
         amountElement.textContent = this.amount;
     }
 };
-
+function showNotification(message) {
+    console.log(message);
+    notificationText.textContent = message;
+    notification.style.display = "block";
+    setTimeout(function () {
+      notification.style.display = "none";
+    }, 3000);
+  }
 // Attach event listeners and initialize the cart
 document.addEventListener("DOMContentLoaded", function () {
     const listElement = document.getElementById("list");

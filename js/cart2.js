@@ -17,16 +17,7 @@ var cart = {
   amt_of: function (item) {
     // Calculate the amount of a product
   },
-  get count() {
-    return this.items.reduce(function (total, item) {
-      return total + item.qty;
-    }, 0);
-  },
-  get amount() {
-    return this.items.reduce(function (total, item) {
-      return total + item.qty * item.price;
-    }, 0);
-  },
+  
   saveToLocalStorage: function () {
     var json = JSON.stringify(this.items);
     localStorage.setItem("cart", json);
@@ -42,6 +33,7 @@ var cart = {
         var row = document.createElement("tr");
         row.innerHTML = `
                 <td>${item.id}</td>
+                <td><img  src="https://192.168.109.128${item.path}" class="img-fluid" alt="" style="width: 100px;"></td>
                 <td>${item.name}</td>
                 <td>${item.price}</td>
                <td>
@@ -67,7 +59,14 @@ document.addEventListener("DOMContentLoaded", function () {
   cart.loadFromLocalStorage();
   cart.renderCartItems();
 });
-
+function showNotification(message) {
+  console.log(message);
+  notificationText.textContent = message;
+  notification.style.display = "block";
+  setTimeout(function () {
+    notification.style.display = "none";
+  }, 3000);
+}
 function updateQuantity(itemId, newQuantity) {
   // Find the item in the cart
   var item = cart.items.find(function (item) {
@@ -78,7 +77,7 @@ function updateQuantity(itemId, newQuantity) {
   var availableQuantity = item.quantity; // Assuming the available quantity is stored in the 'quantity' property of the item
 
   if (parseInt(newQuantity) >= availableQuantity) {
-    alert(availableQuantity);
+    showNotification("số lượng trong kho ko đủ ")
     item.qty = parseInt(item.quantity);
     cart.saveToLocalStorage();
     cart.renderCartItems();
