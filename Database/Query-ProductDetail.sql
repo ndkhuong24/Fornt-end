@@ -29,8 +29,6 @@ BEGIN
     END
 END;
 
-EXEC GetProductDetail
-
 CREATE PROCEDURE SearchProductDetailByName
     @searchPattern NVARCHAR(255)
 AS
@@ -70,14 +68,89 @@ CREATE PROCEDURE SearchProductDetailById
 AS
 BEGIN 
 	SELECT
-		PD.id,IC.[path],PD.price
+		PD.id,P.name,IC.[path],PD.price,PD.quantity,PD.[status]
 	FROM 
 		ProductDetail AS PD
 		JOIN ImageChinh AS IC ON PD.id=IC.product_detail_id
+		JOIN Product AS P ON PD.product_id=P.id
 	WHERE
 		PD.id=@Id
 END
 
-SELECT*FROM ProductDetail
+DROP PROCEDURE SearchProductDetailById
 
-EXEC SearchProductDetailById @Id='135'
+CREATE PROCEDURE GetProductDetailById
+    @Id INT
+AS
+BEGIN
+    SELECT
+		PD.id AS ID,C.[name] AS CategoryName,B.[name] AS BrandName,P.[name] AS ProductName,S.[name] AS SizeName,Cl.[name] AS ColorName,Sl.[name] AS SoleName
+	FROM
+		ProductDetail AS PD
+		JOIN Category AS C ON PD.category_id=C.id
+		JOIN Brand AS B ON PD.brand_id=B.id
+		JOIN Product AS P ON PD.product_id=P.id
+		JOIN Size AS S ON PD.size_id=S.id
+		JOIN Color AS Cl ON PD.color_id=Cl.id
+		JOIN Sole AS Sl ON PD.sole_id=Sl.id
+	WHERE 
+		PD.id = @Id
+END;
+CREATE PROCEDURE GetImageChinhProductDetail
+    @Id INT
+AS
+BEGIN
+    SELECT
+		ProductDetail.id,ImageChinh.[path]
+	FROM
+		ProductDetail JOIN ImageChinh ON ProductDetail.id= ImageChinh.product_detail_id
+	WHERE 
+		ProductDetail.id=@Id
+END;
+CREATE PROCEDURE GetImagePhuProductDetail
+    @Id INT
+AS
+BEGIN
+    SELECT
+		ProductDetail.id,ImagePhu.[path]
+	FROM
+		ProductDetail JOIN ImagePhu ON ProductDetail.id= ImagePhu.product_detail_id
+	WHERE 
+		ProductDetail.id=@Id
+END;
+
+
+
+
+
+
+
+
+
+CREATE PROCEDURE UpdateProductDetail
+(
+  @NewId INT,
+  @NewQuantity INT,
+  @NewPrice INT,
+  @NewStatus INT
+)
+AS
+BEGIN
+  -- Kiểm tra xem @NewId có tồn tại trong bảng ProductDetail không
+  IF EXISTS (SELECT 1 FROM ProductDetail WHERE Id = @NewId)
+  BEGIN
+    -- Nếu tồn tại, cập nhật thông tin sản phẩm chi tiết
+    UPDATE ProductDetail
+    SET
+      Quantity = @NewQuantity,
+      Price = @NewPrice,
+      Status = @NewStatus
+    WHERE Id = @NewId;
+  END
+  ELSE
+  BEGIN
+    -- Nếu không tồn tại, thêm mới sản phẩm chi tiết
+    INSERT INTO ProductDetail (Id, Quantity, Price, Status)
+    VALUES (@NewId, @NewQuantity, @NewPrice, @NewStatus);
+  END
+END
