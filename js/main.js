@@ -324,6 +324,45 @@
   // Ban đầu, gọi hàm updateContent để hiển thị nội dung cho URL ban đầu.
   updateContent();
 
+  function onlyOne(checkbox) {
+    var checkboxes = document.getElementsByName('check')
+    checkboxes.forEach((item) => {
+        if (item !== checkbox) item.checked = false
+    })
+}
+
+function tinhTongTien() {
+	//lấy số lượng từ ô input:
+	var soLuong = parseInt(document.getElementById('quantity').value);
+	//Lấy giá tiền từ các phần tử có class "price":
+	var giaTien = parseInt(document.getElementsByClassName('price')[0].innerHTML.replace(' vnđ', '').replace('.', ''));
+	//Tính Tồng Tiền:
+	var tongTien = soLuong * giaTien;
+	// Hiển Thị Tông Tiền Lên form:
+	document.getElementById('tongTien').innerHTML = tongTien.toLocaleString() + 'vnđ';
+}
+
+const productDivs = document.querySelectorAll('.product');
+//khởi tạo biến tổng tiền:
+let total = 0;
+//Lặp qua từng thẻ div và tính tổng tiền;
+productDivs.forEach((div) => {
+	//Trích Xuất giá trị tiền sản phẩm từ văn bản trong thẻ div:
+	const text = div.textContent;
+	//Sử Dụng biểu thức chính quy để tìm số nguyên trong văn bản:
+	const priceMatch = text.match(/\$\d+/);
+	if (priceMatch) {
+		//Loại bỏ kí tự "$" và chuyển đổi thành số nguyên
+		const price = parseInt(priceMatch[0].slice(1));
+		//Cộng dồn vào tổng:
+		total += price;
+	}
+
+});
+// Hiển thị tổng tiền trong thẻ total
+const totalDiv = document.getElementById('total');
+totalDiv.textContent = `Thành tiền: ${total}vnđ`;
+
 
 
 

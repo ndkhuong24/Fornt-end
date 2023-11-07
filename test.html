@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <style>
+        .notification {
+            z-index: 999;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgb(154, 154, 236);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+    </div>
+
+    <div>
+      <div class="row row-pb-md" id="cart-app"></div>
+      <a id="cart-link" href="test2.html">
+        <span id="cart-count"></span> items x $<span id="cart-amount"></span>
+      </a>
+    </div>
+    <script>
+      const row = document.querySelector(".row.row-pb-md");
+      function fetchData() {
+        fetch("https://192.168.109.128/api/ProductDetail/getAll")
+          .then((response) => response.json())
+          .then((data) => {
+            data.forEach((item) => {
+              row.innerHTML += `
+    <div class="col-lg-3 mb-4 text-center" id="list">
+      <div class="product-entry border">
+        <a href="product-detail.html" class="prod-img">
+          <img  src="https://192.168.109.128${item.path}" class="img-fluid" alt="">
+        </a>
+        <div class="desc">
+          <h2><a href="">${item.productName}</a></h2>
+          <span class="price">${item.price}</span>
+        </div>
+        <button onclick="cart.add(${item.id})">ADD TO CART</button>
+      </div>
+    </div>
+  `;
+            });
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+      fetchData();
+
+      const cart = {
+        items: [],
+        add(id) {
+          console.log(id);
+          const item = this.items.find((item) => item.id == id);
+          if (item) {
+            if (item.qty == item.quantity) {
+                showNotification("số lượng ko trong kho ko đủ ")
+              return;
+            } else {
+              item.qty++;
+              this.saveToLocalStorage();
+              this.updateCountAndAmount();
+            }
+          } else {
+            // Make a request to fetch the product data
+            // Replace the API URL with the appropriate endpoint
+            fetch(`https://192.168.109.128/api/ProductDetail/getById/${id}`)
+              .then((response) => response.json())
+              .then((data) => {
+                data.qty = 1;
+                this.items.push(data);
+                this.saveToLocalStorage();
+                this.updateCountAndAmount();
+              });
+          }
+        },
+        updateCountAndAmount() {
+          const countElement = document.getElementById("cart-count");
+          const amountElement = document.getElementById("cart-amount");
+          countElement.textContent = this.count;
+          amountElement.textContent = this.amount;
+        },
+
+        amt_of(item) {
+          // Calculate the amount of a single item
+          // based on its quantity and price
+          return item.qty * item.price;
+        },
+        get count() {
+          // Calculate the total count of items in the cart
+          return this.items.reduce((total, item) => total + item.qty, 0);
+        },
+        get amount() {
+          // Calculate the total amount of items in the cart
+          return this.items.reduce(
+            (total, item) => total + item.qty * item.price,
+            0
+          );
+        },
+        saveToLocalStorage() {
+          // Save the cart to local storage
+          const json = JSON.stringify(this.items);
+          localStorage.setItem("cart", json);
+        },
+        loadFromLocalStorage() {
+          // Load the cart from local storage
+          const json = localStorage.getItem("cart");
+          this.items = json ? JSON.parse(json) : [];
+
+          const countElement = document.getElementById("cart-count");
+          const amountElement = document.getElementById("cart-amount");
+          countElement.textContent = this.count;
+          amountElement.textContent = this.amount;
+        },
+      };
+
+      function showNotification(message) {
+        console.log(message);
+        notificationText.textContent = message;
+        notification.style.display = "block";
+        setTimeout(function () {
+          notification.style.display = "none";
+        }, 3000);
+      }
+
+      // Attach event listeners and initialize the cart
+      document.addEventListener("DOMContentLoaded", function () {
+        const listElement = document.getElementById("list");
+        const cartLinkElement = document.getElementById("cart-link");
+        cartLinkElement.addEventListener("click", function (event) {
+          event.preventDefault();
+
+          window.location.href = this.getAttribute("href");
+        });
+
+        // Load the cart from local storage
+        cart.loadFromLocalStorage();
+      });
+    </script>
+  </body>
+</html>
