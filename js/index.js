@@ -18,9 +18,9 @@ function renderTable(data,page){
     row.innerHTML += `
     <div class="col-lg-3 mb-4 text-center">
       <div class="product-entry border">
-        <a href="product-detail.html" class="prod-img">
-          <img  src="https://192.168.109.128${item.path}" class="img-fluid" alt="">
-        </a>
+      <a href="product-detail.html?id=${item.id}" class="prod-img">
+      <img src="https://192.168.109.128${item.path}" class="img-fluid" alt="">
+    </a>
         <div class="desc">
           <h2><a href="">${item.productName}</a></h2>
           <span class="price">${item.price}</span>
