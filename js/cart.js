@@ -29,10 +29,22 @@ const cart = {
         countElement.textContent = this.count;
         amountElement.textContent = this.amount;
     },
-    
+    remove: function (id) {
+        var index = this.items.findIndex(function (item) {
+          return item.id == id;
+        });
+        this.items.splice(index, 1);
+        this.saveToLocalStorage();
+        this.renderCartItems();
+        location.reload();
+      },
+      clear: function () {
+        this.items = [];
+        this.saveToLocalStorage();
+        this.renderCartItems();
+        location.reload();
+      },
     amt_of(item) {
-        // Calculate the amount of a single item
-        // based on its quantity and price
         return item.qty * item.price;
     },
     get count() {
@@ -55,10 +67,61 @@ const cart = {
 
         const countElement = document.getElementById("cart-count");
         const amountElement = document.getElementById("cart-amount");
+        const totalElement = document.getElementById("total")
+        totalElement.textContent=this.amount+" vnd ";
         countElement.textContent = this.count;
         amountElement.textContent = this.amount;
+    },
+    renderCartItems: function () {
+        var tbody = document.getElementById("cart-items");
+        tbody.innerHTML = "";
+        this.items.forEach(function (item) {
+            var row = document.createElement("tr");
+            row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td><img  src="https://192.168.109.128${item.path}" class="img-fluid" alt="" style="width: 100px;"></td>
+                    <td>${item.name}</td>
+                    <td>${item.price}</td>
+                   <td>
+                      <input onchange="updateQuantity(${item.id}, this.value)" type="number" min="1" value="${item.qty}">
+                    </td>
+                    <td>${item.qty * item.price}</td>
+                    <td>
+                        <button onclick="cart.remove(${item.id})" class="btn btn-sm btn-danger">
+                            delete
+                        </button>
+                    </td>
+             `;
+            tbody.appendChild(row);
+        });
     }
 };
+document.getElementById("clear-btn").addEventListener("click", function () {
+    cart.clear();
+  });
+  function updateQuantity(itemId, newQuantity) {
+    // Find the item in the cart
+    var item = cart.items.find(function (item) {
+      return item.id === itemId;
+    });
+  
+    // Update the quantity
+    var availableQuantity = item.quantity; // Assuming the available quantity is stored in the 'quantity' property of the item
+  
+    if (parseInt(newQuantity) == availableQuantity||parseInt(newQuantity) > availableQuantity) {
+      showNotification("số lượng trong kho ko đủ ")
+      item.qty = parseInt(availableQuantity-1);
+      cart.saveToLocalStorage();
+      cart.renderCartItems();
+      
+      return;
+    } else {
+      item.qty = parseInt(newQuantity);
+      cart.saveToLocalStorage();
+      cart.renderCartItems();
+      location.reload();
+    }
+  }
 function showNotification(message) {
     console.log(message);
     notificationText.textContent = message;
@@ -69,14 +132,13 @@ function showNotification(message) {
   }
 // Attach event listeners and initialize the cart
 document.addEventListener("DOMContentLoaded", function () {
-    const listElement = document.getElementById("list");
-    const cartLinkElement = document.getElementById("cart-link");
-    cartLinkElement.addEventListener("click", function (event) {
-        event.preventDefault();
+  const listElement = document.getElementById("list");
+  const cartLinkElement = document.getElementById("cart-link");
+  cartLinkElement.addEventListener("click", function (event) {
+    event.preventDefault();
 
-        window.location.href = this.getAttribute("href");
-    });
-
-    // Load the cart from local storage
+    window.location.href = this.getAttribute("href");
+  });
     cart.loadFromLocalStorage();
-});
+    cart.renderCartItems();
+  });
