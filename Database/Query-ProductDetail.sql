@@ -119,14 +119,6 @@ BEGIN
 		ProductDetail.id=@Id
 END;
 
-
-
-
-
-
-
-
-
 CREATE PROCEDURE UpdateProductDetail
 (
   @NewId INT,
@@ -136,21 +128,12 @@ CREATE PROCEDURE UpdateProductDetail
 )
 AS
 BEGIN
-  -- Kiểm tra xem @NewId có tồn tại trong bảng ProductDetail không
-  IF EXISTS (SELECT 1 FROM ProductDetail WHERE Id = @NewId)
-  BEGIN
-    -- Nếu tồn tại, cập nhật thông tin sản phẩm chi tiết
     UPDATE ProductDetail
     SET
-      Quantity = @NewQuantity,
-      Price = @NewPrice,
-      Status = @NewStatus
-    WHERE Id = @NewId;
-  END
-  ELSE
-  BEGIN
-    -- Nếu không tồn tại, thêm mới sản phẩm chi tiết
-    INSERT INTO ProductDetail (Id, Quantity, Price, Status)
-    VALUES (@NewId, @NewQuantity, @NewPrice, @NewStatus);
-  END
+      quantity = @NewQuantity,
+      price = @NewPrice,
+      [status] = @NewStatus
+    WHERE id = @NewId
 END
+
+EXEC UpdateProductDetail @NewId=135,@NewQuantity=6,@NewPrice=6666,@NewStatus=0
