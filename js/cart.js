@@ -68,6 +68,7 @@ const cart = {
         const countElement = document.getElementById("cart-count");
         const amountElement = document.getElementById("cart-amount");
         const totalElement = document.getElementById("total")
+        
         totalElement.textContent=this.amount+" vnd ";
         countElement.textContent = this.count;
         amountElement.textContent = this.amount;
@@ -136,7 +137,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartLinkElement = document.getElementById("cart-link");
   cartLinkElement.addEventListener("click", function (event) {
     event.preventDefault();
-
     window.location.href = this.getAttribute("href");
   });
     cart.loadFromLocalStorage();
