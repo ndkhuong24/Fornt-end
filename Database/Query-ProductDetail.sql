@@ -29,6 +29,8 @@ BEGIN
     END
 END;
 
+EXEC GetProductDetail
+
 CREATE PROCEDURE SearchProductDetailByName
     @searchPattern NVARCHAR(255)
 AS
@@ -78,6 +80,10 @@ BEGIN
 END
 
 DROP PROCEDURE SearchProductDetailById
+
+EXEC GetProductDetailById
+
+SELECT*FROM ProductDetail
 
 CREATE PROCEDURE GetProductDetailById
     @Id INT
