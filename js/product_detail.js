@@ -5,6 +5,7 @@ function fetchdata() {
   fetch(`https://192.168.109.128/api/ProductDetail/GetProductDetailAndCart/` + itemId)
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
       const row=document.getElementById("detail");
       row.innerHTML+=`
       <div class="product-desc">

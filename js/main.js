@@ -347,7 +347,7 @@ const cart = {
       return
     }
     if (item) {
-      if (item.qty >= item.quantity) {
+      if (item.qty > item.quantity) {
         showNotification("Số lượng trong kho ko đủ ");
 		return;
       } else {
@@ -359,6 +359,9 @@ const cart = {
       fetch(`https://192.168.109.128/api/ProductDetail/getById/${id}`)
         .then((response) => response.json())
         .then((data) => {
+          if (quantity > data.quantity) {
+            showNotification("Số lượng trong kho ko đủ ");
+        return;}
           data.qty = quantity;
           this.items.push(data);
           this.saveToLocalStorage();
