@@ -394,8 +394,10 @@ const cart = {
     const countElement = document.getElementById("cart-count");
 
     const totalElement = document.getElementById("total");
-
+    const totalElement2 = document.getElementById("total2");
     totalElement.textContent = this.amount + " VNĐ";
+    totalElement2.textContent = this.amount + " VNĐ";
+
     countElement.textContent = this.count;
   },
   renderCartItems: function () {
@@ -413,7 +415,7 @@ const cart = {
                       <input id="quantity" onchange="updateQuantity(${item.id
         }, this.value)" style="width:80px;text-align:center" type="number" min="1" value="${item.qty}">
                     </td>
-                    <td>${item.qty * item.price} VNĐ</td>
+                    <td>${item.qty * item.price}  VNĐ</td>
                     <td>
                         <btn style="font-size: larger;font-weight: 500;margin-top:-4px;text-decoration: underline;color:red;" class="btn" onclick="cart.remove(${item.id
         })">Xóa
