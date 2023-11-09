@@ -141,7 +141,6 @@ document.addEventListener("DOMContentLoaded", function () {
   cart.loadFromLocalStorage();
   cart.renderCartItems();
 });
-<<<<<<< HEAD
 
-=======
->>>>>>> 33e66122ff1e501f9b3acec504cf50927a8615a4
+
+
