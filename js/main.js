@@ -359,9 +359,67 @@ productDivs.forEach((div) => {
 	}
 
 });
-// Hiển thị tổng tiền trong thẻ total
-const totalDiv = document.getElementById('total');
-totalDiv.textContent = `Thành tiền: ${total}vnđ`;
+//Hiện số lượng trong giỏ hàng
+const cart = {
+	items: [],
+	add(id,quantity) {
+	  const item = this.items.find((item) => item.id == id);
+	  console.log(quantity);
+	  if (item) {
+		if (item.qty == item.quantity) {
+		  alert("Số lượng trong kho ko đủ ");
+		} else {
+		  item.qty+=quantity;
+		  this.saveToLocalStorage();
+		  this.updateCountAndAmount();
+		}
+	  } else {
+		fetch(`https://192.168.109.128/api/ProductDetail/getById/${id}`)
+		  .then((response) => response.json())
+		  .then((data) => {
+			data.qty = quantity;
+			this.items.push(data);
+			this.saveToLocalStorage();
+			this.updateCountAndAmount();
+		  });
+	  }
+	},
+	updateCountAndAmount() {
+	  const countElement = document.getElementById("cart-count");
+  
+	  countElement.textContent = this.count;
+	},
+   
+	amt_of(item) {
+	  return item.qty * item.price;
+	},
+	get count() {
+	  // Calculate the total count of items in the cart
+	  return this.items.reduce((total, item) => total + item.qty, 0);
+	},
+	
+	saveToLocalStorage() {
+	  // Save the cart to local storage
+	  const json = JSON.stringify(this.items);
+	  localStorage.setItem("cart", json);
+	},
+	loadFromLocalStorage() {
+	  // Load the cart from local storage
+	  const json = localStorage.getItem("cart");
+	  this.items = json ? JSON.parse(json) : [];
+	  const countElement = document.getElementById("cart-count");
+	  countElement.textContent = this.count;
+	},
+	
+  };
+  
+  
+  
+  // Attach event listeners and initialize the cart
+  document.addEventListener("DOMContentLoaded", function () {
+	cart.loadFromLocalStorage();
+  
+  });
 
 
 
