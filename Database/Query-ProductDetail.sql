@@ -142,4 +142,15 @@ BEGIN
     WHERE id = @NewId
 END
 
-EXEC UpdateProductDetail @NewId=135,@NewQuantity=6,@NewPrice=6666,@NewStatus=0
+
+
+
+CREATE PROCEDURE GetProductDetailAndCart(
+	@Id INT
+)
+AS
+BEGIN
+	
+END
+
+	
