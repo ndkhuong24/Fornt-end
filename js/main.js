@@ -362,7 +362,7 @@ const cart = {
           if (quantity > data.quantity) {
             showNotification("Số lượng trong kho ko đủ ");
         return;}
-          data.qty = quantity;
+          data.qty = parseInt(quantity);
           this.items.push(data);
           this.saveToLocalStorage();
           this.updateCountAndAmount();
