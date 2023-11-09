@@ -8863,3 +8863,22 @@ height: calc(100% - 73px);
 height: 100%;
 }
 }
+.cart-icon {
+  position: relative;
+  display: inline-block;
+}
+
+
+
+.item-count {
+  position: absolute;
+  
+  top: -10px; /* Điều chỉnh vị trí theo ý muốn */
+  right: -17px; /* Điều chỉnh vị trí theo ý muốn */
+  background-color: red; /* Màu nền của số lượng */
+  color: white; /* Màu chữ của số lượng */
+  border-radius: 60px; /* Bo góc để tạo hình tròn */
+  padding: 0px 9px; /* Kích thước và khoảng cách trong số lượng */
+  font-size: 15px;
+  font-weight: 700; /* Kích thước chữ của số lượng */
+}
