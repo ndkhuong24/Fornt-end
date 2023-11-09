@@ -342,10 +342,13 @@ const cart = {
   items: [],
   add(id, quantity) {
     const item = this.items.find((item) => item.id == id);
-
+    if(quantity<=0){
+      showNotification("số lượng ko đc nhỏ hơn 0")
+      return
+    }
     if (item) {
       if (item.qty >= item.quantity) {
-        alert("Số lượng trong kho ko đủ ");
+        showNotification("Số lượng trong kho ko đủ ");
 		return;
       } else {
         item.qty=parseInt(item.qty)+parseInt(quantity);
@@ -395,3 +398,11 @@ const cart = {
 document.addEventListener("DOMContentLoaded", function () {
   cart.loadFromLocalStorage();
 });
+function showNotification(message) {
+  
+  notificationText.textContent = message;
+  notification.style.display = "block";
+  setTimeout(function () {
+    notification.style.display = "none";
+  }, 3000);
+}
