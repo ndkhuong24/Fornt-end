@@ -347,7 +347,7 @@ const cart = {
       return
     }
     if (item) {
-      if (item.qty > item.quantity) {
+      if (item.qty >= item.quantity) {
         showNotification("Số lượng trong kho ko đủ ");
 		return;
       } else {
