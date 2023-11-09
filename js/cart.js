@@ -334,7 +334,7 @@ const cart = {
     const item = this.items.find((item) => item.id == id);
     if (item) {
       if (item.qty == item.quantity) {
-        alert("Số lượng trong kho ko đủ ");
+        alert("sỐ LƯỢNG SẢN PHẨM TRONG KHO KHÔNG ĐỦ");
       } else {
         item.qty++;
         this.saveToLocalStorage();
@@ -441,7 +441,7 @@ function updateQuantity(itemId, newQuantity) {
     parseInt(newQuantity) == availableQuantity ||
     parseInt(newQuantity) > availableQuantity
   ) {
-    showNotification("số lượng trong kho ko đủ ");
+    showNotification("sỐ LƯỢNG SẢN PHẨM TRONG KHO KHÔNG ĐỦ ");
     item.qty = parseInt(availableQuantity - 1);
     cart.saveToLocalStorage();
     cart.renderCartItems();
