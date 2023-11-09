@@ -1,22 +1,19 @@
 const cart = {
   items: [],
   add(id) {
-
-    const item = this.items.find(item => item.id == id);
+    const item = this.items.find((item) => item.id == id);
     if (item) {
       if (item.qty == item.quantity) {
-        alert("Số lượng trong kho ko đủ ")
+        alert("Số lượng trong kho ko đủ ");
       } else {
         item.qty++;
         this.saveToLocalStorage();
         this.updateCountAndAmount();
       }
     } else {
-      // Make a request to fetch the product data
-      // Replace the API URL with the appropriate endpoint
       fetch(`https://192.168.109.128/api/ProductDetail/getById/${id}`)
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           data.qty = 1;
           this.items.push(data);
           this.saveToLocalStorage();
@@ -26,9 +23,8 @@ const cart = {
   },
   updateCountAndAmount() {
     const countElement = document.getElementById("cart-count");
-    
+
     countElement.textContent = this.count;
-   
   },
   remove: function (id) {
     var index = this.items.findIndex(function (item) {
@@ -54,7 +50,7 @@ const cart = {
   },
   get amount() {
     // Calculate the total amount of items in the cart
-    return this.items.reduce((total, item) => total + (item.qty * item.price), 0);
+    return this.items.reduce((total, item) => total + item.qty * item.price, 0);
   },
   saveToLocalStorage() {
     // Save the cart to local storage
@@ -67,11 +63,10 @@ const cart = {
     this.items = json ? JSON.parse(json) : [];
     const countElement = document.getElementById("cart-count");
 
-    const totalElement = document.getElementById("total")
+    const totalElement = document.getElementById("total");
 
     totalElement.textContent = this.amount + " vnd ";
     countElement.textContent = this.count;
-    
   },
   renderCartItems: function () {
     var tbody = document.getElementById("cart-items");
@@ -79,22 +74,32 @@ const cart = {
     this.items.forEach(function (item) {
       var row = document.createElement("tr");
       row.innerHTML = `
-                    <td><img  src="https://192.168.109.128${item.path}" class="img-fluid" alt="" style="width: 100px;"></td>
-                    <td  style="font-weight: 600;text-decoration: underline;color: dodgerblue;">${item.name}</td>
+                    <td><img  src="https://192.168.109.128${
+                      item.path
+                    }" class="img-fluid" alt="" style="width: 100px;"></td>
+                    <td  style="font-weight: 600;text-decoration: underline;color: dodgerblue;">${
+                      item.name
+                    }</td>
                     <td>${item.price} VNĐ</td>
                    <td>
-                      <input onchange="updateQuantity(${item.id}, this.value)" style="width:85px;text-align:center" type="number" min="1" value="${item.qty}">
+                      <input id="quantity" onchange="updateQuantity(${
+                        item.id
+                      }, this.value)" style="width:85px;text-align:center" type="number" min="1" value="${
+        item.qty
+      }">
                     </td>
                     <td>${item.qty * item.price} VNĐ</td>
                     <td>
-                        <btn style="font-size: larger;font-weight: 500;margin-top:-4px;text-decoration: underline;color:red;" class="btn" onclick="cart.remove(${item.id})">Xóa
+                        <btn style="font-size: larger;font-weight: 500;margin-top:-4px;text-decoration: underline;color:red;" class="btn" onclick="cart.remove(${
+                          item.id
+                        })">Xóa
                         </btn>
                         
                     </td>
              `;
       tbody.appendChild(row);
     });
-  }
+  },
 };
 
 function updateQuantity(itemId, newQuantity) {
@@ -106,8 +111,11 @@ function updateQuantity(itemId, newQuantity) {
   // Update the quantity
   var availableQuantity = item.quantity; // Assuming the available quantity is stored in the 'quantity' property of the item
 
-  if (parseInt(newQuantity) == availableQuantity || parseInt(newQuantity) > availableQuantity) {
-    showNotification("số lượng trong kho ko đủ ")
+  if (
+    parseInt(newQuantity) == availableQuantity ||
+    parseInt(newQuantity) > availableQuantity
+  ) {
+    showNotification("số lượng trong kho ko đủ ");
     item.qty = parseInt(availableQuantity - 1);
     cart.saveToLocalStorage();
     cart.renderCartItems();
@@ -130,7 +138,6 @@ function showNotification(message) {
 }
 // Attach event listeners and initialize the cart
 document.addEventListener("DOMContentLoaded", function () {
- 
   cart.loadFromLocalStorage();
   cart.renderCartItems();
 });
