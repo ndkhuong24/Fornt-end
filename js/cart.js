@@ -65,7 +65,7 @@ const cart = {
 
     const totalElement = document.getElementById("total");
 
-    totalElement.textContent = this.amount + " vnd ";
+    totalElement.textContent = this.amount + " VNĐ";
     countElement.textContent = this.count;
   },
   renderCartItems: function () {
@@ -141,3 +141,6 @@ document.addEventListener("DOMContentLoaded", function () {
   cart.loadFromLocalStorage();
   cart.renderCartItems();
 });
+
+
+
