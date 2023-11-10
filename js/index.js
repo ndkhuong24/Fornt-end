@@ -1,6 +1,5 @@
 const apiUrl = "https://192.168.109.128/api/ProductDetail/getAll";
 
-
 const perPage = 8; // Số lượng mục trên mỗi trang
 let currentPage = 1; // Trang hiện tại
 
@@ -8,7 +7,7 @@ const row = document.querySelector(".row.row-pb-md");
 
 // Định nghĩa biến data và khởi tạo nó là một mảng trống
 let data = [];
-function renderTable(data,page){
+function renderTable(data, page) {
   const startIndex = (page - 1) * perPage;
   const endIndex = page * perPage;
   row.innerHTML = "";
@@ -23,15 +22,14 @@ function renderTable(data,page){
     </a>
         <div class="desc">
           <h2><a href="">${item.productName}</a></h2>
-          <span class="price">${item.price}</span>
+          <span class="price">${item.price} VND</span>
         </div>
       </div>
     </div>
   `;
   }
 }
-let totakPages=1;
-
+let totakPages = 1;
 
 // Sửa hàm fetchDataAndPopulateTable để tính totalPages
 function fetchDataAndPopulateTable() {
