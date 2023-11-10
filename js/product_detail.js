@@ -25,8 +25,11 @@ function fetchdata() {
         <h3>${data.productName}</h3>
         <p class="price">
             <span>${priceWithVND}</span>
+            <br/>
         </p>
         <div>
+            <label>Mã : </label> ${data.productCode} - <label>Trạng thái : </label> ${data.status}<br>
+            <br/>
             <label style="font-size: large;font-weight: 500;">Style : </label> ${data.styleName} <br>
             <label style="font-size: large;font-weight: 500;">Category : </label> ${data.categoryName} <br>
             <label style="font-size: large;font-weight: 500;">Brand : </label> ${data.brandName} <br>
@@ -64,7 +67,7 @@ function fetchdata() {
         </div>
         <div class="row">
             <div class="col-sm-12 text-center" id="addtocart">
-                <p class="addtocart"><a href="#" class="btn btn-primary btn-addtocart"
+                <p class="addtocart"><a style="color: white" class="btn btn-primary btn-addtocart"
                         onclick="cart.add(${data.productDetailID},document.getElementById('quantity').value)"><i
                             class="icon-shopping-cart"></i> Add to Cart</a></p>
             </div>

@@ -151,7 +151,7 @@ CREATE PROCEDURE GetProductDetailAndCart(
 AS
 BEGIN
 	SELECT 
-		PD.id AS ProductDetailID,P.code AS ProductCode,P.[name] AS ProductName,P.[description] AS ProductDescription,Sl.[name] AS StyleName,C.[name] AS CategoryName,B.[name] AS BrandName,S.[name] AS SizeName,Cl.[name] AS ColorName,Sol.[name] AS SoleName,M.[name] AS MaterialName,PD.quantity AS Quantity,PD.price AS Price
+		PD.id AS ProductDetailID,P.code AS ProductCode,P.[name] AS ProductName,P.[description] AS ProductDescription,Sl.[name] AS StyleName,C.[name] AS CategoryName,B.[name] AS BrandName,S.[name] AS SizeName,Cl.[name] AS ColorName,Sol.[name] AS SoleName,M.[name] AS MaterialName,PD.quantity AS Quantity,PD.price AS Price,PD.[status]
 	FROM 
 		ProductDetail AS PD
 		JOIN Product AS P ON PD.product_id=P.id 
@@ -165,6 +165,7 @@ BEGIN
 	WHERE PD.id=@Id
 END
 
+EXEC GetProductDetailAndCart @Id=135
 
 CREATE TRIGGER trg_UpdateVoucherStatus
 ON Voucher
