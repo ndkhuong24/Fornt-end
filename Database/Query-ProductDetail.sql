@@ -150,7 +150,48 @@ CREATE PROCEDURE GetProductDetailAndCart(
 )
 AS
 BEGIN
-	
+	SELECT 
+		PD.id AS ProductDetailID,P.code AS ProductCode,P.[name] AS ProductName,P.[description] AS ProductDescription,Sl.[name] AS StyleName,C.[name] AS CategoryName,B.[name] AS BrandName,S.[name] AS SizeName,Cl.[name] AS ColorName,Sol.[name] AS SoleName,M.[name] AS MaterialName,PD.quantity AS Quantity,PD.price AS Price
+	FROM 
+		ProductDetail AS PD
+		JOIN Product AS P ON PD.product_id=P.id 
+		JOIN Style AS Sl ON P.style_id=Sl.id
+		JOIN Category AS C ON C.id=PD.category_id
+		JOIN Brand AS B ON B.id=PD.brand_id
+		JOIN Size AS S ON S.id=PD.size_id
+		JOIN Color AS Cl ON Cl.id=PD.color_id
+		JOIN Sole AS Sol ON Sol.id=PD.sole_id
+		JOIN Material AS M ON M.id=PD.material_id
+	WHERE PD.id=@Id
 END
+
+
+CREATE TRIGGER trg_UpdateVoucherStatus
+ON Voucher
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    DECLARE @CurrentTime DATETIME;
+    SET @CurrentTime = GETDATE();  -- Lấy thời gian hiện tại
+
+    -- Cập nhật trạng thái cho các voucher mới hoặc đã cập nhật
+    UPDATE Voucher
+    SET status = 
+        CASE
+            WHEN @CurrentTime BETWEEN Voucher.start_date AND Voucher.end_date THEN 1  -- Trạng thái "Còn hạn"
+            ELSE 0  -- Trạng thái "Hết hạn"
+        END
+    FROM Voucher
+    INNER JOIN inserted ON Voucher.id = inserted.id;
+END;
+
+
+-- Xóa trigger có tên trg_UpdateVoucherStatus
+DROP TRIGGER trg_UpdateVoucherStatus;
+
+SELECT * FROM Voucher WHERE id=24
+
+UPDATE Voucher SET name='1' where id=24
+
 
 	
