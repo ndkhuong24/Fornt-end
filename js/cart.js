@@ -437,17 +437,19 @@ function updateQuantity(itemId, newQuantity) {
   // Update the quantity
   var availableQuantity = item.quantity; // Assuming the available quantity is stored in the 'quantity' property of the item
   console.log(availableQuantity);
-  if (
-    parseInt(newQuantity) > availableQuantity
-  ) {
+  if (parseInt(newQuantity) > availableQuantity) {
     showNotification("sỐ LƯỢNG SẢN PHẨM TRONG KHO KHÔNG ĐỦ ");
     item.qty = parseInt(availableQuantity);
     cart.saveToLocalStorage();
     cart.renderCartItems();
-
+    location.reload();
     return;
   }else if(newQuantity<=0){
       showNotification("SỐ LƯỢNG SẢN PHẨM KO ĐƯỢC NHỎ HƠN 0");
+      item.qty = 1;
+      cart.saveToLocalStorage();
+      cart.renderCartItems();
+      location.reload();
       return;
   } else {
     item.qty = parseInt(newQuantity);
