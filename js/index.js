@@ -14,15 +14,22 @@ function renderTable(data, page) {
   // Lặp qua các mục dựa trên chỉ mục bắt đầu và kết thúc
   for (let i = startIndex; i < endIndex && i < data.length; i++) {
     const item = data[i];
+      // Format currency and replace currency symbol
+      const formattedPrice = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(item.price);
+
+      const priceWithVND = formattedPrice.replace("₫", "VND");
     row.innerHTML += `
-    <div class="col-lg-3 mb-4 text-center">
+    <div class="col-lg-3 mb-4 text-center" >
       <div class="product-entry border">
       <a href="product-detail.html?id=${item.id}" class="prod-img">
       <img src="https://192.168.109.128${item.path}" class="img-fluid" alt="">
     </a>
         <div class="desc">
           <h2><a href="">${item.productName}</a></h2>
-          <span class="price">${item.price} VND</span>
+          <span class="price" style="color:red;font-weight:500">${priceWithVND}</span>
         </div>
       </div>
     </div>
@@ -80,3 +87,5 @@ function updatePageInfo() {
 
 // Gọi hàm fetchDataAndPopulateTable để khởi tạo và render dữ liệu
 fetchDataAndPopulateTable();
+
+

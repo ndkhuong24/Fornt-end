@@ -375,7 +375,6 @@ const cart = {
     return item.qty * item.price;
   },
   get count() {
-    // Calculate the total count of items in the cart
     return this.items.reduce((total, item) => total + item.qty, 0);
   },
   get amount() {
@@ -395,27 +394,51 @@ const cart = {
 
     const totalElement = document.getElementById("total");
     const totalElement2 = document.getElementById("total2");
-    totalElement.textContent = this.amount + " VNĐ";
-    totalElement2.textContent = this.amount + " VNĐ";
+
+    const formattedPrice = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(this.amount);
+    const priceWithVND = formattedPrice.replace("₫", "VND");
+
+    totalElement.textContent = priceWithVND;
+    totalElement2.textContent =priceWithVND;
 
     countElement.textContent = this.count;
   },
+
   renderCartItems: function () {
     var tbody = document.getElementById("cart-items");
     tbody.innerHTML = "";
     this.items.forEach(function (item) {
       var row = document.createElement("tr");
+
+      // Format currency and replace currency symbol
+      const formattedPrice = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(item.price);
+      const priceWithVND = formattedPrice.replace("₫", "VND");
+
+
+      // Format currency and replace currency symbol
+      const formattedPrice1 = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(item.qty * item.price);
+      const priceWithVND1 = formattedPrice1.replace("₫", "VND");
+
       row.innerHTML = `
                     <td><img  src="https://192.168.109.128${item.path
         }" class="img-fluid" alt="" style="width: 100px;"></td>
                     <td  style="font-weight: 600;text-decoration: underline;color: dodgerblue;">${item.name
         }</td>
-                    <td>${item.price} VNĐ</td>
+                    <td>${priceWithVND}</td>
                    <td>
                       <input id="quantity" onchange="updateQuantity(${item.id
         }, this.value)" style="width:80px;text-align:center" type="number" min="1" value="${item.qty}">
                     </td>
-                    <td>${item.qty * item.price}  VNĐ</td>
+                    <td>${priceWithVND1} </td>
                     <td>
                         <btn style="font-size: larger;font-weight: 500;margin-top:-4px;text-decoration: underline;color:red;" class="btn" onclick="cart.remove(${item.id
         })">Xóa
@@ -427,6 +450,7 @@ const cart = {
     });
   },
 };
+
 
 function updateQuantity(itemId, newQuantity) {
   // Find the item in the cart
@@ -444,13 +468,13 @@ function updateQuantity(itemId, newQuantity) {
     cart.renderCartItems();
     cart.loadFromLocalStorage();
     return;
-  }else if(newQuantity<=0){
-      showNotification("SỐ LƯỢNG SẢN PHẨM KO ĐƯỢC NHỎ HƠN 0");
-      item.qty = 1;
-      cart.saveToLocalStorage();
-      cart.renderCartItems();
-      cart.loadFromLocalStorage();
-      return;
+  } else if (newQuantity <= 0) {
+    showNotification("SỐ LƯỢNG SẢN PHẨM KO ĐƯỢC NHỎ HƠN 0");
+    item.qty = 1;
+    cart.saveToLocalStorage();
+    cart.renderCartItems();
+    cart.loadFromLocalStorage();
+    return;
   } else {
     item.qty = parseInt(newQuantity);
     cart.saveToLocalStorage();
@@ -471,6 +495,5 @@ document.addEventListener("DOMContentLoaded", function () {
   cart.loadFromLocalStorage();
   cart.renderCartItems();
 });
-
 
 
