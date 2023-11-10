@@ -363,7 +363,7 @@ const cart = {
     this.items.splice(index, 1);
     this.saveToLocalStorage();
     this.renderCartItems();
-    location.reload();
+    this.loadFromLocalStorage();
   },
   clear: function () {
     this.items = [];
@@ -442,20 +442,20 @@ function updateQuantity(itemId, newQuantity) {
     item.qty = parseInt(availableQuantity);
     cart.saveToLocalStorage();
     cart.renderCartItems();
-    location.reload();
+    cart.loadFromLocalStorage();
     return;
   }else if(newQuantity<=0){
       showNotification("SỐ LƯỢNG SẢN PHẨM KO ĐƯỢC NHỎ HƠN 0");
       item.qty = 1;
       cart.saveToLocalStorage();
       cart.renderCartItems();
-      location.reload();
+      cart.loadFromLocalStorage();
       return;
   } else {
     item.qty = parseInt(newQuantity);
     cart.saveToLocalStorage();
     cart.renderCartItems();
-    location.reload();
+    cart.loadFromLocalStorage();
   }
 }
 function showNotification(message) {
