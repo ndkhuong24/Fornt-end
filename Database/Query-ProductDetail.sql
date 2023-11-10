@@ -142,9 +142,6 @@ BEGIN
     WHERE id = @NewId
 END
 
-
-
-
 CREATE PROCEDURE GetProductDetailAndCart(
 	@Id INT
 )
@@ -165,34 +162,4 @@ BEGIN
 	WHERE PD.id=@Id
 END
 
-EXEC GetProductDetailAndCart @Id=135
-
-CREATE TRIGGER trg_UpdateVoucherStatus
-ON Voucher
-AFTER INSERT, UPDATE
-AS
-BEGIN
-    DECLARE @CurrentTime DATETIME;
-    SET @CurrentTime = GETDATE();  -- Lấy thời gian hiện tại
-
-    -- Cập nhật trạng thái cho các voucher mới hoặc đã cập nhật
-    UPDATE Voucher
-    SET status = 
-        CASE
-            WHEN @CurrentTime BETWEEN Voucher.start_date AND Voucher.end_date THEN 1  -- Trạng thái "Còn hạn"
-            ELSE 0  -- Trạng thái "Hết hạn"
-        END
-    FROM Voucher
-    INNER JOIN inserted ON Voucher.id = inserted.id;
-END;
-
-
--- Xóa trigger có tên trg_UpdateVoucherStatus
-DROP TRIGGER trg_UpdateVoucherStatus;
-
-SELECT * FROM Voucher WHERE id=24
-
-UPDATE Voucher SET name='1' where id=24
-
-
-	
+EXEC GetProductDetailAndCart @Id=135	
