@@ -354,6 +354,7 @@ const cart = {
         item.qty=parseInt(item.qty)+parseInt(quantity);
         this.saveToLocalStorage();
         this.updateCountAndAmount();
+        showNotification("Thêm thành công")
       }
     } else {
       fetch(`https://192.168.109.128/api/ProductDetail/getById/${id}`)
@@ -366,6 +367,7 @@ const cart = {
           this.items.push(data);
           this.saveToLocalStorage();
           this.updateCountAndAmount();
+          showNotification("Thêm thành công")
         });
     }
   },
