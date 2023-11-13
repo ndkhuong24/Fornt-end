@@ -163,3 +163,5 @@ BEGIN
 END
 
 EXEC GetProductDetailAndCart @Id=135	
+
+SELECT * FROM Voucher
