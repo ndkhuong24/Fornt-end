@@ -331,167 +331,170 @@ updateContent();
 const cart = {
     items: [],
     add(id) {
-        const item = this.items.find((item) => item.id == id);
-        if (item) {
-            if (item.qty == item.quantity) {
-                alert("sỐ LƯỢNG SẢN PHẨM TRONG KHO KHÔNG ĐỦ");
-            } else {
-                item.qty++;
-                this.saveToLocalStorage();
-                this.updateCountAndAmount();
-            }
+      const item = this.items.find((item) => item.id == id);
+      if (item) {
+        if (item.qty == item.quantity) {
+          alert("sỐ LƯỢNG SẢN PHẨM TRONG KHO KHÔNG ĐỦ");
         } else {
-            fetch(`https://192.168.109.128/api/ProductDetail/getById/${id}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    data.qty = 1;
-                    this.items.push(data);
-                    this.saveToLocalStorage();
-                    this.updateCountAndAmount();
-                });
+          item.qty++;
+          this.saveToLocalStorage();
+          this.updateCountAndAmount();
         }
+      } else {
+        fetch(`https://192.168.109.128/api/ProductDetail/getById/${id}`)
+          .then((response) => response.json())
+          .then((data) => {
+            data.qty = 1;
+            this.items.push(data);
+            this.saveToLocalStorage();
+            this.updateCountAndAmount();
+          });
+      }
     },
     updateCountAndAmount() {
-        const countElement = document.getElementById("cart-count");
-
-        countElement.textContent = this.count;
+      const countElement = document.getElementById("cart-count");
+  
+      countElement.textContent = this.count;
     },
     remove: function (id) {
-        var index = this.items.findIndex(function (item) {
-            return item.id == id;
-        });
-        this.items.splice(index, 1);
-        this.saveToLocalStorage();
-        this.renderCartItems();
-        this.loadFromLocalStorage();
+      var index = this.items.findIndex(function (item) {
+        return item.id == id;
+      });
+      this.items.splice(index, 1);
+      this.saveToLocalStorage();
+      this.renderCartItems();
+      this.loadFromLocalStorage();
     },
     clear: function () {
-        this.items = [];
-        this.saveToLocalStorage();
-        this.renderCartItems();
-        location.reload();
+      this.items = [];
+      this.saveToLocalStorage();
+      this.renderCartItems();
+      location.reload();
     },
     amt_of(item) {
-        return item.qty * item.price;
+      return item.qty * item.price;
     },
     get count() {
-        return this.items.reduce((total, item) => total + item.qty, 0);
+      return this.items.reduce((total, item) => total + item.qty, 0);
     },
     get amount() {
-        // Calculate the total amount of items in the cart
-        return this.items.reduce((total, item) => total + item.qty * item.price, 0);
+      // Calculate the total amount of items in the cart
+      return this.items.reduce((total, item) => total + item.qty * item.price, 0);
     },
     saveToLocalStorage() {
-        // Save the cart to local storage
-        const json = JSON.stringify(this.items);
-        localStorage.setItem("cart", json);
+      // Save the cart to local storage
+      const json = JSON.stringify(this.items);
+      localStorage.setItem("cart", json);
     },
-   
     loadFromLocalStorage() {
-        // Load the cart from local storage
-        const json = localStorage.getItem("cart");
-        this.items = json ? JSON.parse(json) : [];
-        const countElement = document.getElementById("cart-count");
-    
-        const totalElement = document.getElementById("total");
-        const totalElement2 = document.getElementById("total2");
-    
+      // Load the cart from local storage
+      const json = localStorage.getItem("cart");
+      this.items = json ? JSON.parse(json) : [];
+      const countElement = document.getElementById("cart-count");
+  
+      const totalElement = document.getElementById("total");
+      const totalElement2 = document.getElementById("total2");
+  
+      const formattedPrice = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(this.amount);
+      const priceWithVND = formattedPrice.replace("₫", "VND");
+  
+      totalElement.textContent = priceWithVND;
+      totalElement2.textContent =priceWithVND;
+  
+      countElement.textContent = this.count;
+    },
+  
+    renderCartItems: function () {
+      var tbody = document.getElementById("cart-items");
+      tbody.innerHTML = "";
+      this.items.forEach(function (item) {
+        var row = document.createElement("tr");
+  
+        // Format currency and replace currency symbol
         const formattedPrice = new Intl.NumberFormat("vi-VN", {
           style: "currency",
           currency: "VND",
-        }).format(this.amount);
+        }).format(item.price);
         const priceWithVND = formattedPrice.replace("₫", "VND");
-    
-        totalElement.textContent = priceWithVND;
-        totalElement2.textContent =priceWithVND;
-    
-        countElement.textContent = this.count;
-      },
-
-    renderCartItems: function () {
-        var tbody = document.getElementById("cart-items");
-        tbody.innerHTML = "";
-        this.items.forEach(function (item) {
-            var row = document.createElement("tr");
-            // Format currency and replace currency symbol
-            const formattedPrice = new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-            }).format(item.price);
-            const formatPrice = formattedPrice.replace("₫", "VND");
-            // Format currency and replace currency symbol
-            const formattedPrice1 = new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-            }).format(item.qty * item.price);
-            const formatPrice1 = formattedPrice1.replace("₫", "VND");
-            row.innerHTML = `
+  
+  
+        // Format currency and replace currency symbol
+        const formattedPrice1 = new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(item.qty * item.price);
+        const priceWithVND1 = formattedPrice1.replace("₫", "VND");
+  
+        row.innerHTML = `
                       <td><img  src="https://192.168.109.128${item.path
-                }" class="img-fluid" alt="" style="width: 100px;"></td>
+          }" class="img-fluid" alt="" style="width: 100px;"></td>
                       <td  style="font-weight: 600;text-decoration: underline;color: dodgerblue;">${item.name
-                }</td>
-                      <td>${formatPrice}</td>
+          }</td>
+                      <td>${priceWithVND}</td>
                      <td>
                         <input id="quantity" onchange="updateQuantity(${item.id
-                }, this.value)" style="width:80px;text-align:center" type="number" min="1" value="${item.qty}">
+          }, this.value)" style="width:80px;text-align:center" type="number" min="1" value="${item.qty}">
                       </td>
-                      <td>${formatPrice1} </td>
+                      <td>${priceWithVND1} </td>
                       <td>
                           <btn style="font-size: larger;font-weight: 500;margin-top:-4px;text-decoration: underline;color:red;" class="btn" onclick="cart.remove(${item.id
-                })">Xóa
+          })">Xóa
                           </btn>
                           
                       </td>
                `;
-            tbody.appendChild(row);
-        });
+        tbody.appendChild(row);
+      });
     },
-};
-
-
-function updateQuantity(itemId, newQuantity) {
+  };
+  
+  
+  function updateQuantity(itemId, newQuantity) {
     // Find the item in the cart
     var item = cart.items.find(function (item) {
-        return item.id === itemId;
+      return item.id === itemId;
     });
-
+  
     // Update the quantity
     var availableQuantity = item.quantity; // Assuming the available quantity is stored in the 'quantity' property of the item
     console.log(availableQuantity);
     if (parseInt(newQuantity) > availableQuantity) {
-        showNotification("sỐ LƯỢNG SẢN PHẨM TRONG KHO KHÔNG ĐỦ ");
-        item.qty = parseInt(availableQuantity);
-        cart.saveToLocalStorage();
-        cart.renderCartItems();
-        cart.loadFromLocalStorage();
-        return;
+      showNotification("sỐ LƯỢNG SẢN PHẨM TRONG KHO KHÔNG ĐỦ ");
+      item.qty = parseInt(availableQuantity);
+      cart.saveToLocalStorage();
+      cart.renderCartItems();
+      cart.loadFromLocalStorage();
+      return;
     } else if (newQuantity <= 0) {
-        showNotification("SỐ LƯỢNG SẢN PHẨM KO ĐƯỢC NHỎ HƠN 0");
-        item.qty = 1;
-        cart.saveToLocalStorage();
-        cart.renderCartItems();
-        cart.loadFromLocalStorage();
-        return;
+      showNotification("SỐ LƯỢNG SẢN PHẨM KO ĐƯỢC NHỎ HƠN 0");
+      item.qty = 1;
+      cart.saveToLocalStorage();
+      cart.renderCartItems();
+      cart.loadFromLocalStorage();
+      return;
     } else {
-        item.qty = parseInt(newQuantity);
-        cart.saveToLocalStorage();
-        cart.renderCartItems();
-        cart.loadFromLocalStorage();
+      item.qty = parseInt(newQuantity);
+      cart.saveToLocalStorage();
+      cart.renderCartItems();
+      cart.loadFromLocalStorage();
     }
-}
-function showNotification(message) {
+  }
+  function showNotification(message) {
     console.log(message);
     notificationText.textContent = message;
     notification.style.display = "block";
     setTimeout(function () {
-        notification.style.display = "none";
+      notification.style.display = "none";
     }, 3000);
-}
-// Attach event listeners and initialize the cart
-document.addEventListener("DOMContentLoaded", function () {
+  }
+  // Attach event listeners and initialize the cart
+  document.addEventListener("DOMContentLoaded", function () {
     cart.loadFromLocalStorage();
     cart.renderCartItems();
-});
+  });
 function onlyOne(checkbox) {
     var checkboxes = document.getElementsByName("check");
     checkboxes.forEach((item) => {
