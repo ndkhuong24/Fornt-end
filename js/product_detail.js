@@ -1,6 +1,35 @@
 const urlParams = new URLSearchParams(window.location.search);
 const itemId = urlParams.get("id");
 
+document.addEventListener("DOMContentLoaded", function () {
+  // Bước 1: Lấy dữ liệu từ API bằng fetch
+  fetch(`https://192.168.109.128/api/ProductDetail/getImageChinhById/${itemId}`)
+    .then((response) => response.json())
+    .then((imageChinhData) => {
+      var carouselItems = document.querySelectorAll(".owl-carousel .item");
+
+      // Lặp qua các phần tử của carousel và cập nhật hình ảnh
+      carouselItems.forEach((item, index) => {
+        var imgElement = item.querySelector(".prod-img img");
+        if (imgElement) {
+          imgElement.src = `https://192.168.109.128${imageChinhData.path}`;
+        }
+      });
+
+      initializeOwlCarousel();
+    })
+    .catch((error) => {
+      console.error("Lỗi khi lấy dữ liệu từ API", error);
+    });
+
+  function initializeOwlCarousel() {
+    var owl = $("#owl-carousel");
+    owl.owlCarousel({
+      // loop: true,
+    });
+  }
+});
+
 function fetchdata() {
   fetch(
     `https://192.168.109.128/api/ProductDetail/GetProductDetailAndCart/` +
@@ -8,9 +37,7 @@ function fetchdata() {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       const row = document.getElementById("detail");
-
       // Format currency and replace currency symbol
       const formattedPrice = new Intl.NumberFormat("vi-VN", {
         style: "currency",

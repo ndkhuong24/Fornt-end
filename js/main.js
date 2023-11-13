@@ -342,19 +342,19 @@ const cart = {
   items: [],
   add(id, quantity) {
     const item = this.items.find((item) => item.id == id);
-    if(quantity<=0){
-      showNotification("số lượng ko đc nhỏ hơn 0")
-      return
+    if (quantity <= 0) {
+      showNotification("số lượng ko đc nhỏ hơn 0");
+      return;
     }
     if (item) {
       if (item.qty >= item.quantity) {
         showNotification("Số lượng trong kho ko đủ ");
-		return;
+        return;
       } else {
-        item.qty=parseInt(item.qty)+parseInt(quantity);
+        item.qty = parseInt(item.qty) + parseInt(quantity);
         this.saveToLocalStorage();
         this.updateCountAndAmount();
-        showNotification("Thêm thành công")
+        showNotification("Thêm thành công");
       }
     } else {
       fetch(`https://192.168.109.128/api/ProductDetail/getById/${id}`)
@@ -362,12 +362,13 @@ const cart = {
         .then((data) => {
           if (quantity > data.quantity) {
             showNotification("Số lượng trong kho ko đủ ");
-        return;}
+            return;
+          }
           data.qty = parseInt(quantity);
           this.items.push(data);
           this.saveToLocalStorage();
           this.updateCountAndAmount();
-          showNotification("Thêm thành công")
+          showNotification("Thêm thành công");
         });
     }
   },
@@ -404,7 +405,6 @@ document.addEventListener("DOMContentLoaded", function () {
   cart.loadFromLocalStorage();
 });
 function showNotification(message) {
-  
   notificationText.textContent = message;
   notification.style.display = "block";
   setTimeout(function () {
