@@ -104,8 +104,9 @@ document.querySelectorAll('input[id="brand"]:checked').forEach((checkbox) => {
      const apiFilter = `http://localhost:8080/api/filter?minPrice=${min}&maxPrice=${max}&colors=${colors.join("&colors=")}&brands=${brands.join("&brands=")}`;
      fetch(apiFilter)
          .then((response) => response.json())
-         .then((data) => {
+         .then((filterdata) => {
           currentPage = 1;
+          data=filterdata;
           totalPages = Math.ceil(data.length / perPage);
           updatePageInfo();
           renderTable(data, currentPage);
