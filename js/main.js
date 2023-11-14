@@ -351,7 +351,7 @@ const cart = {
         showNotification("Số lượng trong kho ko đủ ");
         return;
       } else {
-        item.qty = parseInt(item.qty) + parseInt(quantity);
+        item.qty=parseInt(item.qty)+parseInt(quantity);
         this.saveToLocalStorage();
         this.updateCountAndAmount();
         showNotification("Thêm thành công");
