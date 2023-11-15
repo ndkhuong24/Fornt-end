@@ -1,18 +1,62 @@
 const urlParams = new URLSearchParams(window.location.search);
 const itemId = urlParams.get("id");
 
+// let data = [];
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   fetch(`https://192.168.109.128/api/ProductDetail/getImageChinhById/${itemId}`)
+//     .then((response) => response.json())
+//     .then((imageChinhData) => {
+//       Promise.all([
+//         fetch(
+//           `https://192.168.109.128/api/ProductDetail/getImagePhuById/${itemId}`
+//         ),
+//       ])
+//         .then((responses) => Promise.all(responses.map((res) => res.json())))
+//         .then((imagePhuData) => {
+//           // Gộp dữ liệu imageChinhData và imagePhuData
+//           imagePhuData.concat(imageChinhData);
+
+//           var carouselItems = document.querySelectorAll(".owl-carousel .item");
+//           // Lặp qua các phần tử của carousel và cập nhật hình ảnh
+//           carouselItems.forEach((item, index) => {
+//             var imgElement = item.querySelector(".prod-img img");
+//             if (imgElement) {
+//               // Lấy đường dẫn hình ảnh từ phần tử mảng imagePhuData
+//               imgElement.src = `https://192.168.109.128${imagePhuData.path}`;
+//             }
+//           });
+
+//           initializeOwlCarousel();
+//         })
+//         .catch((error) => {
+//           console.error("Lỗi khi lấy dữ liệu ảnh phụ từ API", error);
+//         });
+//     })
+//     .catch((error) => {
+//       console.error("Lỗi khi lấy dữ liệu ảnh chính từ API", error);
+//     });
+// });
+
+function initializeOwlCarousel() {
+  var owl = $("#owl-carousel");
+  owl.owlCarousel({
+    loop: true,
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   // Bước 1: Lấy dữ liệu từ API bằng fetch
-  fetch(`https://192.168.109.128/api/ProductDetail/getImageChinhById/${itemId}`)
+  fetch(`https://192.168.109.128/api/ProductDetail/getImagePhuById/${itemId}`)
     .then((response) => response.json())
     .then((imageChinhData) => {
-      var carouselItems = document.querySelectorAll(".owl-carousel .item");
+      console.log(imageChinhData);
 
-      // Lặp qua các phần tử của carousel và cập nhật hình ảnh
+      var carouselItems = document.querySelectorAll(".owl-carousel .item");
       carouselItems.forEach((item, index) => {
         var imgElement = item.querySelector(".prod-img img");
-        if (imgElement) {
-          imgElement.src = `https://192.168.109.128${imageChinhData.path}`;
+        if (imgElement && imageChinhData[index]?.path) {
+          imgElement.src = `https://192.168.109.128${imageChinhData[index].path}`;
         }
       });
 
@@ -21,14 +65,14 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => {
       console.error("Lỗi khi lấy dữ liệu từ API", error);
     });
-
-  function initializeOwlCarousel() {
-    var owl = $("#owl-carousel");
-    owl.owlCarousel({
-      // loop: true,
-    });
-  }
 });
+
+function initializeOwlCarousel() {
+  var owl = $("#owl-carousel");
+  owl.owlCarousel({
+    // loop: true,
+  });
+}
 
 function fetchdata() {
   fetch(
