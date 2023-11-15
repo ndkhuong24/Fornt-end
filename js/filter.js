@@ -22,7 +22,7 @@ function renderTable(data, page) {
 
     const priceWithVND = formattedPrice.replace("₫", "VND");
     row.innerHTML += `
-    <div class="col-lg-3 mb-4 text-center" >
+    <div class="col-lg-3 mb-5 text-center" >
       <div class="product-entry border">
       <a href="product-detail.html?id=${item.id}" class="prod-img">
       <img src="https://192.168.109.128${item.path}" class="img-fluid" alt="">
@@ -91,6 +91,9 @@ function filter() {
     let max = document.getElementById("maxPrice").value || Number.MAX_SAFE_INTEGER;
     let colors = [];
     let brands=[];
+    let sizes=[];
+    let soles=[];
+    let materials=[];
 
 // Get checked checkboxes and update colors array
 document.querySelectorAll('input[id="color"]:checked').forEach((checkbox) => {
@@ -100,8 +103,19 @@ document.querySelectorAll('input[id="color"]:checked').forEach((checkbox) => {
 document.querySelectorAll('input[id="brand"]:checked').forEach((checkbox) => {
  brands.push(checkbox.value);
 });
+document.querySelectorAll('input[id="size"]:checked').forEach((checkbox) => {
+  sizes.push(checkbox.value);
+ });
+ document.querySelectorAll('input[id="sole"]:checked').forEach((checkbox) => {
+  soles.push(checkbox.value);
+ });
+ document.querySelectorAll('input[id="material"]:checked').forEach((checkbox) => {
+  materials.push(checkbox.value);
+ });
 
-     const apiFilter = `http://localhost:8080/api/filter?minPrice=${min}&maxPrice=${max}&colors=${colors.join("&colors=")}&brands=${brands.join("&brands=")}`;
+     const apiFilter = `http://localhost:8080/api/filter?minPrice=${min}&maxPrice=${max}`+
+                        `&colors=${colors.join("&colors=")}&brands=${brands.join("&brands=")}`+
+                        `&sizes=${sizes.join("&sizes=")}&soles=${soles.join("&soles=")}&materials=${materials.join("&material=")}`;
      fetch(apiFilter)
          .then((response) => response.json())
          .then((filterdata) => {
@@ -123,7 +137,12 @@ function fetchThuocTinh(){
      const row=document.getElementById("color")
      data.forEach((item)=>{
          row.innerHTML+=`
-         ${item.name} <input type="checkbox" value="${item.name}" id="color" />`;
+         <table>
+         <tbody>
+         <tr>
+         <td><input type="checkbox" value="${item.name}" id="color" /> <span style="font-size:larger;font-weight:500">${item.name}</span></td></tr>
+         </tbody>
+         </table>`;
      })
      
  })
@@ -134,10 +153,141 @@ function fetchThuocTinh(){
      const row=document.getElementById("brand")
      data.forEach((item)=>{
          row.innerHTML+=`
-         ${item.name} <input type="checkbox" value="${item.name}" id="brand" />`;
+         <table>
+         <tbody>
+         <tr>
+         <td><input type="checkbox" value="${item.name}" id="brand" /> <span style="font-size:larger;font-weight:500">${item.name}</span></td></tr>
+         </tbody>
+         </table>
+         `;
+     })
+     
+ })
+
+ fetch("http://localhost:8080/api/Size/getAll")
+ .then((response) => response.json())
+ .then((data)=>{
+    
+     const row=document.getElementById("size")
+     data.forEach((item)=>{
+         row.innerHTML+=`
+         <table>
+         <tbody>
+         <tr>
+         <td><input type="checkbox" value="${item.name}" id="size" /> <span style="font-size:larger;font-weight:500">${item.name}</span></td></tr>
+         </tbody>
+         </table>`;
+     })
+     
+ })
+ fetch("http://localhost:8080/api/Sole/getAll")
+ .then((response) => response.json())
+ .then((data)=>{
+    
+     const row=document.getElementById("sole")
+     data.forEach((item)=>{
+         row.innerHTML+=`
+         <table>
+         <tbody>
+         <tr>
+         <td><input type="checkbox" value="${item.name}" id="sole" /> <span style="font-size:larger;font-weight:500">${item.name}</span></td></tr>
+         </tbody>
+         </table>`;
+     })
+     
+ })
+ fetch("http://localhost:8080/api/Material/getAll")
+ .then((response) => response.json())
+ .then((data)=>{
+    
+     const row=document.getElementById("material")
+     data.forEach((item)=>{
+         row.innerHTML+=`
+         <table>
+         <tbody>
+         <tr>
+         <td><input type="checkbox" value="${item.name}" id="material" /> <span style="font-size:larger;font-weight:500">${item.name}</span></td></tr>
+         </tbody>
+         </table>`;
      })
      
  })
 };
 fetchThuocTinh();
+var toggleArrow1 = document.getElementById('toggleArrow1');
+var myList1 = document.getElementById('brand');
+myList1.style.display = 'none';
+// Thêm sự kiện click cho mũi tên
+toggleArrow1.addEventListener('click', function() {
+  // Toggle trạng thái hiển thị/ẩn của danh sách
+  if (myList1.style.display === 'none' || myList1.style.display === '') {
+    myList1.style.display = 'block';
+    toggleArrow1.textContent = 'Thương Hiệu ➜'; 
+  } else {
+    myList1.style.display = 'none';
+    toggleArrow1.textContent = 'Thương Hiệu ➜'; 
+  }
+});
 
+var toggleArrow2 = document.getElementById('toggleArrow2');
+var myList2 = document.getElementById('size');
+myList2.style.display = 'none';
+// Thêm sự kiện click cho mũi tên
+toggleArrow2.addEventListener('click', function() {
+  // Toggle trạng thái hiển thị/ẩn của danh sách
+  if (myList2.style.display === 'none' || myList2.style.display === '') {
+    myList2.style.display = 'block';
+    toggleArrow2.textContent = 'Size ➜'; 
+  } else {
+    myList2.style.display = 'none';
+    toggleArrow2.textContent = 'Size ➜'; 
+  }
+});
+
+var toggleArrow3 = document.getElementById('toggleArrow3');
+var myList3 = document.getElementById('color');
+myList3.style.display = 'none';
+// Thêm sự kiện click cho mũi tên
+toggleArrow3.addEventListener('click', function() {
+  // Toggle trạng thái hiển thị/ẩn của danh sách
+  if (myList3.style.display === 'none' || myList3.style.display === '') {
+    myList3.style.display = 'block';
+    toggleArrow3.textContent = 'Màu Sắc ➜'; 
+  } else {
+    myList3.style.display = 'none';
+    toggleArrow3.textContent = 'Màu Sắc ➜'; 
+  }
+});
+
+var toggleArrow4 = document.getElementById('toggleArrow4');
+var myList4 = document.getElementById('material');
+myList4.style.display = 'none';
+// Thêm sự kiện click cho mũi tên
+toggleArrow4.addEventListener('click', function() {
+  // Toggle trạng thái hiển thị/ẩn của danh sách
+  if (myList4.style.display === 'none' || myList4.style.display === '') {
+    myList4.style.display = 'block';
+    toggleArrow4.textContent = 'Chất Liệu ➜'; 
+  } else {
+    myList4.style.display = 'none';
+    toggleArrow4.textContent = 'Chất Liệu ➜'; 
+  }
+});
+
+
+var toggleArrow5 = document.getElementById('toggleArrow5');
+var myList5 = document.getElementById('sole');
+myList5.style.display = 'none';
+// Thêm sự kiện click cho mũi tên
+toggleArrow5.addEventListener('click', function() {
+  // Toggle trạng thái hiển thị/ẩn của danh sách
+  if (myList5.style.display === 'none' || myList5.style.display === '') {
+    myList5.style.display = 'block';
+    toggleArrow5.textContent = 'Đế Giày ➜'; 
+  } else {
+    myList5.style.display = 'none';
+    toggleArrow5.textContent = 'Đế Giày ➜'; 
+  }
+});
+
+ 
