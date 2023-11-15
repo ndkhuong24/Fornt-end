@@ -352,6 +352,10 @@ const cart = {
         return;
       } else {
         item.qty=parseInt(item.qty)+parseInt(quantity);
+        if(parseInt(item.qty)+parseInt(quantity)>item.quantity){
+          showNotification("Số lượng trong kho ko đủ ");
+          return;
+        }
         this.saveToLocalStorage();
         this.updateCountAndAmount();
         showNotification("Thêm thành công");
