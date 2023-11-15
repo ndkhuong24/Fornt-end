@@ -91,6 +91,9 @@ function filter() {
     let max = document.getElementById("maxPrice").value || Number.MAX_SAFE_INTEGER;
     let colors = [];
     let brands=[];
+    let sizes=[];
+    let soles=[];
+    let materials=[];
 
 // Get checked checkboxes and update colors array
 document.querySelectorAll('input[id="color"]:checked').forEach((checkbox) => {
@@ -100,8 +103,19 @@ document.querySelectorAll('input[id="color"]:checked').forEach((checkbox) => {
 document.querySelectorAll('input[id="brand"]:checked').forEach((checkbox) => {
  brands.push(checkbox.value);
 });
+document.querySelectorAll('input[id="size"]:checked').forEach((checkbox) => {
+  sizes.push(checkbox.value);
+ });
+ document.querySelectorAll('input[id="sole"]:checked').forEach((checkbox) => {
+  soles.push(checkbox.value);
+ });
+ document.querySelectorAll('input[id="material"]:checked').forEach((checkbox) => {
+  materials.push(checkbox.value);
+ });
 
-     const apiFilter = `http://localhost:8080/api/filter?minPrice=${min}&maxPrice=${max}&colors=${colors.join("&colors=")}&brands=${brands.join("&brands=")}`;
+     const apiFilter = `http://localhost:8080/api/filter?minPrice=${min}&maxPrice=${max}`+
+                        `&colors=${colors.join("&colors=")}&brands=${brands.join("&brands=")}`+
+                        `&sizes=${sizes.join("&sizes=")}&soles=${soles.join("&soles=")}&materials=${materials.join("&material=")}`;
      fetch(apiFilter)
          .then((response) => response.json())
          .then((filterdata) => {
@@ -135,6 +149,40 @@ function fetchThuocTinh(){
      data.forEach((item)=>{
          row.innerHTML+=`
          ${item.name} <input type="checkbox" value="${item.name}" id="brand" />`;
+     })
+     
+ })
+
+ fetch("http://localhost:8080/api/Size/getAll")
+ .then((response) => response.json())
+ .then((data)=>{
+    
+     const row=document.getElementById("size")
+     data.forEach((item)=>{
+         row.innerHTML+=`
+         ${item.name} <input type="checkbox" value="${item.name}" id="size" />`;
+     })
+     
+ })
+ fetch("http://localhost:8080/api/Sole/getAll")
+ .then((response) => response.json())
+ .then((data)=>{
+    
+     const row=document.getElementById("sole")
+     data.forEach((item)=>{
+         row.innerHTML+=`
+         ${item.name} <input type="checkbox" value="${item.name}" id="sole" />`;
+     })
+     
+ })
+ fetch("http://localhost:8080/api/Material/getAll")
+ .then((response) => response.json())
+ .then((data)=>{
+    
+     const row=document.getElementById("material")
+     data.forEach((item)=>{
+         row.innerHTML+=`
+         ${item.name} <input type="checkbox" value="${item.name}" id="material" />`;
      })
      
  })
