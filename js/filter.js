@@ -7,6 +7,8 @@ const row = document.querySelector(".row.row-pb-md");
 
 // Định nghĩa biến data và khởi tạo nó là một mảng trống
 let data = [];
+
+
 function renderTable(data, page) {
   const startIndex = (page - 1) * perPage;
   const endIndex = page * perPage;
@@ -45,8 +47,8 @@ function fetchDataAndPopulateTable() {
     .then((response) => response.json())
     .then((apiData) => {
      
-      let max = 0; // Initializing max with 0
-      let min = Number.MAX_VALUE; // Initializing min with a very large value
+       let max = 0; // Initializing max with 0
+       let min = Number.MAX_VALUE; // Initializing min with a very large value
 
       apiData.forEach((item) => {
           if (item.price > max) {
@@ -71,33 +73,8 @@ function fetchDataAndPopulateTable() {
 
       // Render trang đầu tiên
       renderTable(data, currentPage);
-      $(function() {
-        var slider = $( "#slider-range" ).slider({
-            range: true,
-            min: min,
-            max: max,
-            values: [ min, max],
-            slide: function( event, ui ) {
-                $( "#minPrice" ).val(ui.values[0]);
-                $( "#maxPrice" ).val(ui.values[1]);
-            }
-        });
-      
-        // Cập nhật giá trị slider khi input thay đổi
-        $("#minPrice, #maxPrice").on('input', function() {
-            var minValue = parseInt($("#minPrice").val());
-            var maxValue = parseInt($("#maxPrice").val());
-      
-            // Kiểm tra giá trị hợp lệ và thiết lập lại giá trị cho slider
-            if (!isNaN(minValue) && !isNaN(maxValue) && minValue < maxValue) {
-                slider.slider('values', [minValue, maxValue]);
-            }
-        });
-      
-        // Cập nhật giá trị input ban đầu
-        $( "#minPrice" ).val($( "#slider-range" ).slider( "values", 0 ));
-        $( "#maxPrice" ).val($( "#slider-range" ).slider( "values", 1 ));
-      });
+      setupSlider(min, max);
+       
     })
     .catch((error) => {
       console.error("Lỗi khi gọi API:", error);
@@ -334,5 +311,32 @@ toggleArrow5.addEventListener('click', function() {
   }
 });
 
+function setupSlider(min, max) {
+  $(function() {
+    var slider = $("#slider-range").slider({
+        range: true,
+        min: min,
+        max:max,
+        values: [min,max],
+        slide: function( event, ui ) {
+            $("#minPrice").val(ui.values[0]);
+            $("#maxPrice").val(ui.values[1]);
+        }
+    });
 
- 
+    // Cập nhật giá trị slider khi input thay đổi
+    $("#minPrice, #maxPrice").on('input', function() {
+        var minValue = parseInt($("#minPrice").val());
+        var maxValue = parseInt($("#maxPrice").val());
+
+        // Kiểm tra giá trị hợp lệ và thiết lập lại giá trị cho slider
+        if (!isNaN(minValue) && !isNaN(maxValue) && minValue < maxValue) {
+            slider.slider('values', [minValue, maxValue]);
+        }
+    });
+
+    // Cập nhật giá trị input ban đầu
+    $("#minPrice").val($("#slider-range").slider("values", 0));
+    $("#maxPrice").val($("#slider-range").slider("values", 1));
+  });
+}
