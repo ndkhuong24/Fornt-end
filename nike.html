@@ -38,26 +38,75 @@
 	<style>
 		/* Ẩn danh sách mặc định */
 		#myList {
-		  display: none;
+			display: none;
 		}
-	
+
 		/* Kiểu mũi tên */
 		#toggleArrow1 {
-		  cursor: pointer;
+			cursor: pointer;
 		}
+
 		#toggleArrow2 {
-		  cursor: pointer;
+			cursor: pointer;
 		}
+
 		#toggleArrow3 {
-		  cursor: pointer;
+			cursor: pointer;
 		}
+
 		#toggleArrow4 {
-		  cursor: pointer;
+			cursor: pointer;
 		}
+
 		#toggleArrow5 {
-		  cursor: pointer;
+			cursor: pointer;
 		}
-	  </style>
+
+		/* Thiết lập chiều rộng mặc định cho slider */
+.range {
+  width: 100%;
+}
+
+/* Thiết lập chiều cao cho slider */
+#slider-range {
+	width: 180px;
+  height: 3px;
+  background:  #000000; /* Màu nền của slider */
+  border: 0px solid;
+}
+
+/* Thiết lập màu sắc cho phần đã chọn trên slider */
+#slider-range .ui-slider-range {
+  background:  #6c757d; /* Màu cho phần đã chọn */
+}
+
+/* Thiết lập kiểu dáng cho handle (cái nút trượt) */
+#slider-range .ui-slider-handle {
+  width: 16px;
+  height: 16px;
+  background:#41bca5; /* Màu của nút trượt */
+  border: 1px solid #36a490; /* Viền của nút trượt */
+  border-radius: 50%; /* Làm tròn nút trượt */
+  cursor: pointer; /* Hình con trỏ khi di chuyển qua nút trượt */
+margin-top: -3px;}
+
+/* Thiết lập kiểu dáng cho khối chứa input text */
+.side {
+  padding: 15px;
+  margin-top: 0px;
+}
+
+/* Thiết lập kiểu dáng cho input text */
+#minPrice,
+#maxPrice {
+  width: 90px; /* Độ rộng của input text */
+  height: 25px;
+  margin: 0 2px; /* Khoảng cách giữa input text và slider */
+  text-align: center; /* Căn giữa nội dung trong input text */
+  font-size: small;
+}
+
+	</style>
 
 </head>
 
@@ -147,18 +196,18 @@
 				<div class="row">
 					<div class="col">
 						<div class="breadcrumbs-img" style="background-image: url(images/BANNER_L_N-RUNNING.jpg);">
-						
+
 						</div>
-						<div class="menu text-center" style="background-color: black;" >
-							
-							
+						<div class="menu text-center" style="background-color: black;">
+
+
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		
+
 
 		<div class="colorlib-product" style="margin-top: -60px;">
 			<div class="container">
@@ -166,7 +215,7 @@
 					<div class="col-lg-3 col-xl-3">
 						<div class="row">
 							<div class="col-sm-12">
-								<h5>Tìm Kiếm Theo :</h5>
+								<h5>Tìm Kiếm Theo</h5>
 								<div class="side border mb-1" style="text-align: center;">
 									<div style="font-size: larger;font-weight: 500;" id="toggleArrow1">Thương Hiệu ➜
 									</div>
@@ -175,7 +224,7 @@
 
 								</div>
 							</div>
-							
+
 							<div class="col-sm-12">
 								<div class="side border mb-1" style="text-align: center;">
 									<div style="font-size: larger;font-weight: 500;" id="toggleArrow2">Size ➜
@@ -213,16 +262,21 @@
 								</div>
 							</div>
 							<div class="col-sm-12">
-								<div class="side border mb-1">
-									<div id="slider-range"></div>
-									<input type="text" id="minPrice">
-									<input type="text" id="maxPrice">
+								<div class="side border mb-1" style="text-align: center;">
+									<div style="font-size: larger;font-weight: 500;" id="toggleArrow2">Giá
+									</div>
+									<div id="slider-range" class="range" style="margin-top: 10px;margin-left: 25px;"></div>
+									<br>
+									<input id="minPrice"> ➜
+									<input id="maxPrice">
 								</div>
 							</div>
-							<button class="btn btn-primary" id="myButton"  onclick="filter()">Lọc</button>
+							
+							<button class="btn btn-primary" style="border-radius: 5px;width: 110px;background-color: #000000;margin-left: 160px;" id="myButton" onclick="filter()">Tìm Kiếm</button>
 						</div>
 					</div>
 					<div class="col-lg-9 col-xl-9">
+						<h3 style="text-align: center;font-weight: 600;">Tất Cả Sản Phẩm</h3>
 						<div class="row row-pb-md" style="font-weight: 400;margin-top: 18px;">
 
 						</div>
@@ -360,10 +414,10 @@
 	<!-- Stellar Parallax -->
 	<script src="js/jquery.stellar.min.js"></script>
 
-	 
-	 <!-- Nhúng thư viện jQuery UI từ CDN -->
-	 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<!-- Nhúng thư viện jQuery UI từ CDN -->
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/filter.js"></script>
 </body>
