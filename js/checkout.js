@@ -1,5 +1,3 @@
-var tienCuaSanPham;
-
 (function () {
   "use strict";
 
@@ -553,7 +551,3 @@ function GetCommuneWithDistrict(districtOption) {
       console.error("Error: " + error);
     });
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-  console.log(tienCuaSanPham);
-});
