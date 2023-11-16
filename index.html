@@ -39,7 +39,53 @@
 		a:hover {
 			cursor: pointer;
 		}
-	</style>
+    /* Reset some default styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    /* Styling for search container */
+    .search-container {
+      
+      display: flex;
+      align-items: center;
+    }
+
+    /* Styling for search input */
+    .search-input {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      outline: none;
+      width: 200px;
+      transition: width 0.3s ease-in-out;
+
+    }
+
+    /* Styling for search button */
+   
+
+    /* Styling for search button on hover */
+
+    /* Styling for search input on focus */
+    .search-input:focus {
+      width: 300px;
+    }
+  </style>
+	
 </head>
 
 <body>
@@ -58,10 +104,11 @@
 						<div class="col-sm-3 col-md-3">
 							<form action="#" class="search-wrap" style="margin-left: -30px">
 								<div class="form-group">
-									<input style="font-weight: 500;" type="search"
-										class="form-control search" " placeholder=" Tìm Kiếm">
-									<button class="btn btn-primary submit-search text- active" type="submit"><i
-											class="icon-search"></i></button>
+									<div class="search-container">
+										<input id="searchInput" style="font-weight: 500;" type="search"
+										class="form-control search "  placeholder="Nhập từ khóa tìm kiếm...">
+										<a id="searchButton" href="nike.html" type="submit" id="searchButton" class="search-button" style="margin-left: -30px;"><img style="width: 20px;" src="images/search.png" alt=""></a>
+									</div>
 								</div>
 							</form>
 						</div>
