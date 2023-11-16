@@ -86,3 +86,17 @@ function updatePageInfo() {
 }
 
 fetchDataAndPopulateTable();
+
+document.getElementById("searchButton").addEventListener("click", function(event) {
+  event.preventDefault(); // Prevent the default action of the link
+  
+  var searchValue = document.getElementById("searchInput").value.trim(); // Get the input value
+  
+  if (searchValue !== "") {
+      // Redirect to nike.html with the search query as a parameter
+      window.location.href = "nike.html?search=" + encodeURIComponent(searchValue);
+  } else {
+      // Handle empty input case (you can show an alert or perform other actions)
+      console.log("Please enter a search term.");
+  }
+});

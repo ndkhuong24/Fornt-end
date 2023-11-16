@@ -340,3 +340,51 @@ function setupSlider(min, max) {
     $("#maxPrice").val($("#slider-range").slider("values", 1));
   });
 }
+//search
+document.getElementById("searchButton").addEventListener("click", function () {
+  // Lấy giá trị tìm kiếm từ trường input
+  const searchPattern = document.getElementById("searchInput").value;
+  if (searchPattern.trim() === "") {
+    fetchDataAndPopulateTable();
+  } else {
+    searchByName(searchPattern);
+  }
+});
+function searchByName(searchPattern) {
+  // Lấy dữ liệu từ API và render trang đầu tiên
+  fetch(`http://localhost:8080/api/search/${searchPattern}`)
+    .then((response) => response.json())
+    .then((searhData) => {
+      currentPage = 1;
+      data = searhData;
+      totalPages = Math.ceil(data.length / perPage);
+      updatePageInfo();
+      renderTable(data, currentPage);
+    })
+    .catch((error) => {
+      showNotification("Đã xảy ra lỗi");
+    });
+}
+
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return "";
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+// Perform search automatically when the page loads
+window.addEventListener('DOMContentLoaded', function () {
+  const searchPattern = getParameterByName('search');
+  if (searchPattern) {
+      searchByName(searchPattern);
+  } else {
+      // If no search query is provided in the URL, you may choose to handle it here.
+      // For example, you could load default data or display a message.
+      fetchDataAndPopulateTable(); // This function fetches and populates the table with default data
+  }
+});
+
