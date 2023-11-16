@@ -214,8 +214,9 @@
 							</div>
 							<div class="col-sm-12">
 								<div class="side border mb-1">
-									<h3>Giá min</h3><input type="text" id="minPrice" />
-									<h3>Giá max</h3> <input type="text" id="maxPrice" />
+									<div id="slider-range"></div>
+									<input type="text" id="minPrice">
+									<input type="text" id="maxPrice">
 								</div>
 							</div>
 							<button class="btn btn-primary" id="myButton"  onclick="filter()">Lọc</button>
@@ -358,7 +359,11 @@
 	<script src="js/bootstrap-datepicker.js"></script>
 	<!-- Stellar Parallax -->
 	<script src="js/jquery.stellar.min.js"></script>
-	<!-- Main -->
+
+	 
+	 <!-- Nhúng thư viện jQuery UI từ CDN -->
+	 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/filter.js"></script>
 </body>
