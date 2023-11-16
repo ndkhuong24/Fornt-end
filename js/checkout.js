@@ -310,7 +310,6 @@ const cart = {
   },
   updateCountAndAmount() {
     const countElement = document.getElementById("cart-count");
-
     countElement.textContent = this.count;
   },
   remove: function (id) {
@@ -348,6 +347,7 @@ const cart = {
 
     const totalElement = document.getElementById("total");
     const totalElement2 = document.getElementById("total2");
+    // const phiGiaoHang = document.getElementById("phiGiaoHang");
 
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -357,7 +357,6 @@ const cart = {
 
     totalElement.textContent = priceWithVND;
     totalElement2.textContent = priceWithVND;
-
     countElement.textContent = this.count;
   },
 
@@ -405,7 +404,6 @@ function updateQuantity(itemId, newQuantity) {
   });
 
   var availableQuantity = item.quantity;
-  console.log(availableQuantity);
   if (parseInt(newQuantity) > availableQuantity) {
     showNotification("Số lượng hàm trong kho không đủ");
     item.qty = parseInt(availableQuantity);
@@ -441,19 +439,14 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 var selectProvince = document.getElementById("Province");
-var provinceOption = selectProvince.value;
-
+var optionProvince = selectProvince.value;
 var selectDistrict = document.getElementById("District");
-var districtOption = selectDistrict.value;
-
+var optionDistrict = selectDistrict.value;
 var selectCommune = document.getElementById("Commune");
-var communeOption = selectCommune.value;
-
+var token = "123510a7-56b9-11ee-b394-8ac29577e80e";
 var serviceID;
 
 document.addEventListener("DOMContentLoaded", function () {
-  var token = "123510a7-56b9-11ee-b394-8ac29577e80e";
-
   fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province", {
     method: "GET",
     headers: {
@@ -470,11 +463,9 @@ document.addEventListener("DOMContentLoaded", function () {
         option.text = item.ProvinceName;
         selectProvince.appendChild(option);
       });
+
       provinceOption = selectProvince.value;
       GetDistrictByProvince(provinceOption);
-    })
-    .catch((error) => {
-      console.error("Error: " + error);
     });
 
   selectProvince.addEventListener("change", function () {
@@ -489,7 +480,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function GetDistrictByProvince(provinceOption) {
-  var token = "123510a7-56b9-11ee-b394-8ac29577e80e";
   fetch(
     "https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=" +
       provinceOption,
@@ -512,9 +502,6 @@ function GetDistrictByProvince(provinceOption) {
 
       districtOption = selectDistrict.value;
       GetCommuneWithDistrict(districtOption);
-    })
-    .catch((error) => {
-      console.error("Error: " + error);
     });
 
   selectDistrict.addEventListener("change", function () {
@@ -525,8 +512,6 @@ function GetDistrictByProvince(provinceOption) {
 }
 
 function GetCommuneWithDistrict(districtOption) {
-  var token = "123510a7-56b9-11ee-b394-8ac29577e80e";
-
   fetch(
     "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" +
       districtOption,
@@ -546,8 +531,18 @@ function GetCommuneWithDistrict(districtOption) {
         option.text = item.WardName;
         selectCommune.appendChild(option);
       });
-    })
-    .catch((error) => {
-      console.error("Error: " + error);
     });
 }
+
+function updateSelectValues() {
+  var selectIDs = ["Province", "District", "Commune"];
+  selectIDs.forEach(function (id) {
+    var selectElement = document.getElementById(id);
+    selectElement.addEventListener("change", function () {
+      var selectedValue = selectElement.value;
+      console.log("ID: " + id + ", New Value: " + selectedValue);
+      updateData(selectedValue);
+    });
+  });
+}
+updateSelectValues();
