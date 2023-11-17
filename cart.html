@@ -49,6 +49,51 @@
 			border-radius: 5px;
 			display: none;
 		}
+		 /* Reset some default styles */
+		 * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    /* Styling for search container */
+    .search-container {
+      
+      display: flex;
+      align-items: center;
+    }
+
+    /* Styling for search input */
+    .search-input {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      outline: none;
+      width: 200px;
+      transition: width 0.3s ease-in-out;
+
+    }
+
+    /* Styling for search button */
+   
+
+    /* Styling for search button on hover */
+
+    /* Styling for search input on focus */
+    .search-input:focus {
+      width: 300px;
+    }
 	</style>
 </head>
 
@@ -70,10 +115,11 @@
 						<div class="col-sm-3 col-md-3">
 							<form action="#" class="search-wrap" style="margin-left: -30px;">
 								<div class="form-group">
-									<input style="font-weight: 500;" type="search"
-										class="form-control search" " placeholder=" Tìm Kiếm">
-									<button class="btn btn-primary submit-search text- active" type="submit"><i
-											class="icon-search"></i></button>
+									<div class="search-container">
+										<input id="searchInput" style="font-weight: 500;" type="search"
+										class="form-control search "  placeholder="Nhập từ khóa tìm kiếm...">
+										<a id="searchButton" href="nike.html" type="submit" id="searchButton" class="search-button" style="margin-left: -30px;cursor: pointer;"><img style="width: 20px;" src="images/search.png" alt=""></a>
+									</div>
 								</div>
 							</form>
 						</div>
@@ -105,11 +151,8 @@
 								<ul>
 									<li><a href="index.html">Trang Chủ</a></li>
 									<li>
-										<a href="nike.html">Giày Nike</a>
+										<a href="nike.html">Sản Phẩm</a>
 									</li>
-									<li><a href="adidas.html">Giày Adidas</a></li>
-									<li><a href="puma.html">Giày Puma</a></li>
-									<li><a href="asics.html">Giày Asics</a></li>
 									<li><a href="about.html">Giới Thiệu</a></li>
 									<li><a href="contact.html">Liên Hệ</a></li>
 									<li class="cart"><a href="cart.html">
@@ -277,6 +320,21 @@
 		<script src="js/jquery.stellar.min.js"></script>
 		<!-- Main -->
 		<script src="js/cart.js"></script>
+		<script>
+			document.getElementById("searchButton").addEventListener("click", function (event) {
+				event.preventDefault(); // Prevent the default action of the link
+	
+				var searchValue = document.getElementById("searchInput").value.trim(); // Get the input value
+	
+				if (searchValue !== "") {
+					// Redirect to nike.html with the search query as a parameter
+					window.location.href = "nike.html?search=" + encodeURIComponent(searchValue);
+				} else {
+					// Handle empty input case (you can show an alert or perform other actions)
+					console.log("Please enter a search term.");
+				}
+			});
+		</script>
 </body>
 
 </html>
