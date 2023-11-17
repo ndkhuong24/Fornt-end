@@ -45,7 +45,7 @@ function initializeOwlCarousel() {
 function fetchdata() {
   fetch(
     `https://192.168.109.128/api/ProductDetail/GetProductDetailAndCart/` +
-      itemId
+    itemId
   )
     .then((response) => response.json())
     .then((data) => {
@@ -57,48 +57,52 @@ function fetchdata() {
       }).format(data.price);
 
       const priceWithVND = formattedPrice.replace("₫", "VND");
-
+      const nameProduct = document.getElementById("nameProduct");
+      nameProduct.innerHTML += `<span>${data.productName}</span>`
       row.innerHTML += `
 	  
 	  <div class="product-desc">
-        <h3>${data.productName}</h3>
-        <p class="price">
-            <span>${priceWithVND}</span>
-            <br/>
-        </p>
-        <div>
-            <label>Mã : </label> ${
-              data.productCode
-            } - <label>Trạng thái : </label> <span style="color: green;"> ${
-        data.status === 1 ? "Còn hàng" : "Hết hàng"
-      }</span> <br>
-            <br/>
-            <label style="font-size: large;font-weight: 500;">Style : </label> ${
-              data.styleName
-            } <br>
-            <label style="font-size: large;font-weight: 500;">Category : </label> ${
-              data.categoryName
-            } <br>
-            <label style="font-size: large;font-weight: 500;">Brand : </label> ${
-              data.brandName
-            } <br>
-            <label style="font-size: large;font-weight: 500;">Sole : </label> ${
-              data.soleName
-            } <br>
-            <label style="font-size: large;font-weight: 500;">Material : </label> ${
-              data.materialName
-            } <br>
-            <label style="font-size: large;font-weight: 500;">Size : </label> ${
-              data.sizeName
-            } <br>
+        <h3 style="font-weight:600">${data.productName}</h3>
+        <hr>
+        <table>
+        <thead>
+        <tr>
+        <th> <p class="price">
+        <span style="font-weight:700;color:red;margin-top:15px">${priceWithVND}</span>
+        
+    </p> </th>
+    <th style="font-weight:500;font-size:smaller"> <label style="margin-left:30px;">Mã SP : </label> ${data.productCode}
+    <br/><label style="margin-left:30px;"> Trạng thái : </label><span style="color: green;font-weight:600"> ${data.status === 1 ? "CÒN HÀNG" : "HẾT HÀNG"}</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        
+        </tr>
+        </tbody>
+        </table>
+        <hr>
+        
+        <div style="font-weight:600;">
+            <label style="font-size: large;font-weight: 500;">Style : </label> ${data.styleName
+        } <br>
+            <label style="font-size: large;font-weight: 500;">Category : </label> ${data.categoryName
+        } <br>
+            <label style="font-size: large;font-weight: 500;">Brand : </label> ${data.brandName
+        } <br>
+            <label style="font-size: large;font-weight: 500;">Sole : </label> ${data.soleName
+        } <br>
+            <label style="font-size: large;font-weight: 500;">Material : </label> ${data.materialName
+        } <br>
+            <labels style="font-size: large;font-weight: 500;">Size : </labels> ${data.sizeName
+        } <br>
         </div>
          <div class="size-wrap">
             <div class="block-26 mb-4">
                 <h4>Color</h4>
                 <ul>
-                    <li><a style="background-color:${
-                      data.colorName
-                    } ;"></a></li>
+                    <li><a style="background-color:${data.colorName
+        } ;"></a></li>
                 </ul>
             </div>
         </div> 
@@ -119,9 +123,8 @@ function fetchdata() {
         <div class="row">
             <div class="col-sm-12 text-center" id="addtocart">
                 <p class="addtocart"><a style="color: white" class="btn btn-primary btn-addtocart"
-                        onclick="cart.add(${
-                          data.productDetailID
-                        },document.getElementById('quantity').value)"><i
+                        onclick="cart.add(${data.productDetailID
+        },document.getElementById('quantity').value)"><i
                             class="icon-shopping-cart"></i> Add to Cart</a></p>
             </div>
         </div>
