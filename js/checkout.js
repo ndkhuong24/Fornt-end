@@ -563,7 +563,6 @@ function GetCommuneWithDistrict(districtOption) {
           var removedvnd = removedDot.replace("VND", "");
           var final = removedvnd.trim();
           var tienGiamGiaCuaHoaDon = parseInt(final);
-          console.log(tienGiamGiaCuaHoaDon);
 
           fetch(
             `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=${serviceID}&insurance_value=${tongTien}&coupon=&from_district_id=3303&to_district_id=${districtNow1}&to_ward_code=${communeNow1}&height=15&length=15&weight=1000&width=15`,
@@ -578,11 +577,33 @@ function GetCommuneWithDistrict(districtOption) {
           )
             .then((response) => response.json())
             .then((data) => {
+              const formatPhiGiaoHang = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(data.data.service_fee);
+              const phiGiaoHangWithVND = formatPhiGiaoHang.replace("₫", "VND");
               document.getElementById("phiGiaoHang").innerText =
-                data.data.service_fee;
+                phiGiaoHangWithVND;
 
-              document.getElementById("total2").innerText =
-                data.data.service_fee + tongTien - tienGiamGiaCuaHoaDon;
+              const formatTongDonHang = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(
+                data.data.service_fee + tongTien - tienGiamGiaCuaHoaDon
+              );
+              const tongDonHangWithVND = formatTongDonHang.replace("₫", "VND");
+              document.getElementById("total2").innerText = tongDonHangWithVND;
+
+              const formatPhiGiamGia = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(tienGiamGiaCuaHoaDon);
+              const tienGiamGiaCuaHoaDonWithVND = formatPhiGiamGia.replace(
+                "₫",
+                "VND"
+              );
+              document.getElementById("tienGiamGia").innerText =
+                tienGiamGiaCuaHoaDonWithVND;
             });
         });
     });
