@@ -438,12 +438,12 @@ document.addEventListener("DOMContentLoaded", function () {
   cart.renderCartItems();
 });
 
-var selectProvince = document.getElementById("Province");
-var optionProvince = selectProvince.value;
-var selectDistrict = document.getElementById("District");
-var optionDistrict = selectDistrict.value;
-var selectCommune = document.getElementById("Commune");
-var token = "123510a7-56b9-11ee-b394-8ac29577e80e";
+const selectProvince = document.getElementById("Province");
+const optionProvince = selectProvince.value;
+const selectDistrict = document.getElementById("District");
+const optionDistrict = selectDistrict.value;
+const selectCommune = document.getElementById("Commune");
+const token = "123510a7-56b9-11ee-b394-8ac29577e80e";
 var serviceID;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -531,18 +531,40 @@ function GetCommuneWithDistrict(districtOption) {
         option.text = item.WardName;
         selectCommune.appendChild(option);
       });
-    });
-}
 
-function updateSelectValues() {
-  var selectIDs = ["Province", "District", "Commune"];
-  selectIDs.forEach(function (id) {
-    var selectElement = document.getElementById(id);
-    selectElement.addEventListener("change", function () {
-      var selectedValue = selectElement.value;
-      console.log("ID: " + id + ", New Value: " + selectedValue);
-      updateData(selectedValue);
+      var districtNow = selectDistrict.value;
+      fetch(
+        `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=4556959&from_district=3303&to_district=${districtNow}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "123510a7-56b9-11ee-b394-8ac29577e80e",
+            ShopId: "4556959",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          serviceID = data.data[0].service_id;
+
+          var districtNow1 = selectDistrict.value;
+          var communeNow1 = selectCommune.value;
+
+          fetch(
+            `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=${serviceID}&insurance_value=${giaTien}&coupon=&from_district_id=3303&to_district_id=${districtNow1}&to_ward_code=${communeNow1}&height=15&length=15&weight=1000&width=15`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Token: "123510a7-56b9-11ee-b394-8ac29577e80e",
+                ShopId: "4556959",
+              },
+            }
+          ).then((response) => response.json());
+          then((data) => {
+            console.log(data);
+          });
+        });
     });
-  });
 }
-updateSelectValues();
