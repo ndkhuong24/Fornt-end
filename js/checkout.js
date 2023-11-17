@@ -551,8 +551,23 @@ function GetCommuneWithDistrict(districtOption) {
           var districtNow1 = selectDistrict.value;
           var communeNow1 = selectCommune.value;
 
+          var tongTienCuaSanPham = document.getElementById("total");
+
+          var originalString = tongTienCuaSanPham.innerText;
+
+          // Loại bỏ các dấu chấm
+          var removedDots = originalString.replace(/\./g, "");
+
+          // Loại bỏ chuỗi " VND"
+          var removedVND = removedDots.replace("VND", "");
+
+          // Loại bỏ khoảng trắng
+          var finalResult = removedVND.trim();
+
+          var tongTien = parseInt(finalResult);
+
           fetch(
-            `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=${serviceID}&insurance_value=${giaTien}&coupon=&from_district_id=3303&to_district_id=${districtNow1}&to_ward_code=${communeNow1}&height=15&length=15&weight=1000&width=15`,
+            `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=${serviceID}&insurance_value=${tongTien}&coupon=&from_district_id=3303&to_district_id=${districtNow1}&to_ward_code=${communeNow1}&height=15&length=15&weight=1000&width=15`,
             {
               method: "GET",
               headers: {
@@ -561,10 +576,13 @@ function GetCommuneWithDistrict(districtOption) {
                 ShopId: "4556959",
               },
             }
-          ).then((response) => response.json());
-          then((data) => {
-            console.log(data);
-          });
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              // console.log("Tiền ship :" + data.data.service_fee);
+              document.getElementById("phiGiaoHang").innerText =
+                data.data.service_fee;
+            });
         });
     });
 }
