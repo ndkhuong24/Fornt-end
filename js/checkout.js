@@ -346,8 +346,7 @@ const cart = {
     const countElement = document.getElementById("cart-count");
 
     const totalElement = document.getElementById("total");
-    const totalElement2 = document.getElementById("total2");
-    // const phiGiaoHang = document.getElementById("phiGiaoHang");
+    // const totalElement2 = document.getElementById("total2");
 
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -356,7 +355,7 @@ const cart = {
     const priceWithVND = formattedPrice.replace("₫", "VND");
 
     totalElement.textContent = priceWithVND;
-    totalElement2.textContent = priceWithVND;
+    // totalElement2.textContent = priceWithVND;
     countElement.textContent = this.count;
   },
 
@@ -552,19 +551,19 @@ function GetCommuneWithDistrict(districtOption) {
           var communeNow1 = selectCommune.value;
 
           var tongTienCuaSanPham = document.getElementById("total");
-
           var originalString = tongTienCuaSanPham.innerText;
-
-          // Loại bỏ các dấu chấm
           var removedDots = originalString.replace(/\./g, "");
-
-          // Loại bỏ chuỗi " VND"
           var removedVND = removedDots.replace("VND", "");
-
-          // Loại bỏ khoảng trắng
           var finalResult = removedVND.trim();
-
           var tongTien = parseInt(finalResult);
+
+          var tienGiam = document.getElementById("tienGiamGia");
+          var original = tienGiam.innerText;
+          var removedDot = original.replace(/\./g, "");
+          var removedvnd = removedDot.replace("VND", "");
+          var final = removedvnd.trim();
+          var tienGiamGiaCuaHoaDon = parseInt(final);
+          console.log(tienGiamGiaCuaHoaDon);
 
           fetch(
             `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=${serviceID}&insurance_value=${tongTien}&coupon=&from_district_id=3303&to_district_id=${districtNow1}&to_ward_code=${communeNow1}&height=15&length=15&weight=1000&width=15`,
@@ -579,9 +578,11 @@ function GetCommuneWithDistrict(districtOption) {
           )
             .then((response) => response.json())
             .then((data) => {
-              // console.log("Tiền ship :" + data.data.service_fee);
               document.getElementById("phiGiaoHang").innerText =
                 data.data.service_fee;
+
+              document.getElementById("total2").innerText =
+                data.data.service_fee + tongTien - tienGiamGiaCuaHoaDon;
             });
         });
     });
