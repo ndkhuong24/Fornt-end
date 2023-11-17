@@ -104,7 +104,7 @@
 									<div class="search-container">
 										<input id="searchInput" style="font-weight: 500;" type="search"
 										class="form-control search "  placeholder="Nhập từ khóa tìm kiếm...">
-										<a id="searchButton" type="submit" id="searchButton" class="search-button" style="margin-left: -30px;cursor: pointer;"><img style="width: 20px;" src="images/search.png" alt=""></a>
+										<a id="searchButton" href="nike.html" type="submit" id="searchButton" class="search-button" style="margin-left: -30px;cursor: pointer;"><img style="width: 20px;" src="images/search.png" alt=""></a>
 									</div>
 								</div>
 							</form>
@@ -364,6 +364,20 @@
 			} catch (err) {
 				alert('Lỗi')
 				console.log(err)
+			}
+		});
+		
+		document.getElementById("searchButton").addEventListener("click", function (event) {
+			event.preventDefault(); // Prevent the default action of the link
+
+			var searchValue = document.getElementById("searchInput").value.trim(); // Get the input value
+
+			if (searchValue !== "") {
+				// Redirect to nike.html with the search query as a parameter
+				window.location.href = "nike.html?search=" + encodeURIComponent(searchValue);
+			} else {
+				// Handle empty input case (you can show an alert or perform other actions)
+				console.log("Please enter a search term.");
 			}
 		});
 	</script>
