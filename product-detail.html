@@ -47,6 +47,42 @@
 			border-radius: 5px;
 			display: none;
 		}
+		* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    
+
+    /* Styling for search container */
+    .search-container {
+      
+      display: flex;
+      align-items: center;
+    }
+
+    /* Styling for search input */
+    .search-input {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      outline: none;
+      width: 200px;
+      transition: width 0.3s ease-in-out;
+
+    }
+
+    /* Styling for search button */
+   
+
+    /* Styling for search button on hover */
+
+    /* Styling for search input on focus */
+    .search-input:focus {
+      width: 300px;
+    }
 	</style>
 </head>
 
@@ -121,16 +157,16 @@
 				<div class="row">
 					<div class="col">
 						<p class="bread"><span><a href="index.html">Trang Chủ</a></span> / <span>Chi Tiết Sản
-								Phẩm</span></p>
+								Phẩm</span> / <span id="nameProduct"> </span></p>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="colorlib-product">
+		<div class="colorlib-product" style="margin-top: -50px;">
 			<div class="container">
 				<div class="row row-pb-lg product-detail-wrap">
 					<div class="col-sm-8">
-						<div class="owl-carousel" id="owl-carousel">
+						<div class="owl-carousel" id="owl-carousel" style="width: 600px;margin-left: 100px;">
 							<div class="item">
 								<div class="product-entry border">
 									<a class="prod-img">
@@ -228,9 +264,9 @@
 	</div>
 
 	<div class="gototop js-top">
-		<a class="js-gotop"><i class="ion-ios-arrow-up"></i></a>
+		
 		<div class="gototop js-top" style="z-index: 300;">
-			<a class="js-gotop"><i class="ion-ios-arrow-up"></i></a>
+			
 		</div>
 		<!-- jQuery -->
 		<script src="js/jquery.min.js"></script>
