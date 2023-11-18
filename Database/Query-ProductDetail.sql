@@ -162,6 +162,26 @@ BEGIN
 	WHERE PD.id=@Id
 END
 
+SELECT TOP (1000) [id]
+      ,[code]
+      ,[name]
+      ,[type]
+      ,[value]
+      ,[maximum_value]
+      ,[condition]
+      ,[quantity]
+      ,[start_date]
+      ,[end_date]
+      ,[status]
+  FROM [DATN].[dbo].[Voucher]
+WHERE
+	start_date <= GETDATE()
+	AND end_date >= GETDATE()
+	AND quantity > 0
+
+
+
+
 EXEC GetProductDetailAndCart @Id=135	
 
 SELECT * FROM Voucher
