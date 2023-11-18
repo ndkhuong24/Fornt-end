@@ -48,51 +48,52 @@
 			border-radius: 5px;
 			display: none;
 		}
-		 /* Reset some default styles */
-		 * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
 
-    body {
-      
-      background-color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+		/* Reset some default styles */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
 
-    /* Styling for search container */
-    .search-container {
-      
-      display: flex;
-      align-items: center;
-    }
+		body {
 
-    /* Styling for search input */
-    .search-input {
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      outline: none;
-      width: 200px;
-      transition: width 0.3s ease-in-out;
+			background-color: #ffffff;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+		}
 
-    }
+		/* Styling for search container */
+		.search-container {
 
-    /* Styling for search button */
-   
+			display: flex;
+			align-items: center;
+		}
 
-    /* Styling for search button on hover */
+		/* Styling for search input */
+		.search-input {
+			padding: 10px;
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
+			outline: none;
+			width: 200px;
+			transition: width 0.3s ease-in-out;
 
-    /* Styling for search input on focus */
-    .search-input:focus {
-      width: 300px;
-    }
+		}
+
+		/* Styling for search button */
+
+
+		/* Styling for search button on hover */
+
+		/* Styling for search input on focus */
+		.search-input:focus {
+			width: 300px;
+		}
 	</style>
 </head>
 
@@ -116,8 +117,10 @@
 								<div class="form-group">
 									<div class="search-container">
 										<input id="searchInput" style="font-weight: 500;" type="search"
-										class="form-control search "  placeholder="Nhập từ khóa tìm kiếm...">
-										<a id="searchButton" type="submit" id="searchButton" class="search-button" style="margin-left: -30px;cursor: pointer;"><img style="width: 20px;" src="images/search.png" alt=""></a>
+											class="form-control search " placeholder="Nhập từ khóa tìm kiếm...">
+										<a id="searchButton" type="submit" id="searchButton" class="search-button"
+											style="margin-left: -30px;cursor: pointer;"><img style="width: 20px;"
+												src="images/search.png" alt=""></a>
 									</div>
 								</div>
 							</form>
@@ -278,32 +281,32 @@
 							</div> -->
 						</div>
 
-						
-							<div class="row row-pb-lg" style="margin-top: -50px;font-weight:500;padding: 20px;">
 
-								<table class="table" style="border-radius: 20px;">
-									<thead class="">
-										<tr>
-											<th>Hình Ảnh</th>
-											<th>Sản Phẩm</th>
-											<th>Giá Tiền</th>
-											<th>Số Lượng</th>
-											<th>Tổng</th>
-											<th style="font-weight: 700;">Thao Tác</th>
-										</tr>
-									</thead>
-									<tbody id="cart-items">
+						<div class="row row-pb-lg" style="margin-top: -50px;font-weight:500;padding: 20px;">
 
-									</tbody>
-								</table>
-							</div>
-						
+							<table class="table" style="border-radius: 20px;">
+								<thead class="">
+									<tr>
+										<th>Hình Ảnh</th>
+										<th>Sản Phẩm</th>
+										<th>Giá Tiền</th>
+										<th>Số Lượng</th>
+										<th>Tổng</th>
+										<th style="font-weight: 700;">Thao Tác</th>
+									</tr>
+								</thead>
+								<tbody id="cart-items">
+
+								</tbody>
+							</table>
+						</div>
+
 
 						<form>
 							<div class="row form-group" style="margin-left: 20px;margin-top: -60px;">
-								<input type="text"
+								<!-- <input type="text"
 									style="width: 450px;font-weight: 400;border-radius: 15px;font-weight: 500;"
-									class="form-control input-number" placeholder="Nhập mã giảm giá của bạn">
+									class="form-control input-number" placeholder="Nhập mã giảm giá của bạn"> -->
 								<div style="margin-left: 480px;margin-top: -40px;">
 									<input type="submit"
 										style="background-color:#88c8bc;border: 0px solid;color: rgb(254, 254, 254);font-weight: 500;border-radius: 15px;"
@@ -399,7 +402,7 @@
 		<div class="gototop js-top">
 			<a class="js-gotop"><i class="ion-ios-arrow-up"></i></a>
 		</div>
-	
+
 
 		<!-- jQuery -->
 		<script src="js/jquery.min.js"></script>
@@ -422,9 +425,7 @@
 		<script src="js/bootstrap-datepicker.js"></script>
 		<!-- Stellar Parallax -->
 		<script src="js/jquery.stellar.min.js"></script>
-		<!-- Main -->
 		<!-- <script src="js/main.js"></script> -->
-
 		<script src="js/checkout.js"></script>
 </body>
 
