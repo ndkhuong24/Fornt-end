@@ -27,7 +27,7 @@ function renderTable(data, page) {
     <div class="col-lg-3 mb-5 text-center" >
       <div class="product-entry border">
       <a href="product-detail.html?id=${item.id}" class="prod-img">
-      <img src="https://192.168.109.128${item.path}" class="img-fluid" alt="">
+      <img src="https://192.168.2.5${item.path}" class="img-fluid" alt="">
     </a>
         <div class="desc">
           <h2><a href="">${item.productName}</a></h2>

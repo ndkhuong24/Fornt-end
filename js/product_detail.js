@@ -4,11 +4,11 @@ const itemId = urlParams.get("id");
 let data = [];
 
 document.addEventListener("DOMContentLoaded", function () {
-  fetch(`https://192.168.109.128/api/ProductDetail/getImageChinhById/${itemId}`)
+  fetch(`https://192.168.2.5/api/ProductDetail/getImageChinhById/${itemId}`)
     .then((response) => response.json())
     .then((imageChinhData) => {
       fetch(
-        `https://192.168.109.128/api/ProductDetail/getImagePhuById/${itemId}`
+        `https://192.168.2.5/api/ProductDetail/getImagePhuById/${itemId}`
       )
         .then((response) => response.json())
         .then((imagePhuData) => {
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(imgElement);
             if (imgElement && image.path) {
               console.log(image.path);
-              imgElement.src = `https://192.168.109.128${image.path}`;
+              imgElement.src = `https://192.168.2.5${image.path}`;
             }
           });
 
@@ -44,7 +44,7 @@ function initializeOwlCarousel() {
 
 function fetchdata() {
   fetch(
-    `https://192.168.109.128/api/ProductDetail/GetProductDetailAndCart/` +
+    `https://192.168.2.5/api/ProductDetail/GetProductDetailAndCart/` +
     itemId
   )
     .then((response) => response.json())
