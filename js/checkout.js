@@ -605,6 +605,20 @@ function GetCommuneWithDistrict(districtOption) {
               document.getElementById("tienGiamGia").innerText =
                 tienGiamGiaCuaHoaDonWithVND;
             });
+
+          fetch(
+            `https://192.168.2.5/api/Voucher/getVoucherActivity/${tongTien}`
+          )
+            .then((response) => response.json())
+            .then((voucherData) => {
+              var voucherElement = document.getElementById("VoucherId");
+              voucherData.forEach((option) => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.id;
+                optionElement.text = option.name;
+                voucherElement.appendChild(optionElement);
+              });
+            });
         });
     });
 }
