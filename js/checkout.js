@@ -615,7 +615,7 @@ function GetCommuneWithDistrict(districtOption) {
               voucherData.forEach((option) => {
                 const optionElement = document.createElement("option");
                 optionElement.value = option.id;
-                optionElement.text = option.name;
+                optionElement.text = `${option.name} - ${option.code}`;
                 voucherElement.appendChild(optionElement);
               });
             });
