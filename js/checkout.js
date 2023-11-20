@@ -298,7 +298,7 @@ const cart = {
         this.updateCountAndAmount();
       }
     } else {
-      fetch(`https://192.168.2.5/api/ProductDetail/getById/${id}`)
+      fetch(`https://192.168.109.128/api/ProductDetail/getById/${id}`)
         .then((response) => response.json())
         .then((data) => {
           data.qty = 1;
@@ -378,7 +378,7 @@ const cart = {
       const priceWithVND1 = formattedPrice1.replace("₫", "VND");
 
       row.innerHTML = `
-        <td><img src="https://192.168.2.5${item.path}" class="img-fluid" alt="" style="width: 100px;"></td>
+        <td><img src="https://192.168.109.128${item.path}" class="img-fluid" alt="" style="width: 100px;"></td>
         <td style="font-weight: 600;text-decoration: underline;color: dodgerblue;">${item.name}</td>
         <td>${priceWithVND}</td>
         <td>
@@ -607,7 +607,7 @@ function GetCommuneWithDistrict(districtOption) {
             });
 
           fetch(
-            `https://192.168.2.5/api/Voucher/getVoucherActivity/${tongTien}`
+            `https://192.168.109.128/api/Voucher/getVoucherActivity/${tongTien}`
           )
             .then((response) => response.json())
             .then((voucherData) => {
@@ -619,6 +619,27 @@ function GetCommuneWithDistrict(districtOption) {
                 voucherElement.appendChild(optionElement);
               });
             });
+
+          const myButton = document.getElementById("submitVoucher");
+
+          myButton.addEventListener("click", function () {
+            var valueVoucher = document.getElementById("VoucherId");
+            if (valueVoucher.value === "") {
+              showNotification("Vui lòng chọn một Voucher");
+            } else {
+              fetch(
+                `http://localhost:8080/api/Voucher/id/${valueVoucher.value}`
+              )
+                .then((response) => response.json())
+                .then((dataVoucher) => {
+                  if (dataVoucher.type === 0) {
+                    tienGiam.innerText = dataVoucher.value;
+                  } else {
+                    console.log(originalString * dataVoucher.value);
+                  }
+                });
+            }
+          });
         });
     });
 }

@@ -29,7 +29,7 @@ BEGIN
 END
 
 DROP Procedure GetVoucherActivity
-EXEC GetVoucherActivity @NewCondition=1500000000
+EXEC GetVoucherActivity @NewCondition=2000000
 
 INSERT INTO Voucher (code, [name], [type], [value], maximum_value, condition_value, quantity, [start_date], [end_date])
 VALUES
@@ -40,3 +40,5 @@ VALUES
 ('JKL012', N'Voucher 5', 2, 20.5, 60, 8, 40, '2023-11-10', '2023-12-05');
 
 SELECT * FROM Voucher
+
+Update Voucher Set maximum_value=null where type=0
