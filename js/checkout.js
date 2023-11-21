@@ -633,10 +633,57 @@ function GetCommuneWithDistrict(districtOption) {
                 .then((response) => response.json())
                 .then((dataVoucher) => {
                   if (dataVoucher.type === 0) {
-                    tienGiam.innerText = dataVoucher.value;
+                    const formatTien = new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(dataVoucher.value);
+                    const tien = formatTien.replace("₫", "VND");
+
+                    tienGiam.innerText = tien;
                   } else {
-                    console.log(originalString * dataVoucher.value);
+                    const formatTien1 = new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format((tongTien / 100) * dataVoucher.value);
+                    const tien1 = formatTien1.replace("₫", "VND");
+
+                    tienGiam.innerText = tien1;
                   }
+
+                  var tongTienCuaSanPhamNow = document.getElementById("total");
+                  var originalStringNow = tongTienCuaSanPhamNow.innerText;
+                  var removedDotsNow = originalStringNow.replace(/\./g, "");
+                  var removedVNDNow = removedDotsNow.replace("VND", "");
+                  var finalResultNow = removedVNDNow.trim();
+                  var tongTienNow = parseInt(finalResultNow);
+
+                  var tienGiamNow = document.getElementById("tienGiamGia");
+                  var originalNow = tienGiamNow.innerText;
+                  var removedDotNow = originalNow.replace(/\./g, "");
+                  var removedvndNow = removedDotNow.replace("VND", "");
+                  var finalNow = removedvndNow.trim();
+                  var tienGiamGiaCuaHoaDonNow = parseInt(finalNow);
+
+                  var tienGiaoHangNow = document.getElementById("phiGiaoHang");
+                  var originalPhiGiaoHangNow = tienGiaoHangNow.innerText;
+                  var removedDotPhiGiaoHangNow = originalPhiGiaoHangNow.replace(
+                    /\./g,
+                    ""
+                  );
+                  var removedVNDPhiGiaoHangNow =
+                    removedDotPhiGiaoHangNow.replace("VND", "");
+                  var finalPhiGiaoHangNow = removedVNDPhiGiaoHangNow.trim();
+                  var tienPhiGiaoHangNow = parseInt(finalPhiGiaoHangNow);
+
+                  const formatTien2 = new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(
+                    tongTienNow - tienGiamGiaCuaHoaDonNow + tienPhiGiaoHangNow
+                  );
+                  const tien2 = formatTien2.replace("₫", "VND");
+
+                  document.getElementById("total2").innerText = tien2;
                 });
             }
           });
