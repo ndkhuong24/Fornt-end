@@ -127,7 +127,7 @@ function filter() {
     });
 
   const apiFilter =
-    `http://localhost:8080/api/filter?minPrice=${min}&maxPrice=${max}` +
+    `http://localhost:8080/filter?minPrice=${min}&maxPrice=${max}` +
     `&colors=${colors.join("&colors=")}&brands=${brands.join("&brands=")}` +
     `&sizes=${sizes.join("&sizes=")}&soles=${soles.join(
       "&soles="
