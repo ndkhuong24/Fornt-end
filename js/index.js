@@ -30,7 +30,7 @@ function renderTable(data, page) {
       <img src="https://192.168.109.128${item.path}" class="img-fluid" alt="">
     </a>
         <div class="desc">
-          <h2><a href="">${item.productName}</a></h2>
+          <h2><a>${item.productName}</a></h2>
           <span class="price" style="color:red;font-weight:500">${priceWithVND}</span>
         </div>
       </div>
