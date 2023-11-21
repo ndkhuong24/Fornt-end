@@ -101,7 +101,7 @@
 	<div id="notification" class="notification">
 		<span id="notificationText"></span>
 	</div>
-	<div class="colorlib-loader"></div>
+	<!-- <div class="colorlib-loader"></div> -->
 
 	<div id="page">
 		<nav class="colorlib-nav" role="navigation">
@@ -113,7 +113,7 @@
 										style="width: 220px;"></a></div>
 						</div>
 						<div class="col-sm-3 col-md-3">
-							<form action="#" class="search-wrap" style="margin-left: -30px;">
+							<div class="search-wrap" style="margin-left: -30px;">
 								<div class="form-group">
 									<div class="search-container">
 										<input id="searchInput" style="font-weight: 500;" type="search"
@@ -123,33 +123,28 @@
 												src="images/search.png" alt=""></a>
 									</div>
 								</div>
-							</form>
+							</div>
 						</div>
-						<div class="col-sm-3 col-md-3">
-							<form action="#" class="search-wrap"
-								style="width: 100px;margin-left: 155px;position: relative;" type="submit">
+						<div class="col-md-3">
+							<div class="search-wrap"
+								style="width: 100px;margin-left: 100px;position: relative;margin-top: 5px;">
 								<div class="form-group">
-									<a href="login.html">
-										<div class="cart-icon">
-											<img src="images/avatar_126486.png" style="width: 35px;margin-bottom: 12px;"
-												alt="">
-											<span style="font-weight: 700;border-bottom: 2px solid;color: black;">Tài
+									<a>
+										<img src="images/undraw_profile.svg" style="width: 25px;margin-bottom: 10px;">
+										<div id="div1" class="cart-icon">
+											<span id="fullname"
+												style="font-weight: 700;color: black;text-decoration: none;">Tài
 												Khoản</span>
-
 										</div>
 									</a>
-
 								</div>
-							</form>
+							</div>
 						</div>
 					</div>
 
 					<div class="row">
-
 						<div class="col-sm-12 text-left ">
-
 							<div class="col-sm-12 text-left">
-
 								<ul>
 									<li><a href="index.html">Trang Chủ</a></li>
 									<li>
@@ -157,12 +152,14 @@
 									</li>
 									<li><a href="about.html">Giới Thiệu</a></li>
 									<li><a href="contact.html">Liên Hệ</a></li>
-									<li class="cart"><a href="cart.html">
+									<li class="cart">
+										<a href="cart.html">
 											<div class="cart-icon">
 												<img src="images/shopping-cart.png" style="width: 35px;" alt="">
 												<span class="item-count" id="cart-count"></span>
 											</div>
-										</a></li>
+										</a>
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -188,18 +185,19 @@
 						<form method="post" class="colorlib-form" style="border-radius: 15px">
 							<h2>Thông Tin Thanh Toán</h2>
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-12">
 									<div class="form-group">
-										<label for="fname">Họ </label>
-										<input type="text" id="fname" class="form-control" placeholder="Nhập Họ">
+										<label for="fullname">Họ và tên</label>
+										<input type="text" id="fullname" class="form-control"
+											placeholder="Nhập họ và tên">
 									</div>
 								</div>
-								<div class="col-md-6">
+								<!-- <div class="col-md-6">
 									<div class="form-group">
 										<label for="lname">Tên</label>
 										<input type="text" id="lname" class="form-control" placeholder="Nhập Tên">
 									</div>
-								</div>
+								</div> -->
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="Phone">Số Điện Thoại</label>
