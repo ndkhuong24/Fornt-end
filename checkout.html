@@ -17,22 +17,17 @@
 	<link rel="stylesheet" href="css/ionicons.min.css">
 	<!-- Bootstrap  -->
 	<link rel="stylesheet" href="css/bootstrap.min.css">
-
 	<!-- Magnific Popup -->
 	<link rel="stylesheet" href="css/magnific-popup.css">
-
 	<!-- Flexslider  -->
 	<link rel="stylesheet" href="css/flexslider.css">
-
 	<!-- Owl Carousel -->
 	<link rel="stylesheet" href="css/owl.carousel.min.css">
 	<link rel="stylesheet" href="css/owl.theme.default.min.css">
-
 	<!-- Date Picker -->
 	<link rel="stylesheet" href="css/bootstrap-datepicker.css">
 	<!-- Flaticons  -->
 	<link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
-
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="css/style.css">
 
@@ -49,7 +44,6 @@
 			display: none;
 		}
 
-		/* Reset some default styles */
 		* {
 			margin: 0;
 			padding: 0;
@@ -66,14 +60,11 @@
 			margin: 0;
 		}
 
-		/* Styling for search container */
 		.search-container {
-
 			display: flex;
 			align-items: center;
 		}
 
-		/* Styling for search input */
 		.search-input {
 			padding: 10px;
 			border: none;
@@ -85,12 +76,6 @@
 
 		}
 
-		/* Styling for search button */
-
-
-		/* Styling for search button on hover */
-
-		/* Styling for search input on focus */
 		.search-input:focus {
 			width: 300px;
 		}
@@ -306,9 +291,14 @@
 									<option value="">Vui lòng chọn một voucher</option>
 								</select>
 								<div style="margin-left: 480px;margin-top: -40px;">
-									<input type="submit" id="submitVoucher"
+									<button class="btn btn-primary" type="button" data-toggle="modal"
+										data-target="#VoucherModal"
+										style="background-color:#88c8bc;border: 0px solid;color: rgb(254, 254, 254);font-weight: 500;border-radius: 15px;">Chọn
+										Voucher
+									</button>
+									<!-- <input type="submit" data-bs-toggle="modal" data-bs-target="#VoucherModal"
 										style="background-color:#88c8bc;border: 0px solid;color: rgb(254, 254, 254);font-weight: 500;border-radius: 15px;"
-										value="ÁP DỤNG" class="btn btn-primary">
+										value="Chọn Voucher" class="btn btn-primary"> -->
 								</div>
 							</div>
 						</div>
@@ -397,8 +387,30 @@
 			</footer>
 		</div>
 
-		<div class="gototop js-top">
+		<!-- <div class="gototop js-top">
 			<a class="js-gotop"><i class="ion-ios-arrow-up"></i></a>
+		</div> -->
+
+		<!-- Voucher Modal -->
+		<div class="modal fade" id="VoucherModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true">
+			<div class=" modal-dialog modal-xl" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Thêm sản phẩm</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						000
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+						<button type="button" class="btn btn-primary" id="saveChanges">Thêm</button>
+					</div>
+				</div>
+			</div>
 		</div>
 
 
