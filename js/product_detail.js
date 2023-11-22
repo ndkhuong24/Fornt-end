@@ -12,17 +12,13 @@ document.addEventListener("DOMContentLoaded", function () {
       )
         .then((response) => response.json())
         .then((imagePhuData) => {
-          const combinedImageData = imagePhuData.concat(imageChinhData);
-          var carouselItems = document.querySelectorAll(".owl-carousel .item");
-          combinedImageData.forEach((image, index) => {
-            var imgElement =
-              carouselItems[index].querySelector(".prod-img img");
-            if (imgElement && image.path) {
-              imgElement.src = `https://192.168.109.128${image.path}`;
-            }
-          });
+          console.log(imagePhuData.concat(imageChinhData));
 
-          initializeOwlCarousel();
+          const imgElements = document.querySelectorAll(".product-entry img");
+          const srcs = Array.from(imgElements).map((imgElement) =>
+            imgElement.getAttribute("src")
+          );
+          console.log(srcs);
         })
         .catch((error) => {
           console.error("Lỗi khi lấy dữ liệu ảnh phụ từ API", error);
@@ -32,13 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Lỗi khi lấy dữ liệu ảnh chính từ API", error);
     });
 });
-
-function initializeOwlCarousel() {
-  var owl = $("#owl-carousel");
-  owl.owlCarousel({
-    // loop: true,
-  });
-}
 
 function fetchdata() {
   fetch(
