@@ -8,6 +8,7 @@ const row = document.querySelector(".row.row-pb-md");
 let data = [];
 
 function renderTable(data, page) {
+  console.log(data);
   const startIndex = (page - 1) * perPage;
   const endIndex = page * perPage;
   row.innerHTML = "";
@@ -43,6 +44,25 @@ function fetchDataAndPopulateTable() {
   fetch(apiUrl)
     .then((response) => response.json())
     .then((apiData) => {
+
+      data = apiData;
+
+      totalPages = Math.ceil(data.length / perPage);
+      // Hiển thị thông tin trang hiện tại và tổng số trang
+      updatePageInfo();
+
+      // Render trang đầu tiên
+      renderTable(data, currentPage);
+    })
+    .catch((error) => {
+      console.error("Lỗi khi gọi API:", error);
+    });
+}
+function fetchMinPriceMaxPrice() {
+  // Lấy dữ liệu từ API và render trang đầu tiên
+  fetch(apiUrl)
+    .then((response) => response.json())
+    .then((apiData) => {
       let max = 0; // Initializing max with 0
       let min = Number.MAX_VALUE; // Initializing min with a very large value
 
@@ -55,15 +75,6 @@ function fetchDataAndPopulateTable() {
           min = item.price; // Update min if a smaller price is found
         }
       });
-
-      data = apiData;
-
-      totalPages = Math.ceil(data.length / perPage);
-      // Hiển thị thông tin trang hiện tại và tổng số trang
-      updatePageInfo();
-
-      // Render trang đầu tiên
-      renderTable(data, currentPage);
       setupSlider(min, max);
     })
     .catch((error) => {
@@ -95,10 +106,13 @@ function updatePageInfo() {
   const currentPageElement = document.getElementById("currentPage");
   currentPageElement.textContent = `${currentPage}/${totalPages}`;
 }
-fetchDataAndPopulateTable();
+
 const urlParams = new URLSearchParams(window.location.search);
 const item = urlParams.get("search");
-
+if(item===null){
+  fetchDataAndPopulateTable();
+}
+fetchMinPriceMaxPrice();
 function filter() {
   let min = document.getElementById("minPrice").value || 0;
   let max =
@@ -331,15 +345,27 @@ function setupSlider(min, max) {
   });
 }
 //search
-document.getElementById("searchButton").addEventListener("click", function () {
-  // Lấy giá trị tìm kiếm từ trường input
-  const searchPattern = document.getElementById("searchInput").value;
-  if (searchPattern.trim() === "") {
-    fetchDataAndPopulateTable();
-  } else {
-    searchByName(searchPattern);
-  }
-});
+// document.getElementById("searchButton").addEventListener("click", function () {
+//   // Lấy giá trị tìm kiếm từ trường input
+//   const searchPattern = document.getElementById("searchInput").value;
+//   if (searchPattern.trim() === "") {
+//     fetchDataAndPopulateTable();
+//   } else {
+//     searchByName(searchPattern);
+//   }
+// });
+document
+  .getElementById("searchButton")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    var searchValue = document.getElementById("searchInput").value.trim();
+    if (searchValue !== "") {
+      window.location.href =
+        "nike.html?search=" + encodeURIComponent(searchValue);
+    } else {
+      console.log("Please enter a search term.");
+    }
+  });
 function searchByName(searchPattern) {
   // Lấy dữ liệu từ API và render trang đầu tiên
   fetch(`http://localhost:8080/search/${searchPattern}`)
@@ -368,12 +394,12 @@ function getParameterByName(name, url) {
 
 // Perform search automatically when the page loads
 window.addEventListener("DOMContentLoaded", function () {
+
   const searchPattern = getParameterByName("search");
   if (searchPattern) {
     searchByName(searchPattern);
   } else {
-    // If no search query is provided in the URL, you may choose to handle it here.
-    // For example, you could load default data or display a message.
-    fetchDataAndPopulateTable(); // This function fetches and populates the table with default data
+    fetchDataAndPopulateTable(); 
   }
-});
+}); 
+
