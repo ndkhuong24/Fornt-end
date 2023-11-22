@@ -96,8 +96,11 @@ function updatePageInfo() {
   currentPageElement.textContent = `${currentPage}/${totalPages}`;
 }
 fetchDataAndPopulateTable();
+const urlParams = new URLSearchParams(window.location.search);
+const item = urlParams.get("search");
 
 function filter() {
+  
   let min = document.getElementById("minPrice").value || 0;
   let max =
     document.getElementById("maxPrice").value || Number.MAX_SAFE_INTEGER;
@@ -106,7 +109,11 @@ function filter() {
   let sizes = [];
   let soles = [];
   let materials = [];
+  let products=[];
 
+  if(item!==null){
+    products.push(item)
+    }
   document.querySelectorAll('input[id="color"]:checked').forEach((checkbox) => {
     colors.push(checkbox.value);
   });
@@ -129,9 +136,9 @@ function filter() {
   const apiFilter =
     `http://localhost:8080/filter?minPrice=${min}&maxPrice=${max}` +
     `&colors=${colors.join("&colors=")}&brands=${brands.join("&brands=")}` +
-    `&sizes=${sizes.join("&sizes=")}&soles=${soles.join(
-      "&soles="
-    )}&materials=${materials.join("&material=")}`;
+    `&sizes=${sizes.join("&sizes=")}&soles=${soles.join("&soles=")}`+
+    `&materials=${materials.join("&materials=")}`+
+    `&products=${products.join("&products=")}`;
   fetch(apiFilter)
     .then((response) => response.json())
     .then((filterdata) => {
