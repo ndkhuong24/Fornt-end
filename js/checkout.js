@@ -379,7 +379,7 @@ const cart = {
 
       row.innerHTML = `
         <td><img src="https://192.168.109.128${item.path}" class="img-fluid" alt="" style="width: 100px;"></td>
-        <td style="font-weight: 600;text-decoration: underline;color: dodgerblue;">${item.name}</td>
+        <td style="font-weight: 600;text-decoration: none;color: dodgerblue;">${item.name}</td>
         <td>${priceWithVND}</td>
         <td>
             <input id="quantity" onchange="updateQuantity(${item.id}, this.value)" style="width:80px;text-align:center"
@@ -387,7 +387,7 @@ const cart = {
         </td>
         <td>${priceWithVND1} </td>
         <td>
-            <btn style="font-size: larger;font-weight: 500;margin-top:-4px;text-decoration: underline;color:red;" class="btn"
+            <btn style="font-size: larger;font-weight: 500;margin-top:-4px;text-decoration: none;color:red;" class="btn"
               onclick="cart.remove(${item.id})">Xóa
             </btn>
         </td>

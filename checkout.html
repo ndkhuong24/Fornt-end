@@ -23,6 +23,7 @@
 	<link rel="stylesheet" href="css/flexslider.css">
 	<!-- Owl Carousel -->
 	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	
 	<link rel="stylesheet" href="css/owl.theme.default.min.css">
 	<!-- Date Picker -->
 	<link rel="stylesheet" href="css/bootstrap-datepicker.css">
@@ -244,8 +245,8 @@
 
 					<div class="col-lg-7">
 						<div class="cart-detail" style="border-radius: 15px">
-							<h3></h3>
-							<!-- <div class="row">
+							<!-- <h3></h3>
+							<div class="row">
 								<div class="col-md-6">
 									<br>
 									<h2>Phương Thức Thanh Toán</h2>
@@ -264,9 +265,7 @@
 							</div> -->
 						</div>
 
-
 						<div class="row row-pb-lg" style="margin-top: -50px;font-weight:500;padding: 20px;">
-
 							<table class="table" style="border-radius: 20px;">
 								<thead class="">
 									<tr>
@@ -286,10 +285,12 @@
 
 						<div>
 							<div class="row form-group" style="margin-left: 20px;margin-top: -60px;">
-								<select class="form-control" id="VoucherId"
+								<input type="text" class="form-control" id="VoucherId" disabled
+									style="width: 450px;font-weight: 400;border-radius: 15px;font-weight: 500;">
+								<!-- <select class="form-control" id="VoucherId"
 									style="width: 450px;font-weight: 400;border-radius: 15px;font-weight: 500;">
 									<option value="">Vui lòng chọn một voucher</option>
-								</select>
+								</select> -->
 								<div style="margin-left: 480px;margin-top: -40px;">
 									<button class="btn btn-primary" type="button" data-toggle="modal"
 										data-target="#VoucherModal"
@@ -394,7 +395,7 @@
 		<!-- Voucher Modal -->
 		<div class="modal fade" id="VoucherModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 			aria-hidden="true">
-			<div class=" modal-dialog modal-xl" role="document">
+			<div class=" modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">Thêm sản phẩm</h5>
@@ -403,7 +404,7 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						000
+
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
