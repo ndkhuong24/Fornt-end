@@ -91,7 +91,7 @@ function fetchdata() {
                     type="number" id="quantity" name="quantity" class="input-number" value="1" min="1" max="100">
             </div>
             <div class="col-sm-6 text-center" id="addtocart">
-                <p class="addtocart"><a style="color: white; padding: 10px 20px;
+                <p class="addtocart"><a style="color: white; padding: 10px 30px;
               font-size: 18px;
               background-color:  #45a049;
               color: white; 
@@ -103,7 +103,7 @@ function fetchdata() {
               margin-left:5px;
               transition: background-color 0.3s;" class="btn btn-success btn-addtocart" onclick="cart.add(${
                 data.productDetailID
-              },document.getElementById('quantity').value)"><i style="width:30px" class="icon-shopping-cart"></i>THÊM
+              },document.getElementById('quantity').value)"> THÊM
                         VÀO GIỎ HÀNG</a></p>
             </div>
         </div>
