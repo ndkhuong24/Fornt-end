@@ -1,8 +1,4 @@
-/*
- * jQuery FlexSlider v2.6.0
- * Copyright 2012 WooThemes
- * Contributing Author: Tyler Smith
- */ !(function ($) {
+!(function ($) {
   var e = !0;
   ($.flexslider = function (t, a) {
     var n = $(t);
@@ -208,7 +204,7 @@
               s;
             if (
               ((n.controlNavScaffold = $(
-                '<ol class="' + i + "control-nav " + i + e + '"></ol>'
+                // '<ol class="' + i + "control-nav " + i + e + '"></ol>'
               )),
               n.pagingCount > 1)
             )

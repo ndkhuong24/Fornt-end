@@ -1,3 +1,6 @@
+const table = document.getElementById("data-table");
+const tbody = table.querySelector("tbody");
+
 (function () {
   "use strict";
 
@@ -609,82 +612,31 @@ function GetCommuneWithDistrict(districtOption) {
             `https://192.168.109.128/api/Voucher/getVoucherActivity/${tongTien}`
           )
             .then((response) => response.json())
-            .then((voucherData) => {
-              // var voucherElement = document.getElementById("VoucherId");
-              // voucherData.forEach((option) => {
-              //   const optionElement = document.createElement("option");
-              //   optionElement.value = option.id;
-              //   optionElement.text = `${option.name} - ${option.code}`;
-              //   voucherElement.appendChild(optionElement);
-              // });
+            .then((vouchers) => {
+              vouchers.forEach(function (voucher) {
+                var row = document.createElement("tr");
+                row.innerHTML = `
+                  <td>${voucher.code}</td>
+                  <td>${voucher.name}</td>
+                  <td>${voucher.type == 0 ? "VNĐ" : "%"}</td>
+                  <td>${voucher.value}</td>
+                  <td>${
+                    voucher.maximumValue !== null ? voucher.maximumValue : ""
+                  }</td>
+                  <td>
+                   <button id="chonVoucher" class="btn btn-success">Chọn Voucher</button>
+                  </td>
+                `;
+                tbody.appendChild(row);
+              });
             });
 
-          // const myButton = document.getElementById("submitVoucher");
-          // myButton.addEventListener("click", function () {
-          //   var valueVoucher = document.getElementById("VoucherId");
-          //   if (valueVoucher.value === "") {
-          //     showNotification("Vui lòng chọn một Voucher");
-          //   } else {
-          //     fetch(
-          //       `http://localhost:8080/api/Voucher/id/${valueVoucher.value}`
-          //     )
-          //       .then((response) => response.json())
-          //       .then((dataVoucher) => {
-          //         if (dataVoucher.type === 0) {
-          //           const formatTien = new Intl.NumberFormat("vi-VN", {
-          //             style: "currency",
-          //             currency: "VND",
-          //           }).format(dataVoucher.value);
-          //           const tien = formatTien.replace("₫", "VND");
-
-          //           tienGiam.innerText = tien;
-          //         } else {
-          //           const formatTien1 = new Intl.NumberFormat("vi-VN", {
-          //             style: "currency",
-          //             currency: "VND",
-          //           }).format((tongTien / 100) * dataVoucher.value);
-          //           const tien1 = formatTien1.replace("₫", "VND");
-
-          //           tienGiam.innerText = tien1;
-          //         }
-
-          //         var tongTienCuaSanPhamNow = document.getElementById("total");
-          //         var originalStringNow = tongTienCuaSanPhamNow.innerText;
-          //         var removedDotsNow = originalStringNow.replace(/\./g, "");
-          //         var removedVNDNow = removedDotsNow.replace("VND", "");
-          //         var finalResultNow = removedVNDNow.trim();
-          //         var tongTienNow = parseInt(finalResultNow);
-
-          //         var tienGiamNow = document.getElementById("tienGiamGia");
-          //         var originalNow = tienGiamNow.innerText;
-          //         var removedDotNow = originalNow.replace(/\./g, "");
-          //         var removedvndNow = removedDotNow.replace("VND", "");
-          //         var finalNow = removedvndNow.trim();
-          //         var tienGiamGiaCuaHoaDonNow = parseInt(finalNow);
-
-          //         var tienGiaoHangNow = document.getElementById("phiGiaoHang");
-          //         var originalPhiGiaoHangNow = tienGiaoHangNow.innerText;
-          //         var removedDotPhiGiaoHangNow = originalPhiGiaoHangNow.replace(
-          //           /\./g,
-          //           ""
-          //         );
-          //         var removedVNDPhiGiaoHangNow =
-          //           removedDotPhiGiaoHangNow.replace("VND", "");
-          //         var finalPhiGiaoHangNow = removedVNDPhiGiaoHangNow.trim();
-          //         var tienPhiGiaoHangNow = parseInt(finalPhiGiaoHangNow);
-
-          //         const formatTien2 = new Intl.NumberFormat("vi-VN", {
-          //           style: "currency",
-          //           currency: "VND",
-          //         }).format(
-          //           tongTienNow - tienGiamGiaCuaHoaDonNow + tienPhiGiaoHangNow
-          //         );
-          //         const tien2 = formatTien2.replace("₫", "VND");
-
-          //         document.getElementById("total2").innerText = tien2;
-          //       });
-          //   }
-          // });
+          table.addEventListener("click", function (event) {
+            if (event.target.id === "chonVoucher") {
+              const clickedRow = event.target.closest("tr");
+              
+            }
+          });
         });
     });
 }
