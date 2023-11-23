@@ -12841,6 +12841,6 @@ input[type="text"] {
   border-top: 1px solid #ccc;
 }
 .account-option:hover {
-  text-decoration: underline;
-  color: #3498db;
+  background-color:#f0f0f0;
 }
+
