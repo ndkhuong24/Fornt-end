@@ -346,7 +346,6 @@ const cart = {
     const countElement = document.getElementById("cart-count");
 
     const totalElement = document.getElementById("total");
-    // const totalElement2 = document.getElementById("total2");
 
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
