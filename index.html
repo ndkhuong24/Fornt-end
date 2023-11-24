@@ -57,6 +57,32 @@
 		.search-input:focus {
 			width: 300px;
 		}
+		#searchInput {
+      width: 300px;
+      padding: 8px;
+      font-size: 16px;
+    }
+    #suggestions {
+      display: none;
+      border: 1px solid #ccc;
+      max-height: 150px;
+      overflow-y: auto;
+	  position: absolute;
+	  z-index: 999;
+	  background-color: red;
+    }
+    #suggestions ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    #suggestions li {
+      padding: 8px;
+      cursor: pointer;
+    }
+    #suggestions li:hover {
+      background-color: #f0f0f0;
+    }
 	</style>
 
 </head>
@@ -75,8 +101,11 @@
 							<div class="search-wrap" style="margin-left: -30px;">
 								<div class="form-group">
 									<div class="search-container">
+										<div>
 										<input id="searchInput" style="font-weight: 500;" type="search"
 											class="form-control search " placeholder="Nhập từ khóa tìm kiếm...">
+											<div id="suggestions" style="width: 318px;border-radius: 10px; "></div>
+										</div>
 										<a id="searchButton" type="submit" id="searchButton" class="search-button"
 											style="margin-left: -30px;cursor: pointer;"><img style="width: 20px;"
 												src="images/search.png" alt=""></a>
@@ -95,18 +124,31 @@
 												style="font-weight: 700;color: black;text-decoration: none;">Tài
 												Khoản</span>
 										</div>
-										<div class="account-dropdown-content" style="font-size:medium;font-weight: 500;">
+										<div class="account-dropdown-content" style="font-size:medium;font-weight: 500; width: 185px;">
 											<div class="account-option">
 												<div style="margin-top: 10px;"> <a href="login.html"
-													style="margin-left: 10px;color: black;"> <img style="width: 22px;margin-top: -3px;margin-left: 10px;" src="images/login.png" alt=""> Đăng nhập </a>
+													style="margin-left: 15px;color: black;"> <img style="width: 22px;margin-top: -3px;margin-left: 10px;" src="images/login.png" alt=""> Đăng nhập </a>
 											</div>
 											</div>
 											<div class="divider"></div>
 											<div class="account-option">
-												<div class="account-option" style="margin-top: 10px;margin-bottom: 7px;margin-left: 18px;"> <a href="signup.html"
-													style="margin-left: 10px;color: black;"> <img style="width: 22px;margin-top: -5px;" src="images/register.png" alt=""> Đăng Ký </a>
+												<div  style="margin-top: 10px;margin-bottom: 7px;margin-left: 18px;"> <a href="signup.html"
+													style="margin-left: 15px;color: black;"> <img style="width: 22px;margin-top: -5px;" src="images/register.png" alt=""> Đăng Ký </a>
 											</div>
 											</div>
+
+											<div class="account-option hidden">
+												<div style="margin-top: 10px;"> <a href=""
+													style="margin-left: -5px;color: black;"> <img style="width: 25px;margin-top: -3px;margin-left: 33px;" src="images/ttcn.jpg" alt=""> Thông Tin </a>
+											</div>
+											</div>
+											<div class="divider hidden"></div>
+											<div class="account-option hidden">
+												<div style="margin-top: 10px;margin-bottom: 7px;margin-left: 18px;"> <a href=""
+													style="margin-left: 10px;color: black;"> <img style="width: 18px;margin-top: -5px;" src="images/logout.png" alt=""> Đăng Xuất </a>
+											</div>
+										</div>
+										
 										</div>
 									</a>
 								</div>
@@ -398,6 +440,49 @@
 	<script src="js/main.js"></script>
 	<!-- Index -->
 	<script src="js/index.js"></script>
+	<script>
+		 const searchInput = document.getElementById('searchInput');
+    const suggestionsDiv = document.getElementById('suggestions');
+
+    // Function to fetch search suggestions from the API
+    async function fetchSuggestions(query) {
+      try {
+        console.log(query);
+        const response = await fetch(`http://localhost:8080/search/${query}`);
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching suggestions:', error);
+        return [];
+      }
+    }
+
+    // Function to display suggestions based on user input
+    async function showSuggestions() {
+      const query = searchInput.value.trim();
+      if (query === '') {
+        suggestionsDiv.style.display = 'none';
+        return;
+      }
+
+      const suggestions = await fetchSuggestions(query);
+      
+      if (suggestions.length > 0) {
+        const suggestionsList = suggestions.map(suggestion => 
+        `<li><a style="text-decoration: none;" href="product-detail.html?id=${suggestion.id}"><img style="width: 50px;" src="https://192.168.109.128${suggestion.path}" class="img-fluid" alt="">`+
+          ` ${suggestion.productName} Màu:${suggestion.colorName} Size:${suggestion.sizeName}  </a></li>`).join('');
+        suggestionsDiv.innerHTML = `<ul>${suggestionsList}</ul>`;
+        suggestionsDiv.style.display = 'block';
+      } else {
+        suggestionsDiv.style.display = 'none';
+      }
+    }
+
+    // Event listener for input changes
+    searchInput.addEventListener('input', showSuggestions);
+    
+  </script>
+	</script>
 </body>
 
 
