@@ -65,7 +65,6 @@
 		}
 
 		#suggestions {
-<<<<<<< HEAD
 			position: absolute;
 			background-color: #fff;
 			width: 400px;
@@ -76,15 +75,6 @@
 			max-height: 400px;
 			display: none;
 			z-index: 999;
-=======
-			display: none;
-			border: 1px solid #ccc;
-			max-height: 150px;
-			overflow-y: auto;
-			position: absolute;
-			z-index: 999;
-			background-color: red;
->>>>>>> ebc59793918f622912e46a5ff3e6d4f3da37b814
 		}
 
 		#suggestions ul {
@@ -94,19 +84,10 @@
 		}
 
 		#suggestions li {
-<<<<<<< HEAD
 			height: 70px;
 			padding: 8px;
 			cursor: pointer;
 			font-weight: 500;
-=======
-			padding: 8px;
-			cursor: pointer;
-		}
-
-		#suggestions li:hover {
-			background-color: #f0f0f0;
->>>>>>> ebc59793918f622912e46a5ff3e6d4f3da37b814
 		}
 	</style>
 
@@ -127,7 +108,6 @@
 								<div class="form-group">
 									<div class="search-container">
 										<div>
-<<<<<<< HEAD
 											<input id="searchInput"
 												style="font-weight: 500;width: 450px;margin-left: -150px;border-radius: 10px;border: 10px solid;"
 												type="search" class="form-control search "
@@ -135,11 +115,6 @@
 											<div id="suggestions"
 												style="width: 450px;border-radius: 10px;margin-left: -150px;margin-top: 10px; ">
 											</div>
-=======
-											<input id="searchInput" style="font-weight: 500;" type="search"
-												class="form-control search " placeholder="Nhập từ khóa tìm kiếm...">
-											<div id="suggestions" style="width: 318px;border-radius: 10px; "></div>
->>>>>>> ebc59793918f622912e46a5ff3e6d4f3da37b814
 										</div>
 										<a id="searchButton" type="submit" id="searchButton" class="search-button"
 											style="margin-left: -30px;cursor: pointer;"><img style="width: 20px;"
@@ -161,17 +136,12 @@
 										</div>
 										<div class="account-dropdown-content"
 											style="font-size:medium;font-weight: 500; width: 185px;">
-<<<<<<< HEAD
 											<div class="account-option">
-=======
-											<div class="account-option" id="dangNhapOption">
->>>>>>> ebc59793918f622912e46a5ff3e6d4f3da37b814
 												<div style="margin-top: 10px;"> <a href="login.html"
 														style="margin-left: 15px;color: black;"> <img
 															style="width: 22px;margin-top: -3px;margin-left: 10px;"
 															src="images/login.png" alt=""> Đăng nhập </a>
 												</div>
-<<<<<<< HEAD
 											</div>
 											<div class="divider"></div>
 											<div class="account-option">
@@ -180,27 +150,14 @@
 															style="width: 22px;margin-top: -5px;"
 															src="images/register.png" alt=""> Đăng Ký </a>
 												</div>
-=======
->>>>>>> ebc59793918f622912e46a5ff3e6d4f3da37b814
 											</div>
 
-											<div class="divider" id="dividerDangNhapOption"></div>
-
-											<div class="account-option" id="dangKiOption">
-												<div style="margin-top: 10px;margin-bottom: 7px;margin-left: 18px;"> <a
-														href="signup.html" style="margin-left: 15px;color: black;"> <img
-															style="width: 22px;margin-top: -5px;"
-															src="images/register.png" alt=""> Đăng Ký </a>
-												</div>
-											</div>
-
-											<div class="account-option hidden" id="thongTinOption">
+											<div class="account-option hidden">
 												<div style="margin-top: 10px;"> <a href=""
 														style="margin-left: -5px;color: black;"> <img
 															style="width: 25px;margin-top: -3px;margin-left: 33px;"
 															src="images/ttcn.jpg" alt=""> Thông Tin </a>
 												</div>
-<<<<<<< HEAD
 											</div>
 											<div class="divider hidden"></div>
 											<div class="account-option hidden">
@@ -210,20 +167,6 @@
 															src="images/logout.png" alt=""> Đăng Xuất </a>
 												</div>
 											</div>
-=======
-											</div>
-
-											<div class="divider hidden" id="dividerThongTinOption"></div>
-
-											<div class="account-option hidden" id="dangXuatOption">
-												<div style="margin-top: 10px;margin-bottom: 7px;margin-left: 18px;"> <a
-														data-toggle="modal" data-target="#logoutModal"
-														style="margin-left: 10px;color: black;"> <img
-															style="width: 18px;margin-top: -5px;"
-															src="images/logout.png"> Đăng Xuất </a>
-												</div>
-											</div>
->>>>>>> ebc59793918f622912e46a5ff3e6d4f3da37b814
 
 										</div>
 									</a>
@@ -484,7 +427,7 @@
 				<div class="modal-body">Bạn có muốn Đăng Xuất</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-					<a class="btn btn-danger" style="color: white;" id="logoutButton">Đăng Xuất</a>
+					<a style="color: white;" class="btn btn-danger" id="logoutButton">Đăng Xuất</a>
 				</div>
 			</div>
 		</div>
@@ -516,15 +459,11 @@
 	<script src="js/main.js"></script>
 	<!-- Index -->
 	<script src="js/index.js"></script>
-
 	<script>
 		const searchInput = document.getElementById('searchInput');
 		const suggestionsDiv = document.getElementById('suggestions');
 
-<<<<<<< HEAD
 		// Function to fetch search suggestions from the API
-=======
->>>>>>> ebc59793918f622912e46a5ff3e6d4f3da37b814
 		async function fetchSuggestions(query) {
 			try {
 				console.log(query);
@@ -537,10 +476,7 @@
 			}
 		}
 
-<<<<<<< HEAD
 		// Function to display suggestions based on user input
-=======
->>>>>>> ebc59793918f622912e46a5ff3e6d4f3da37b814
 		async function showSuggestions() {
 			const query = searchInput.value.trim();
 			if (query === '') {
@@ -551,7 +487,6 @@
 			const suggestions = await fetchSuggestions(query);
 
 			if (suggestions.length > 0) {
-<<<<<<< HEAD
 				const suggestionsList = suggestions.map(suggestion => {
 					const formattedPrice = new Intl.NumberFormat("vi-VN", {
 						style: "currency",
@@ -563,17 +498,11 @@
 						` <div style="margin-left:100px;margin-top:-75px;"><span style="font-size:medium">${suggestion.productName}</span> - <span style="color:black;">Size : ${suggestion.sizeName}  </span> <br> <span style="font-size:small;color:red;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"> ${priceWithVND}   </span></div>    </a></li> <br>`;
 				}).join('');
 
-=======
-				const suggestionsList = suggestions.map(suggestion =>
-					`<li><a style="text-decoration: none;" href="product-detail.html?id=${suggestion.id}"><img style="width: 50px;" src="https://192.168.109.128${suggestion.path}" class="img-fluid" alt="">` +
-					` ${suggestion.productName} Màu:${suggestion.colorName} Size:${suggestion.sizeName}  </a></li>`).join('');
->>>>>>> ebc59793918f622912e46a5ff3e6d4f3da37b814
 				suggestionsDiv.innerHTML = `<ul>${suggestionsList}</ul>`;
 				suggestionsDiv.style.display = 'block';
 			} else {
 				suggestionsDiv.style.display = 'none';
 			}
-<<<<<<< HEAD
 
 		}
 
@@ -581,11 +510,6 @@
 		searchInput.addEventListener('input', showSuggestions);
 
 	</script>
-=======
-		}
-
-		searchInput.addEventListener('input', showSuggestions);
->>>>>>> ebc59793918f622912e46a5ff3e6d4f3da37b814
 	</script>
 </body>
 
