@@ -616,13 +616,13 @@ function GetCommuneWithDistrict(districtOption) {
                 row.innerHTML = `
                   <td>${voucher.code}</td>
                   <td>${voucher.name}</td>
-                  <td>${voucher.type == 0 ? "VND" : "%"}</td>
                   <td>${voucher.value}</td>
+                  <td>${voucher.type == 0 ? "VND" : "%"}</td>
                   <td>${
                     voucher.maximumValue !== null ? voucher.maximumValue : ""
                   }</td>
                   <td>
-                   <button id="chonVoucher" class="btn btn-success">Chọn Voucher</button>
+                   <button id="chonVoucher" class="btn btn-success">Áp Dụng</button>
                   </td>
                 `;
                 tbody.appendChild(row);
