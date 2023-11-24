@@ -347,17 +347,9 @@ const cart = {
     const json = localStorage.getItem("cart");
     this.items = json ? JSON.parse(json) : [];
     const countElement = document.getElementById("cart-count");
-
     const totalElement = document.getElementById("total");
-
-    const formattedPrice = new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(this.amount);
-    const priceWithVND = formattedPrice.replace("₫", "VND");
-
+    const priceWithVND = formatIntToVND(this.amount);
     totalElement.textContent = priceWithVND;
-    // totalElement2.textContent = priceWithVND;
     countElement.textContent = this.count;
   },
 
@@ -425,6 +417,18 @@ function updateQuantity(itemId, newQuantity) {
     cart.renderCartItems();
     cart.loadFromLocalStorage();
   }
+
+  const tien1 = formatPriceToInt(document.getElementById("total").innerText);
+  const tien2 = formatPriceToInt(
+    document.getElementById("tienGiamGia").innerText
+  );
+  const tien3 = formatPriceToInt(
+    document.getElementById("phiGiaoHang").innerText
+  );
+
+  document.getElementById("total2").innerText = formatIntToVND(
+    tien1 - tien2 + tien3
+  );
 }
 function showNotification(message) {
   notificationText.textContent = message;
@@ -552,19 +556,13 @@ function GetCommuneWithDistrict(districtOption) {
           var districtNow1 = selectDistrict.value;
           var communeNow1 = selectCommune.value;
 
-          var tongTienCuaSanPham = document.getElementById("total");
-          var originalString = tongTienCuaSanPham.innerText;
-          var removedDots = originalString.replace(/\./g, "");
-          var removedVND = removedDots.replace("VND", "");
-          var finalResult = removedVND.trim();
-          var tongTien = parseInt(finalResult);
+          var tongTien = formatPriceToInt(
+            document.getElementById("total").innerText
+          );
 
-          var tienGiam = document.getElementById("tienGiamGia");
-          var original = tienGiam.innerText;
-          var removedDot = original.replace(/\./g, "");
-          var removedvnd = removedDot.replace("VND", "");
-          var final = removedvnd.trim();
-          var tienGiamGiaCuaHoaDon = parseInt(final);
+          var tienGiamGiaCuaHoaDon = formatPriceToInt(
+            document.getElementById("tienGiamGia").innerText
+          );
 
           fetch(
             `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=${serviceID}&insurance_value=${tongTien}&coupon=&from_district_id=3303&to_district_id=${districtNow1}&to_ward_code=${communeNow1}&height=15&length=15&weight=1000&width=15`,
@@ -654,25 +652,56 @@ document.addEventListener("DOMContentLoaded", function () {
         const thanhTien = formatPriceToInt(
           document.getElementById("total").innerText
         );
+
         const phiGiaoHang = formatPriceToInt(
           document.getElementById("phiGiaoHang").innerText
         );
 
-        
         const tienGiamGia = parseInt(
           clickedRow.querySelector("td:nth-child(4)").textContent
         );
+
         document.getElementById("tienGiamGia").innerText =
           formatIntToVND(tienGiamGia);
+
         document.getElementById("total2").innerText = formatIntToVND(
           thanhTien + phiGiaoHang - tienGiamGia
         );
         $("#VoucherModal").modal("hide");
-
         // const modal = document.getElementById("VoucherModal");
         // modal.style.display = "none";
       } else {
-        // console.log("%");
+        const thanhTien = formatPriceToInt(
+          document.getElementById("total").innerText
+        );
+
+        const phiGiaoHang = formatPriceToInt(
+          document.getElementById("phiGiaoHang").innerText
+        );
+
+        const giaTriGiam = parseInt(
+          clickedRow.querySelector("td:nth-child(4)").textContent
+        );
+
+        const giaTriToiDa = parseInt(
+          clickedRow.querySelector("td:nth-child(5)").textContent
+        );
+
+        const soTienDuocGiam = (thanhTien / 100) * giaTriGiam;
+
+        if (soTienDuocGiam > giaTriToiDa) {
+          document.getElementById("tienGiamGia").innerText =
+            formatIntToVND(giaTriToiDa);
+          document.getElementById("total2").innerText = formatIntToVND(
+            thanhTien - giaTriToiDa + phiGiaoHang
+          );
+        } else {
+          document.getElementById("tienGiamGia").innerText =
+            formatIntToVND(soTienDuocGiam);
+          document.getElementById("total2").innerText = formatIntToVND(
+            thanhTien - soTienDuocGiam + phiGiaoHang
+          );
+        }
       }
     }
   });
@@ -684,4 +713,11 @@ function formatPriceToInt(tien) {
   var finalResult = removedVND.trim();
   var int = parseInt(finalResult);
   return int;
+}
+
+function tinhTongTien(tienSanPham, tienDuocGiam, tienGiaoHang) {
+  const tienTong = parseInt(tienSanPham);
+  const tienGiam = parseInt(tienDuocGiam);
+  const tienShip = parseInt(tienGiaoHang);
+  return tienTong - tienGiam + tienShip;
 }
