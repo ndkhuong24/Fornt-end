@@ -367,27 +367,18 @@ const cart = {
     this.items.forEach(function (item) {
       var row = document.createElement("tr");
 
-      const formattedPrice = new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-      }).format(item.price);
-      const priceWithVND = formattedPrice.replace("₫", "VND");
-
-      const formattedPrice1 = new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-      }).format(item.qty * item.price);
-      const priceWithVND1 = formattedPrice1.replace("₫", "VND");
+      const formatGiaTien = formatIntToVND(item.price);
+      const formatTongTien = formatIntToVND(item.qty * item.price);
 
       row.innerHTML = `
         <td><img src="https://192.168.109.128${item.path}" class="img-fluid" alt="" style="width: 100px;"></td>
         <td style="font-weight: 600;text-decoration: none;color: dodgerblue;">${item.name}</td>
-        <td>${priceWithVND}</td>
+        <td>${formatGiaTien}</td>
         <td>
             <input id="quantity" onchange="updateQuantity(${item.id}, this.value)" style="width:80px;text-align:center"
                 type="number" min="1" value="${item.qty}">
         </td>
-        <td>${priceWithVND1} </td>
+        <td>${formatTongTien} </td>
         <td>
             <btn style="font-size: larger;font-weight: 500;margin-top:-4px;text-decoration: none;color:red;" class="btn"
               onclick="cart.remove(${item.id})">Xóa
@@ -398,6 +389,15 @@ const cart = {
     });
   },
 };
+
+function formatIntToVND(int) {
+  const formatPrice = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(int);
+  const formatVND = formatPrice.replace("₫", "VND");
+  return formatVND;
+}
 
 function updateQuantity(itemId, newQuantity) {
   var item = cart.items.find(function (item) {
@@ -618,7 +618,7 @@ function GetCommuneWithDistrict(districtOption) {
                 row.innerHTML = `
                   <td>${voucher.code}</td>
                   <td>${voucher.name}</td>
-                  <td>${voucher.type == 0 ? "VNĐ" : "%"}</td>
+                  <td>${voucher.type == 0 ? "VND" : "%"}</td>
                   <td>${voucher.value}</td>
                   <td>${
                     voucher.maximumValue !== null ? voucher.maximumValue : ""
@@ -630,13 +630,58 @@ function GetCommuneWithDistrict(districtOption) {
                 tbody.appendChild(row);
               });
             });
-
-          table.addEventListener("click", function (event) {
-            if (event.target.id === "chonVoucher") {
-              const clickedRow = event.target.closest("tr");
-              
-            }
-          });
         });
     });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const table = document.getElementById("data-table");
+
+  table.addEventListener("click", function (event) {
+    if (event.target.id === "chonVoucher") {
+      const clickedRow = event.target.closest("tr");
+      const maVoucher = clickedRow.querySelector("td:nth-child(1)").textContent;
+      const tenVoucher =
+        clickedRow.querySelector("td:nth-child(2)").textContent;
+      document.getElementById(
+        "VoucherId"
+      ).value = `${maVoucher} - ${tenVoucher}`;
+
+      const loaiVoucher =
+        clickedRow.querySelector("td:nth-child(3)").textContent;
+
+      if (loaiVoucher === "VND") {
+        const thanhTien = formatPriceToInt(
+          document.getElementById("total").innerText
+        );
+        const phiGiaoHang = formatPriceToInt(
+          document.getElementById("phiGiaoHang").innerText
+        );
+
+        
+        const tienGiamGia = parseInt(
+          clickedRow.querySelector("td:nth-child(4)").textContent
+        );
+        document.getElementById("tienGiamGia").innerText =
+          formatIntToVND(tienGiamGia);
+        document.getElementById("total2").innerText = formatIntToVND(
+          thanhTien + phiGiaoHang - tienGiamGia
+        );
+        $("#VoucherModal").modal("hide");
+
+        // const modal = document.getElementById("VoucherModal");
+        // modal.style.display = "none";
+      } else {
+        // console.log("%");
+      }
+    }
+  });
+});
+
+function formatPriceToInt(tien) {
+  var removedDots = tien.replace(/\./g, "");
+  var removedVND = removedDots.replace("VND", "");
+  var finalResult = removedVND.trim();
+  var int = parseInt(finalResult);
+  return int;
 }
