@@ -7,6 +7,7 @@ go
 CREATE TABLE Category(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
+
 	[status] INT DEFAULT 1
 )
 CREATE TABLE Brand(
@@ -131,17 +132,18 @@ CREATE TABLE Roles(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(10)
 )
-CREATE TABLE Users(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	fullname NVARCHAR(100),
-	email VARCHAR(100),
-	gender INT,
-	phone_number VARCHAR(30),
-	username VARCHAR(100),
-	[password] VARCHAR(100),
-	role_id INT,
-	[status] INT DEFAULT 1
-)
+CREATE TABLE User (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    fullname NVARCHAR(255),
+    email NVARCHAR(255),
+    gender INT,
+    phone_number NVARCHAR(20),
+    username NVARCHAR(255),
+    password NVARCHAR(255),
+    status INT,
+    token NVARCHAR(255),
+    tokencreationdate DATETIME,
+);
 CREATE TABLE UserAddress(
 	id INT IDENTITY(1,1)PRIMARY KEY,
 	[user_id] INT,
