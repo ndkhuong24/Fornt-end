@@ -310,7 +310,7 @@ const cart = {
         this.updateCountAndAmount();
       }
     } else {
-      fetch(`https://192.168.109.128/api/ProductDetail/getById/${id}`)
+      fetch(`http://localhost:5192/api/ProductDetail/getById/${id}`)
         .then((response) => response.json())
         .then((data) => {
           data.qty = 1;
@@ -397,7 +397,7 @@ const cart = {
       const priceWithVND1 = formattedPrice1.replace("₫", "VND");
 
       row.innerHTML = `
-                    <td><img  src="https://192.168.109.128${item.path}" class="img-fluid" alt="" style="width: 100px;"></td>
+                    <td><img  src="http://localhost:5192${item.path}" class="img-fluid" alt="" style="width: 100px;"></td>
                     <td  style="font-weight: 600;text-decoration: none;color: dodgerblue;">${item.name}</td>
                     <td>${priceWithVND}</td>
                    <td>

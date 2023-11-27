@@ -361,7 +361,7 @@ const cart = {
         showNotification("Thêm thành công");
       }
     } else {
-      fetch(`https://192.168.109.128/api/ProductDetail/getById/${id}`)
+      fetch(`http://localhost:5192/api/ProductDetail/getById/${id}`)
         .then((response) => response.json())
         .then((data) => {
           if (quantity > data.quantity) {

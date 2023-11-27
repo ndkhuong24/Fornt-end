@@ -64,7 +64,7 @@ if (userData) {
   document.getElementById("fullname").innerText = userData;
 }
 
-const apiUrl = "https://192.168.109.128/api/ProductDetail/getAll";
+const apiUrl = "http://localhost:5192/api/ProductDetail/getAll";
 
 const perPage = 8;
 let currentPage = 1;
@@ -88,7 +88,7 @@ function renderTable(data, page) {
     <div class="col-lg-3 mb-4 text-center" >
       <div class="product-entry border">
       <a href="product-detail.html?id=${item.id}" class="prod-img">
-      <img src="https://192.168.109.128${item.path}" class="img-fluid" alt="">
+      <img src="http://localhost:5192/${item.path}" class="img-fluid" alt="">
     </a>
         <div class="desc">
           <h2><a>${item.productName}</a></h2>

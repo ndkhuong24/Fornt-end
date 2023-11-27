@@ -34,7 +34,7 @@ async function showSuggestions() {
         const priceWithVND = formattedPrice.replace("VNĐ", "VND");
 
         return (
-          `<li style="height:90px;"><a style="text-decoration: none;" href="product-detail.html?id=${suggestion.id}"><img style="width: 70px;margin-bottom:10px;" src="https://192.168.109.128${suggestion.path}" class="img-fluid" alt="">` +
+          `<li style="height:90px;"><a style="text-decoration: none;" href="product-detail.html?id=${suggestion.id}"><img style="width: 70px;margin-bottom:10px;" src="http://localhost:5192${suggestion.path}" class="img-fluid" alt="">` +
           ` <div style="margin-left:100px;margin-top:-75px;"><span style="font-size:medium">${suggestion.productName}</span> - <span style="color:black;">Size : ${suggestion.sizeName}  </span> <br> <span style="font-size:small;color:red;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"> ${priceWithVND}   </span></div>    </a></li> <br>`
         );
       })

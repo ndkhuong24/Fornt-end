@@ -4,12 +4,10 @@ const itemId = urlParams.get("id");
 let data = [];
 
 document.addEventListener("DOMContentLoaded", function () {
-  fetch(`https://192.168.109.128/api/ProductDetail/getImageChinhById/${itemId}`)
+  fetch(`http://localhost:5192/api/ProductDetail/getImageChinhById/${itemId}`)
     .then((response) => response.json())
     .then((imageChinhData) => {
-      fetch(
-        `https://192.168.109.128/api/ProductDetail/getImagePhuById/${itemId}`
-      )
+      fetch(`http://localhost:5192/api/ProductDetail/getImagePhuById/${itemId}`)
         .then((response) => response.json())
         .then((imagePhuData) => {
           console.log(imagePhuData.concat(imageChinhData));
@@ -25,8 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function fetchdata() {
   fetch(
-    `https://192.168.109.128/api/ProductDetail/GetProductDetailAndCart/` +
-      itemId
+    `http://localhost:5192/api/ProductDetail/GetProductDetailAndCart/` + itemId
   )
     .then((response) => response.json())
     .then((data) => {
