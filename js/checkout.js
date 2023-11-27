@@ -646,7 +646,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ).value = `${maVoucher} - ${tenVoucher}`;
 
       const loaiVoucher =
-        clickedRow.querySelector("td:nth-child(3)").textContent;
+        clickedRow.querySelector("td:nth-child(4)").textContent;
 
       if (loaiVoucher === "VND") {
         const thanhTien = formatPriceToInt(
@@ -658,7 +658,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         const tienGiamGia = parseInt(
-          clickedRow.querySelector("td:nth-child(4)").textContent
+          clickedRow.querySelector("td:nth-child(3)").textContent
         );
 
         document.getElementById("tienGiamGia").innerText =
@@ -668,8 +668,6 @@ document.addEventListener("DOMContentLoaded", function () {
           thanhTien + phiGiaoHang - tienGiamGia
         );
         $("#VoucherModal").modal("hide");
-        // const modal = document.getElementById("VoucherModal");
-        // modal.style.display = "none";
       } else {
         const thanhTien = formatPriceToInt(
           document.getElementById("total").innerText
@@ -680,7 +678,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         const giaTriGiam = parseInt(
-          clickedRow.querySelector("td:nth-child(4)").textContent
+          clickedRow.querySelector("td:nth-child(3)").textContent
         );
 
         const giaTriToiDa = parseInt(
