@@ -1,6 +1,11 @@
 const table = document.getElementById("data-table");
 const tbody = table.querySelector("tbody");
 
+const userData = localStorage.getItem("userData-customer");
+if (userData) {
+  document.getElementById("fullname").innerText = userData;
+}
+
 (function () {
   "use strict";
 
@@ -430,13 +435,6 @@ function updateQuantity(itemId, newQuantity) {
     tien1 - tien2 + tien3
   );
 }
-function showNotification(message) {
-  notificationText.textContent = message;
-  notification.style.display = "block";
-  setTimeout(function () {
-    notification.style.display = "none";
-  }, 3000);
-}
 
 document.addEventListener("DOMContentLoaded", function () {
   cart.loadFromLocalStorage();
@@ -718,4 +716,37 @@ function tinhTongTien(tienSanPham, tienDuocGiam, tienGiaoHang) {
   const tienGiam = parseInt(tienDuocGiam);
   const tienShip = parseInt(tienGiaoHang);
   return tienTong - tienGiam + tienShip;
+}
+
+document
+  .getElementById("checkoutButton")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+
+    const cookie = getCookie("token-user");
+
+    if (cookie === undefined || cookie === "") {
+      showNotification("Vui lòng đăng nhập để tiếp tục");
+      // window.location.href = "login.html";
+    } else {
+      window.location.href = "order-complete.html";
+    }
+  });
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+}
+
+var notification = document.getElementById("notification");
+var notificationText = document.getElementById("notification-text");
+
+function showNotification(message) {
+  notificationText.textContent = message;
+  notification.style.display = "block";
+
+  setTimeout(function () {
+    notification.style.display = "none";
+  }, 3000);
 }
