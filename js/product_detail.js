@@ -10,7 +10,17 @@ document.addEventListener("DOMContentLoaded", function () {
       fetch(`http://localhost:5192/api/ProductDetail/getImagePhuById/${itemId}`)
         .then((response) => response.json())
         .then((imagePhuData) => {
-          console.log(imagePhuData.concat(imageChinhData));
+          const imageData = imagePhuData.concat(imageChinhData);
+          console.log(imageData);
+          const carouselInner = document.getElementById("carousel-inner");
+
+          imageData.forEach((image, index) => {
+            const isActive = index === 0 ? "active" : "";
+            const carouselItem = document.createElement("div");
+            carouselItem.className = `carousel-item ${isActive}`;
+            carouselItem.innerHTML = `<img src="http://localhost:5192${image.path}" class="d-block w-100" alt="...">`;
+            carouselInner.appendChild(carouselItem);
+          });
         })
         .catch((error) => {
           console.error("Lỗi khi lấy dữ liệu ảnh phụ từ API", error);
