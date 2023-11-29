@@ -197,7 +197,7 @@
 											</div>
 
 											<div class="account-option hidden" id="thongTinOption">
-												<div style="margin-top: 10px;"> <a href=""
+												<div style="margin-top: 10px;"> <a href="detailaccount.html"
 														style="margin-left: -5px;color: black;"> <img
 															style="width: 25px;margin-top: -3px;margin-left: 33px;"
 															src="images/ttcn.jpg"> Thông Tin </a>
@@ -365,6 +365,19 @@
 				</div>
 			</div>
 		</footer>
+
+		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">Bạn có muốn Đăng Xuất</div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+						<a style="color: white;" class="btn btn-danger" id="logoutButton">Đăng Xuất</a>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<!-- jQuery -->
@@ -392,6 +405,8 @@
 	<script src="js/main.js"></script>
 
 	<script src="js/search.js"></script>
+
+	<script src="js/login-logout.js"></script>
 </body>
 
 </html>

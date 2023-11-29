@@ -44,7 +44,6 @@ function fetchDataAndPopulateTable() {
   fetch(apiUrl)
     .then((response) => response.json())
     .then((apiData) => {
-
       data = apiData;
 
       totalPages = Math.ceil(data.length / perPage);
@@ -109,7 +108,7 @@ function updatePageInfo() {
 
 const urlParams = new URLSearchParams(window.location.search);
 const item = urlParams.get("search");
-if(item===null){
+if (item === null) {
   fetchDataAndPopulateTable();
 }
 fetchMinPriceMaxPrice();
@@ -394,12 +393,10 @@ function getParameterByName(name, url) {
 
 // Perform search automatically when the page loads
 window.addEventListener("DOMContentLoaded", function () {
-
   const searchPattern = getParameterByName("search");
   if (searchPattern) {
     searchByName(searchPattern);
   } else {
-    fetchDataAndPopulateTable(); 
+    fetchDataAndPopulateTable();
   }
-}); 
-
+});
