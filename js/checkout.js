@@ -1,9 +1,16 @@
 const table = document.getElementById("data-table");
 const tbody = table.querySelector("tbody");
 
-const userData = localStorage.getItem("userData-customer");
-if (userData) {
-  document.getElementById("fullname").innerText = userData;
+var notification = document.getElementById("notification");
+var notificationText = document.getElementById("notification-text");
+
+function showNotification(message) {
+  notificationText.textContent = message;
+  notification.style.display = "block";
+
+  setTimeout(function () {
+    notification.style.display = "none";
+  }, 3000);
 }
 
 (function () {
@@ -387,15 +394,6 @@ const cart = {
   },
 };
 
-function formatIntToVND(int) {
-  const formatPrice = new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  }).format(int);
-  const formatVND = formatPrice.replace("₫", "VND");
-  return formatVND;
-}
-
 function updateQuantity(itemId, newQuantity) {
   var item = cart.items.find(function (item) {
     return item.id === itemId;
@@ -430,7 +428,6 @@ function updateQuantity(itemId, newQuantity) {
   const tien3 = formatPriceToInt(
     document.getElementById("phiGiaoHang").innerText
   );
-
   document.getElementById("total2").innerText = formatIntToVND(
     tien1 - tien2 + tien3
   );
@@ -441,274 +438,21 @@ document.addEventListener("DOMContentLoaded", function () {
   cart.renderCartItems();
 });
 
-const selectProvince = document.getElementById("Province");
-const optionProvince = selectProvince.value;
-const selectDistrict = document.getElementById("District");
-const optionDistrict = selectDistrict.value;
-const selectCommune = document.getElementById("Commune");
-const token = "123510a7-56b9-11ee-b394-8ac29577e80e";
-var serviceID;
-
-document.addEventListener("DOMContentLoaded", function () {
-  fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Token: token,
-      ShopId: "4556959",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      data.data.forEach((item) => {
-        var option = document.createElement("option");
-        option.value = item.ProvinceID;
-        option.text = item.ProvinceName;
-        selectProvince.appendChild(option);
-      });
-
-      provinceOption = selectProvince.value;
-      GetDistrictByProvince(provinceOption);
-    });
-
-  selectProvince.addEventListener("change", function () {
-    provinceOption = selectProvince.value;
-    selectDistrict.innerHTML = "";
-    GetDistrictByProvince(provinceOption);
-
-    districtOption = selectDistrict.value;
-    selectCommune.innerHTML = "";
-    GetCommuneWithDistrict(districtOption);
-  });
-});
-
-function GetDistrictByProvince(provinceOption) {
-  fetch(
-    "https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=" +
-      provinceOption,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Token: token,
-      },
-    }
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      data.data.forEach((item) => {
-        var option = document.createElement("option");
-        option.value = item.DistrictID;
-        option.text = item.DistrictName;
-        selectDistrict.appendChild(option);
-      });
-
-      districtOption = selectDistrict.value;
-      GetCommuneWithDistrict(districtOption);
-    });
-
-  selectDistrict.addEventListener("change", function () {
-    districtOption = selectDistrict.value;
-    selectCommune.innerHTML = "";
-    GetCommuneWithDistrict(districtOption);
-  });
-}
-
-function GetCommuneWithDistrict(districtOption) {
-  fetch(
-    "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" +
-      districtOption,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Token: token,
-      },
-    }
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      data.data.forEach((item) => {
-        var option = document.createElement("option");
-        option.value = item.WardCode;
-        option.text = item.WardName;
-        selectCommune.appendChild(option);
-      });
-
-      var districtNow = selectDistrict.value;
-      fetch(
-        `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=4556959&from_district=3303&to_district=${districtNow}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Token: "123510a7-56b9-11ee-b394-8ac29577e80e",
-            ShopId: "4556959",
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          serviceID = data.data[0].service_id;
-
-          var districtNow1 = selectDistrict.value;
-          var communeNow1 = selectCommune.value;
-
-          var tongTien = formatPriceToInt(
-            document.getElementById("total").innerText
-          );
-
-          var tienGiamGiaCuaHoaDon = formatPriceToInt(
-            document.getElementById("tienGiamGia").innerText
-          );
-
-          fetch(
-            `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=${serviceID}&insurance_value=${tongTien}&coupon=&from_district_id=3303&to_district_id=${districtNow1}&to_ward_code=${communeNow1}&height=15&length=15&weight=1000&width=15`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Token: "123510a7-56b9-11ee-b394-8ac29577e80e",
-                ShopId: "4556959",
-              },
-            }
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              const formatPhiGiaoHang = new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              }).format(data.data.service_fee);
-              const phiGiaoHangWithVND = formatPhiGiaoHang.replace("₫", "VND");
-              document.getElementById("phiGiaoHang").innerText =
-                phiGiaoHangWithVND;
-
-              const formatTongDonHang = new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              }).format(
-                data.data.service_fee + tongTien - tienGiamGiaCuaHoaDon
-              );
-              const tongDonHangWithVND = formatTongDonHang.replace("₫", "VND");
-              document.getElementById("total2").innerText = tongDonHangWithVND;
-
-              const formatPhiGiamGia = new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              }).format(tienGiamGiaCuaHoaDon);
-              const tienGiamGiaCuaHoaDonWithVND = formatPhiGiamGia.replace(
-                "₫",
-                "VND"
-              );
-              document.getElementById("tienGiamGia").innerText =
-                tienGiamGiaCuaHoaDonWithVND;
-            });
-
-          fetch(
-            `http://localhost:5192/api/Voucher/getVoucherActivity/${tongTien}`
-          )
-            .then((response) => response.json())
-            .then((vouchers) => {
-              vouchers.forEach(function (voucher) {
-                var row = document.createElement("tr");
-                row.innerHTML = `
-                  <td>${voucher.code}</td>
-                  <td>${voucher.name}</td>
-                  <td>${voucher.value}</td>
-                  <td>${voucher.type == 0 ? "VND" : "%"}</td>
-                  <td>${
-                    voucher.maximumValue !== null ? voucher.maximumValue : ""
-                  }</td>
-                  <td>
-                   <button id="chonVoucher" class="btn btn-success">Áp Dụng</button>
-                  </td>
-                `;
-                tbody.appendChild(row);
-              });
-            });
-        });
-    });
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  const table = document.getElementById("data-table");
-
-  table.addEventListener("click", function (event) {
-    if (event.target.id === "chonVoucher") {
-      const clickedRow = event.target.closest("tr");
-      const maVoucher = clickedRow.querySelector("td:nth-child(1)").textContent;
-      const tenVoucher =
-        clickedRow.querySelector("td:nth-child(2)").textContent;
-      document.getElementById(
-        "VoucherId"
-      ).value = `${maVoucher} - ${tenVoucher}`;
-
-      const loaiVoucher =
-        clickedRow.querySelector("td:nth-child(4)").textContent;
-
-      if (loaiVoucher === "VND") {
-        const thanhTien = formatPriceToInt(
-          document.getElementById("total").innerText
-        );
-
-        const phiGiaoHang = formatPriceToInt(
-          document.getElementById("phiGiaoHang").innerText
-        );
-
-        const tienGiamGia = parseInt(
-          clickedRow.querySelector("td:nth-child(3)").textContent
-        );
-
-        document.getElementById("tienGiamGia").innerText =
-          formatIntToVND(tienGiamGia);
-
-        document.getElementById("total2").innerText = formatIntToVND(
-          thanhTien + phiGiaoHang - tienGiamGia
-        );
-        $("#VoucherModal").modal("hide");
-      } else {
-        const thanhTien = formatPriceToInt(
-          document.getElementById("total").innerText
-        );
-
-        const phiGiaoHang = formatPriceToInt(
-          document.getElementById("phiGiaoHang").innerText
-        );
-
-        const giaTriGiam = parseInt(
-          clickedRow.querySelector("td:nth-child(3)").textContent
-        );
-
-        const giaTriToiDa = parseInt(
-          clickedRow.querySelector("td:nth-child(5)").textContent
-        );
-
-        const soTienDuocGiam = (thanhTien / 100) * giaTriGiam;
-
-        if (soTienDuocGiam > giaTriToiDa) {
-          document.getElementById("tienGiamGia").innerText =
-            formatIntToVND(giaTriToiDa);
-          document.getElementById("total2").innerText = formatIntToVND(
-            thanhTien - giaTriToiDa + phiGiaoHang
-          );
-        } else {
-          document.getElementById("tienGiamGia").innerText =
-            formatIntToVND(soTienDuocGiam);
-          document.getElementById("total2").innerText = formatIntToVND(
-            thanhTien - soTienDuocGiam + phiGiaoHang
-          );
-        }
-      }
-    }
-  });
-});
-
 function formatPriceToInt(tien) {
   var removedDots = tien.replace(/\./g, "");
   var removedVND = removedDots.replace("VND", "");
   var finalResult = removedVND.trim();
   var int = parseInt(finalResult);
   return int;
+}
+
+function formatIntToVND(int) {
+  const formatPrice = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(int);
+  const formatVND = formatPrice.replace("₫", "VND");
+  return formatVND;
 }
 
 function tinhTongTien(tienSanPham, tienDuocGiam, tienGiaoHang) {
@@ -727,7 +471,6 @@ document
 
     if (cookie === undefined || cookie === "") {
       showNotification("Vui lòng đăng nhập để tiếp tục");
-      // window.location.href = "login.html";
     } else {
       window.location.href = "order-complete.html";
     }
@@ -739,14 +482,58 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(";").shift();
 }
 
-var notification = document.getElementById("notification");
-var notificationText = document.getElementById("notification-text");
+document.addEventListener("DOMContentLoaded", function () {
+  const thisTotalElement = formatPriceToInt(
+    document.getElementById("total").innerText
+  );
 
-function showNotification(message) {
-  notificationText.textContent = message;
-  notification.style.display = "block";
+  const thisTienGiamGia = formatPriceToInt(
+    document.getElementById("tienGiamGia").innerText
+  );
 
-  setTimeout(function () {
-    notification.style.display = "none";
-  }, 3000);
-}
+  const thisTienShip = formatPriceToInt(
+    document.getElementById("phiGiaoHang").innerText
+  );
+
+  document.getElementById("total2").innerText = formatIntToVND(
+    tinhTongTien(thisTotalElement, thisTienGiamGia, thisTienShip)
+  );
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  var token = "123510a7-56b9-11ee-b394-8ac29577e80e";
+  var serviceID;
+
+  fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Token: token,
+      ShopId: "4556959",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      data.data.forEach((item) => {
+        var option = document.createElement("option");
+        option.value = item.ProvinceID;
+        option.text = item.ProvinceName;
+        document.getElementById("Province").appendChild(option);
+      });
+    });
+
+  const provinceSelect = document.getElementById("Province");
+  provinceSelect.addEventListener("change", function () {
+    const selectedValue = provinceSelect.value;
+
+    if (selectedValue === "") {
+      const districtSelect = document.getElementById("District");
+      districtSelect.disabled = true;
+
+      const CommuneSelect = document.getElementById("Commune");
+      CommuneSelect.disabled = true;
+    } else {
+      // console.log("Có thuộc tính");
+    }
+  });
+});

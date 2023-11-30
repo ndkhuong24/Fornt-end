@@ -21,7 +21,6 @@
 			cursor: pointer;
 		}
 
-		/* Reset some default styles */
 		* {
 			margin: 0;
 			padding: 0;
@@ -37,13 +36,11 @@
 			margin: 0;
 		}
 
-		/* Styling for search container */
 		.search-container {
 			display: flex;
 			align-items: center;
 		}
 
-		/* Styling for search input */
 		.search-input {
 			padding: 10px;
 			border: none;
@@ -221,7 +218,7 @@
 											</div>
 
 											<div class="account-option hidden" id="thongTinOption">
-												<div style="margin-top: 10px;"> <a href=""
+												<div style="margin-top: 10px;"> <a href="detailaccount.html"
 														style="margin-left: -5px;color: black;"> <img
 															style="width: 25px;margin-top: -3px;margin-left: 33px;"
 															src="images/ttcn.jpg"> Thông Tin </a>
@@ -295,12 +292,6 @@
 											placeholder="Nhập họ và tên">
 									</div>
 								</div>
-								<!-- <div class="col-md-6">
-									<div class="form-group">
-										<label for="lname">Tên</label>
-										<input type="text" id="lname" class="form-control" placeholder="Nhập Tên">
-									</div>
-								</div> -->
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="Phone">Số Điện Thoại</label>
@@ -322,7 +313,7 @@
 										<div class="form-field">
 											<i class="icon icon-arrow-down3"></i>
 											<select id="Province" class="form-control">
-
+												<option value="">Vui lòng chọn một thành phố</option>
 											</select>
 										</div>
 									</div>
@@ -334,7 +325,7 @@
 										<div class="form-field">
 											<i class="icon icon-arrow-down3"></i>
 											<select id="District" class="form-control">
-
+												<option value="">Vui lòng chọn một quận / huyện</option>
 											</select>
 										</div>
 									</div>
@@ -345,7 +336,7 @@
 										<div class="form-field">
 											<i class="icon icon-arrow-down3"></i>
 											<select id="Commune" class="form-control">
-
+												<option value="">Vui lòng chọn một xã / phường</option>
 											</select>
 										</div>
 									</div>
@@ -427,9 +418,9 @@
 									<li><span style="width: 300px;">Thành Tiền :</span><span style="width: 220px;"
 											id="total"></span>
 									<li><span style="width: 300px;">Phí Giảm Giá :</span> <span style="width: 220px;"
-											id="tienGiamGia">0</span></li>
+											id="tienGiamGia">0 VND</span></li>
 									<li><span style="width: 300px;">Phí Giao Hàng :</span> <span style="width: 220px;"
-											id="phiGiaoHang">0</span></li>
+											id="phiGiaoHang">0 VND</span></li>
 									<li style="font-weight: 600;"><span style="width: 300px;">Tổng :</span><span
 											style="width: 220px;color: red;" id="total2"></span>
 								</ul>
@@ -536,6 +527,19 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">Bạn có muốn Đăng Xuất</div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+						<a style="color: white;" class="btn btn-danger" id="logoutButton">Đăng Xuất</a>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<!-- jQuery -->
@@ -564,6 +568,8 @@
 	<script src="js/checkout.js"></script>
 
 	<script src="js/search.js"></script>
+
+	<script src="js/login-logout.js"></script>
 </body>
 
 </html>

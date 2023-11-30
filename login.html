@@ -36,13 +36,11 @@
 			margin: 0;
 		}
 
-		/* Styling for search container */
 		.search-container {
 			display: flex;
 			align-items: center;
 		}
 
-		/* Styling for search input */
 		.search-input {
 			padding: 10px;
 			border: none;
@@ -108,13 +106,11 @@
 			margin: 0;
 		}
 
-		/* Styling for search container */
 		.search-container {
 			display: flex;
 			align-items: center;
 		}
 
-		/* Styling for search input */
 		.search-input {
 			padding: 10px;
 			border: none;
@@ -424,8 +420,9 @@
 				.then(async (response) => {
 					const data = await response.json();
 					if (data.token) {
-						localStorage.setItem('data-customer', JSON.stringify(data));
-						localStorage.setItem('userData-customer', data.fullname);
+						// localStorage.setItem('data-customer', JSON.stringify(data));
+						localStorage.setItem('fullname', data.fullname);
+						localStorage.setItem('id', data.id);
 						setCookie("token-user", data.token, 7);
 						if (data.roles.includes("ADMIN") || data.roles.includes("MANAGER") || data.roles.includes("CUSTOMER")) {
 							window.location.replace('/index.html');

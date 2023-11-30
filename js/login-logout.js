@@ -1,7 +1,12 @@
 const cookie = getCookie("token-user");
 
-const dataCustomer = JSON.parse(localStorage.getItem("data-customer"));
-console.log(dataCustomer);
+const customerID = localStorage.getItem("id");
+// console.log(customerID);
+
+const customerFullName = localStorage.getItem("fullname");
+if (customerFullName) {
+  document.getElementById("fullname").innerText = customerFullName;
+}
 
 function getCookie(name) {
   const value = `; ${document.cookie}`;
@@ -57,9 +62,4 @@ if (cookie != null && cookie != "") {
   document.getElementById("thongTinOption").classList.remove("hidden");
   document.getElementById("dividerThongTinOption").classList.remove("hidden");
   document.getElementById("dangXuatOption").classList.remove("hidden");
-}
-
-const userData = localStorage.getItem("userData-customer");
-if (userData) {
-  document.getElementById("fullname").innerText = userData;
 }
