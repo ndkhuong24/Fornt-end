@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost:8080/filter";
+const apiUrl = "http://localhost:8081/filter";
 
 const perPage = 12;
 let currentPage = 1;
@@ -146,7 +146,7 @@ function filter() {
     });
 
   const apiFilter =
-    `http://localhost:8080/filter?minPrice=${min}&maxPrice=${max}` +
+    `http://localhost:8081/filter?minPrice=${min}&maxPrice=${max}` +
     `&colors=${colors.join("&colors=")}&brands=${brands.join("&brands=")}` +
     `&sizes=${sizes.join("&sizes=")}&soles=${soles.join("&soles=")}` +
     `&materials=${materials.join("&materials=")}` +
@@ -165,7 +165,7 @@ function filter() {
     });
 }
 function fetchThuocTinh() {
-  fetch("http://localhost:8080/api/Color/getAll/active")
+  fetch("http://localhost:8081/api/Color/getAll/active")
     .then((response) => response.json())
     .then((data) => {
       const row = document.getElementById("color");
@@ -179,7 +179,7 @@ function fetchThuocTinh() {
          </table>`;
       });
     });
-  fetch("http://localhost:8080/api/Brand/getAll/active")
+  fetch("http://localhost:8081/api/Brand/getAll/active")
     .then((response) => response.json())
     .then((data) => {
       const row = document.getElementById("brand");
@@ -195,7 +195,7 @@ function fetchThuocTinh() {
       });
     });
 
-  fetch("http://localhost:8080/api/Size/getAll/active")
+  fetch("http://localhost:8081/api/Size/getAll/active")
     .then((response) => response.json())
     .then((data) => {
       const row = document.getElementById("size");
@@ -209,7 +209,7 @@ function fetchThuocTinh() {
          </table>`;
       });
     });
-  fetch("http://localhost:8080/api/Sole/getAll/active")
+  fetch("http://localhost:8081/api/Sole/getAll/active")
     .then((response) => response.json())
     .then((data) => {
       const row = document.getElementById("sole");
@@ -223,7 +223,7 @@ function fetchThuocTinh() {
          </table>`;
       });
     });
-  fetch("http://localhost:8080/api/Material/getAll/active")
+  fetch("http://localhost:8081/api/Material/getAll/active")
     .then((response) => response.json())
     .then((data) => {
       const row = document.getElementById("material");
@@ -367,7 +367,7 @@ document
   });
 function searchByName(searchPattern) {
   // Lấy dữ liệu từ API và render trang đầu tiên
-  fetch(`http://localhost:8080/search/${searchPattern}`)
+  fetch(`http://localhost:8081/search/${searchPattern}`)
     .then((response) => response.json())
     .then((searhData) => {
       currentPage = 1;

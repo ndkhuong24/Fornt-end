@@ -5,7 +5,7 @@ const suggestionsDiv = document.getElementById("suggestions");
 async function fetchSuggestions(query) {
   try {
     console.log(query);
-    const response = await fetch(`http://localhost:8080/search/${query}`);
+    const response = await fetch(`http://localhost:8081/search/${query}`);
     const data = await response.json();
     return data;
   } catch (error) {

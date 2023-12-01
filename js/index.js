@@ -11,7 +11,7 @@
 
 // document.getElementById("logoutButton").addEventListener("click", function () {
 //   if (cookie) {
-//     fetch("http://localhost:8080/api/auth/logout", {
+//     fetch("http://localhost:8081/api/auth/logout", {
 //       method: "POST",
 //       headers: {
 //         Authorization: `Bearer ${cookie}`,
