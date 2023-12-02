@@ -520,20 +520,45 @@ document.addEventListener("DOMContentLoaded", function () {
         option.text = item.ProvinceName;
         document.getElementById("Province").appendChild(option);
       });
+
+      document.getElementById("District").disabled = true;
+      document.getElementById("Commune").disabled = true;
     });
 
-  const provinceSelect = document.getElementById("Province");
+  var provinceSelect = document.getElementById("Province");
   provinceSelect.addEventListener("change", function () {
     const selectedValue = provinceSelect.value;
 
     if (selectedValue === "") {
-      const districtSelect = document.getElementById("District");
-      districtSelect.disabled = true;
-
-      const CommuneSelect = document.getElementById("Commune");
-      CommuneSelect.disabled = true;
+      document.getElementById("District").disabled = true;
+      document.getElementById("Commune").disabled = true;
+      // document.getElementById("District").selectedIndex = 0;
+      // document.getElementById("Commune").selectedIndex = 0;
     } else {
-      // console.log("Có thuộc tính");
+      document.getElementById("District").disabled = false;
+      document.getElementById("Commune").disabled = true;
+
+      // var selectedValueNow = document.getElementById("Province").value;
+      // fetch(
+      //   "https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=" +
+      //     selectedValueNow,
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Token: token,
+      //     },
+      //   }
+      // )
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     data.data.forEach((item) => {
+      //       var option = document.createElement("option");
+      //       option.value = item.DistrictID;
+      //       option.text = item.DistrictName;
+      //       document.getElementById("District").appendChild(option);
+      //     });
+      //   });
     }
   });
 });
