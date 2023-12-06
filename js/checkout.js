@@ -609,5 +609,59 @@ function GetCommune(value) {
       data.data.forEach((item) => {
         selectCommune.innerHTML += `<option value="${item.WardCode}">${item.WardName}</option>`;
       });
+
+      var districtNow = selectDistrict.value;
+      fetch(
+        `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=4556959&from_district=3303&to_district=${districtNow}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "123510a7-56b9-11ee-b394-8ac29577e80e",
+            ShopId: "4556959",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          serviceID = data.data[0].service_id;
+        });
     });
 }
+
+selectCommune.addEventListener("change", function () {
+  var communeNow = selectCommune.value;
+
+  if (communeNow) {
+    var tongTienSanPham = formatPriceToInt(
+      document.getElementById("total").innerText
+    );
+    var tienGiamGia = formatPriceToInt(
+      document.getElementById("tienGiamGia").innerText
+    );
+
+    var districtNow = selectDistrict.value;
+
+    fetch(
+      `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=${serviceID}&insurance_value=${tongTienSanPham}&coupon=&from_district_id=3303&to_district_id=${districtNow}&to_ward_code=${communeNow}&height=15&length=15&weight=1000&width=15`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Token: "123510a7-56b9-11ee-b394-8ac29577e80e",
+          ShopId: "4556959",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        var phiGiaoHang = data.data.service_fee;
+        document.getElementById("phiGiaoHang").innerText =
+          formatIntToVND(phiGiaoHang);
+
+        document.getElementById("total2").innerText = formatIntToVND(
+          tongTienSanPham - tienGiamGia + phiGiaoHang
+        );
+      });
+  }
+});
