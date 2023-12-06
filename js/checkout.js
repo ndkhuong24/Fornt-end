@@ -500,65 +500,114 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  var token = "123510a7-56b9-11ee-b394-8ac29577e80e";
-  var serviceID;
+const selectProvince = document.getElementById("Province");
+const selectDistrict = document.getElementById("District");
+const selectCommune = document.getElementById("Commune");
+const token = "123510a7-56b9-11ee-b394-8ac29577e80e";
+const ShopId = "4556959";
+let serviceID;
 
+document.addEventListener("DOMContentLoaded", function () {
   fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Token: token,
-      ShopId: "4556959",
+      ShopId: ShopId,
     },
   })
     .then((response) => response.json())
     .then((data) => {
       data.data.forEach((item) => {
-        var option = document.createElement("option");
-        option.value = item.ProvinceID;
-        option.text = item.ProvinceName;
-        document.getElementById("Province").appendChild(option);
+        selectProvince.innerHTML += `<option value="${item.ProvinceID}">${item.ProvinceName}</option>`;
       });
 
-      document.getElementById("District").disabled = true;
-      document.getElementById("Commune").disabled = true;
+      selectDistrict.disabled = true;
+      selectCommune.disabled = true;
     });
-
-  var provinceSelect = document.getElementById("Province");
-  provinceSelect.addEventListener("change", function () {
-    const selectedValue = provinceSelect.value;
-
-    if (selectedValue === "") {
-      document.getElementById("District").disabled = true;
-      document.getElementById("Commune").disabled = true;
-      // document.getElementById("District").selectedIndex = 0;
-      // document.getElementById("Commune").selectedIndex = 0;
-    } else {
-      document.getElementById("District").disabled = false;
-      document.getElementById("Commune").disabled = true;
-
-      // var selectedValueNow = document.getElementById("Province").value;
-      // fetch(
-      //   "https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=" +
-      //     selectedValueNow,
-      //   {
-      //     method: "GET",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Token: token,
-      //     },
-      //   }
-      // )
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     data.data.forEach((item) => {
-      //       var option = document.createElement("option");
-      //       option.value = item.DistrictID;
-      //       option.text = item.DistrictName;
-      //       document.getElementById("District").appendChild(option);
-      //     });
-      //   });
-    }
-  });
 });
+
+selectProvince.addEventListener("change", function () {
+  var provinceOption = selectProvince.value;
+
+  if (provinceOption === "") {
+    selectDistrict.innerHTML = "";
+    const option = new Option("Vui lòng chọn một quận / huyện", "");
+    selectDistrict.appendChild(option);
+    selectDistrict.disabled = true;
+
+    selectCommune.innerHTML = "";
+    const optionCommune = new Option("Vui lòng chọn một xã / phường", "");
+    selectCommune.appendChild(optionCommune);
+    selectCommune.disabled = true;
+  } else {
+    selectCommune.innerHTML = "";
+    const optionCommune = new Option("Vui lòng chọn một xã / phường", "");
+    selectCommune.appendChild(optionCommune);
+    selectCommune.disabled = true;
+
+    selectDistrict.disabled = false;
+    selectDistrict.innerHTML = "";
+    selectDistrict.add(new Option("Vui lòng chọn một quận / huyện", ""));
+    var provinceOptionNow = selectProvince.value;
+    GetDistrict(provinceOptionNow);
+  }
+});
+
+function GetDistrict(value) {
+  fetch(
+    `https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${value}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Token: token,
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      data.data.forEach((item) => {
+        selectDistrict.innerHTML += `<option value="${item.DistrictID}">${item.DistrictName}</option>`;
+      });
+    });
+}
+
+selectDistrict.addEventListener("change", function () {
+  var districtOption = selectDistrict.value;
+
+  if (districtOption === "") {
+    selectCommune.innerHTML = "";
+    const optionCommune = new Option("Vui lòng chọn một xã / phường", "");
+    selectCommune.appendChild(optionCommune);
+    selectCommune.disabled = true;
+  } else {
+    selectCommune.disabled = false;
+
+    selectCommune.innerHTML = "";
+    const optionCommune = new Option("Vui lòng chọn một xã / phường", "");
+    selectCommune.appendChild(optionCommune);
+
+    var districtOptionNow = selectDistrict.value;
+    GetCommune(districtOptionNow);
+  }
+});
+
+function GetCommune(value) {
+  fetch(
+    `https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${value}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Token: token,
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      data.data.forEach((item) => {
+        selectCommune.innerHTML += `<option value="${item.WardCode}">${item.WardName}</option>`;
+      });
+    });
+}
