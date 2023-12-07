@@ -662,6 +662,10 @@ selectCommune.addEventListener("change", function () {
         document.getElementById("total2").innerText = formatIntToVND(
           tongTienSanPham - tienGiamGia + phiGiaoHang
         );
+
+        console.log(
+          formatPriceToInt(document.getElementById("total2").innerText)
+        );
       });
   }
 });
