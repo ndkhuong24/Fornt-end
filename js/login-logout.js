@@ -1,8 +1,5 @@
 const cookie = getCookie("token-user");
 
-const customerID = localStorage.getItem("id");
-console.log(customerID);
-
 const customerFullName = localStorage.getItem("fullname");
 if (customerFullName) {
   document.getElementById("fullname").innerText = customerFullName;

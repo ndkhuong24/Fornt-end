@@ -21,7 +21,6 @@
             cursor: pointer;
         }
 
-        /* Reset some default styles */
         * {
             margin: 0;
             padding: 0;
@@ -167,11 +166,8 @@
             border-bottom: 1px solid black;
             outline: none;
             margin-top: -50px;
-
-            /* Loại bỏ đường viền khi tập trung vào input */
         }
 
-        /* Tùy chỉnh đường viền khi input được chọn */
         .underlined-input:focus {
             border-bottom: 1px solid rgb(0, 0, 0);
         }
@@ -179,16 +175,12 @@
         .custom-combobox {
             position: relative;
             width: 200px;
-            /* Điều chỉnh chiều rộng của combobox */
         }
 
         .square-combobox {
             appearance: none;
-            /* Loại bỏ mặc định kiểu của combobox */
             -webkit-appearance: none;
-            /* Cho trình duyệt WebKit (Chrome, Safari) */
             -moz-appearance: none;
-            /* Cho trình duyệt Mozilla (Firefox) */
             width: 350px;
             margin-bottom: 10px;
             padding: 10px;
@@ -205,10 +197,8 @@
 
         .square-combobox:focus {
             border-color: #4c4e50;
-            /* Màu khi combobox được chọn */
         }
 
-        /* Tùy chỉnh kiểu của dropdown menu */
         .square-combobox option {
             background-color: #fff;
         }
@@ -333,73 +323,26 @@
 
         <div style="font-weight: 500;margin-top: 30px;" class="container">
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-md-3">
                     <div class="vertical-tabs">
                         <button class="tab active" onclick="openTab('tab1')">Thông Tin Tài Khoản</button>
                         <button class="tab" onclick="openTab('tab2')">Đơn Hàng Của Tôi</button>
                         <button class="tab" onclick="openTab('tab3')">Đổi Mật Khẩu</button>
                     </div>
                 </div>
-                <div class="col-lg-9">
+                <div class="col-md-9">
                     <div>
-                        <div id="tab1" class="tab-content active">
-                            <form action="">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="underlinedInput" style="margin-top: 20px;">Họ và Tên </label> <br>
-                                        <input type="text" style="width: 300px;" id="underlinedInput"
-                                            class="underlined-input"><br>
-                                        <label for="underlinedInput" style="margin-top: 20px;">Số Điện Thoại </label>
-                                        <br>
-                                        <input type="text" style="width: 300px;" id="underlinedInput"
-                                            class="underlined-input"><br>
-                                        <label for="underlinedInput" style="margin-top: 20px;">Email </label> <br>
-                                        <input type="text" style="width: 300px;" id="underlinedInput"
-                                            class="underlined-input">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="underlinedInput" style="margin-top: 20px;">Địa Chỉ </label> <br>
-                                        <div class="custom-combobox">
-                                            <select class="square-combobox" id="Province">
-
-                                            </select>
-                                        </div>
-                                        <div class="custom-combobox">
-                                            <select class="square-combobox" id="District">
-
-                                            </select>
-                                        </div>
-                                        <div class="custom-combobox">
-                                            <select class="square-combobox" id="Commune">
-
-                                            </select>
-                                        </div>
-                                        <label for="underlinedInput" style="margin-top: 20px;">Địa Chỉ Chi Chi Tiết:
-                                        </label> <br>
-                                        <input type="text" style="width: 350px;" id="underlinedInput"
-                                            class="underlined-input">
-
-                                        <div class="col-sm-3" style="margin-top: 20px;margin-left: 60px;">
-                                            <a href="order-complete.html"> <input type="submit"
-                                                    style="background-color:#000000;border: 0px solid;color: rgb(255, 255, 255);font-weight: 500;width: 200px;height: 50px;"
-                                                    value="CẬP NHẬT" class="btn btn-primary"></a>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
-
-                            </form>
-                        </div>
-
-                        <div id="tab2" class="tab-content">
+                        <div id="tab1" class="tab-content active" style="border: 1px solid #000;margin-left: -70px;">
                             <h2>Content for Tab 2</h2>
                             <p>This is the content of Tab 2.</p>
                         </div>
 
-                        <div id="tab3" class="tab-content">
+                        <div id="tab2" class="tab-content" style="border: 1px solid #000;margin-left: -70px;">
+                            <h2>Content for Tab 2</h2>
+                            <p>This is the content of Tab 2.</p>
+                        </div>
+
+                        <div id="tab3" class="tab-content" style="border: 1px solid #000;margin-left: -70px;">
                             <h2>Content for Tab 3</h2>
                             <p>This is the content of Tab 3.</p>
                         </div>
@@ -510,69 +453,7 @@
 
     <script src="js/login-logout.js"></script>
 
-    <!-- <script>
-        document.getElementById("loginButton").addEventListener("click", async function (event) {
-            event.preventDefault();
-
-            const username = document.getElementById("Username").value;
-            const password = document.getElementById("Password").value;
-
-            const loginData = {
-                username: username,
-                password: password
-            };
-
-            await fetch('http://localhost:8080/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginData)
-            })
-                .then(async (response) => {
-                    const data = await response.json();
-                    if (data.token) {
-                        localStorage.setItem('data-customer', JSON.stringify(data));
-                        localStorage.setItem('userData-customer', data.fullname);
-                        setCookie("token-user", data.token, 7);
-                        if (data.roles.includes("ADMIN") || data.roles.includes("MANAGER") || data.roles.includes("CUSTOMER")) {
-                            window.location.replace('/index.html');
-                        } else {
-                            window.location.replace('/meomeo');
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Lỗi khi gửi yêu cầu POST:', error);
-                });
-        });
-
-        function checkCookie() {
-            var cookieName = getCookie("token-user");
-
-            if (cookieName != null && cookieName != "") {
-                window.location.replace('/index.html');
-            }
-        }
-
-        checkCookie();
-
-        function setCookie(cookieName, cookieValue, expirationDays) {
-            const d = new Date();
-            d.setTime(d.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
-            const expires = "expires=" + d.toUTCString();
-            document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
-        }
-
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(";").shift();
-        }
-
-
-    </script> -->
-
+    <script src="js/detail-account.js"></script>
 </body>
 
 </html>

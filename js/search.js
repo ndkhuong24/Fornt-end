@@ -4,7 +4,7 @@ const suggestionsDiv = document.getElementById("suggestions");
 // Function to fetch search suggestions from the API
 async function fetchSuggestions(query) {
   try {
-    console.log(query);
+    // console.log(query);
     const response = await fetch(`http://localhost:8081/search/${query}`);
     const data = await response.json();
     return data;
