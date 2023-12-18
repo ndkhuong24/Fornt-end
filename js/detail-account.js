@@ -144,7 +144,22 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const customerID = localStorage.getItem("id");
-// console.log(customerID);
+
 document.addEventListener("DOMContentLoaded", function () {
-  console.log(customerID);
+  fetch(`http://localhost:5192/api/Users/getById/${customerID}`)
+    .then((response) => response.json())
+    .then((data) => {
+      document.getElementById("fullTenCustomer").value = data.fullName;
+
+      document.getElementById("gmailCustomer").value = data.email;
+
+      document.getElementById("soDienThoaiCustomer").value = data.phoneNumber;
+
+      var genderValue = data.gender; // Giả sử giá trị có thể là 'male' hoặc 'female'
+      if (genderValue === 1) {
+        document.getElementById("MaleCustomer").checked = true;
+      } else {
+        document.getElementById("FemaleCustomer").checked = true;
+      }
+    });
 });
