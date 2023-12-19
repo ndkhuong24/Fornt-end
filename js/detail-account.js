@@ -155,11 +155,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
       document.getElementById("soDienThoaiCustomer").value = data.phoneNumber;
 
-      var genderValue = data.gender; // Giả sử giá trị có thể là 'male' hoặc 'female'
+      var genderValue = data.gender;
       if (genderValue === 1) {
         document.getElementById("MaleCustomer").checked = true;
       } else {
         document.getElementById("FemaleCustomer").checked = true;
       }
+    });
+
+  fetch(`http://localhost:5192/api/User/Address/${customerID}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
     });
 });
