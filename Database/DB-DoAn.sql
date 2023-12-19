@@ -7,7 +7,6 @@ go
 CREATE TABLE Category(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[name] NVARCHAR(100),
-
 	[status] INT DEFAULT 1
 )
 CREATE TABLE Brand(
@@ -73,47 +72,25 @@ CREATE TABLE ImagePhu(
 	product_detail_id INT
 )
 CREATE TABLE Commune(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	CommuneCode INT,
+	CommuneID VARCHAR(50),
 	CommuneName NVARCHAR(200),
-	DistrictID INT
+	DistrictID VARCHAR(50)
 )
 CREATE TABLE District (
-	id INT IDENTITY(1,1) PRIMARY KEY,
 	DistrictName NVARCHAR(200),
-	ProvinceID INT,
-	DistrictID INT
+	ProvinceID VARCHAR(50),
+	DistrictID VARCHAR(50)
 )
 CREATE TABLE Province(
-	id INT IDENTITY(1,1) PRIMARY KEY,
 	ProvinceName NVARCHAR(200),
-	ProvinceID INT
+	ProvinceID VARCHAR(50)
 )
 CREATE TABLE [Address](
 	id INT IDENTITY(1,1) PRIMARY KEY,
-	detail_address nvarchar(100),
-	commune_id INT,
-	district_id INT,
+	[user_id] INT,
+	detail_address nvarchar(MAX),
 	province_id INT,
-)
-/*CREATE TABLE Customer(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	role_id INT,
-	[name] NVARCHAR(200),
-	username VARCHAR(100),
-	[password] VARCHAR(100),
-	email VARCHAR(100),
-	phone VARCHAR(20),
-	birthday DATE,
-	gender INT,
-	[status] INT DEFAULT 1
-)*/
-GO
-CREATE TABLE CustomerAddress(
-	id INT IDENTITY(1,1)PRIMARY KEY,
-	customer_id INT,
-	address_id INT,
-	[status] INT DEFAULT 1
+	[status] INT
 )
 CREATE TABLE Review(
 	id INT IDENTITY(1,1) PRIMARY KEY,
@@ -144,12 +121,6 @@ CREATE TABLE User (
     token NVARCHAR(255),
     tokencreationdate DATETIME,
 );
-CREATE TABLE UserAddress(
-	id INT IDENTITY(1,1)PRIMARY KEY,
-	[user_id] INT,
-	address_id INT,
-	[status] INT DEFAULT 1
-)
 CREATE TABLE Voucher(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	code VARCHAR(10),
@@ -188,4 +159,3 @@ CREATE TABLE Authority (
 	user_id INT,
 	role_id INT,
 )
-
