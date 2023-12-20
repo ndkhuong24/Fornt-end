@@ -17,6 +17,17 @@
     <link rel="stylesheet" href="css/style.css">
 
     <style>
+        .default-status {
+            color: orangered;
+            border: 1px solid orangered;
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            float: right;
+            margin-left: 10px;
+        }
+
         a:hover {
             cursor: pointer;
         }
@@ -370,24 +381,25 @@
                                                 id="soDienThoaiCustomer">
                                         </td>
                                     </tr>
-                                </tbody>
+                                    </tbDody>
                             </table>
                             <br>
                             <br>
-                            <table class="table table-bordered">
-                                <tbody>
+                            <table class="table" id="data-table">
+                                <thead>
                                     <tr>
-                                        <td colspan="2" style="font-size:larger;">Địa chỉ của tôi</td>
-                                        <td style="text-align: right;">
+                                        <th>STT</th>
+                                        <th style="font-size: larger;width: 700px;">Địa chỉ của tôi</th>
+                                        <th style="text-align: right;">
                                             <button class="btn btn-secondary">Thêm địa chỉ</button>
-                                        </td>
+                                        </th>
                                     </tr>
-                                    <tr>
-                                        <td colspan="2">Địa chỉ của tôi</td>
-                                        <td>Thêm địa chỉ</td>
-                                    </tr>
+                                </thead>
+                                <tbody>
+
                                 </tbody>
                             </table>
+
                         </div>
 
                         <div id="tab2" class="tab-content" style="margin-left: -70px;">

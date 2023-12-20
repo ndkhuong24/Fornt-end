@@ -1,5 +1,6 @@
 CREATE PROCEDURE GetAddressByUserID @UserID INT AS BEGIN
 SELECT
+	[Address].id AS AddressID,
 	Province.ProvinceID AS ProvinceID,
 	Province.ProvinceName AS ProvinceName,
 	District.DistrictID AS DistrictID,
@@ -19,3 +20,4 @@ WHERE
 END;
 
 EXEC GetAddressByUserID @UserID=3
+DROP PROCEDURE GetAddressByUserID

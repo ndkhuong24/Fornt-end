@@ -166,6 +166,32 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch(`http://localhost:5192/api/User/Address/${customerID}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
+      renderTable(data);
     });
 });
+
+const table = document.getElementById("data-table");
+const tbody = table.querySelector("tbody");
+
+function renderTable(data) {
+  tbody.innerHTML = "";
+
+  data.forEach((item) => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td style="text-align: center;">${item.addressID}</td>
+        <td>${item.detailAddress}, ${item.communeName}, ${item.districtName}, ${item.provinceName} ${item.status === 1 ? '<span class="default-status">Mặc định</span>' : ""}</td>
+        <td style="text-align: center;">
+          <button class="btn btn-secondary" ${item.status === 1 ? 'hidden' : ''} onclick="updateTrangThai('${item.addressID}')">Mặc định</button>
+        </td>
+      `;
+
+    tbody.appendChild(row);
+  });
+}
+
+function updateTrangThai(value) {
+  console.log(value)
+}
