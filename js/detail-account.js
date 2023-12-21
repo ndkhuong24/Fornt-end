@@ -166,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch(`http://localhost:5192/api/User/Address/${customerID}`)
     .then((response) => response.json())
     .then((data) => {
-      // console.log(data);
       renderTable(data);
     });
 });
@@ -184,7 +183,9 @@ function renderTable(data) {
         <td style="text-align: center;">${item.addressID}</td>
         <td>${item.detailAddress}, ${item.communeName}, ${item.districtName}, ${item.provinceName} ${item.status === 1 ? '<span class="default-status">Mặc định</span>' : ""}</td>
         <td style="text-align: center;">
-          <button class="btn btn-secondary" ${item.status === 1 ? 'hidden' : ''} onclick="updateTrangThai('${item.addressID}')">Mặc định</button>
+          <button class="btn btn-secondary" ${
+            item.status === 1 ? "hidden" : ""
+          } onclick="updateTrangThai('${item.addressID}')">Mặc định</button>
         </td>
       `;
 
@@ -193,5 +194,19 @@ function renderTable(data) {
 }
 
 function updateTrangThai(value) {
-  console.log(value)
+  fetch(
+    `http://localhost:5192/api/User/Address/${customerID}?addressID=${value}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        addressID: value,
+        userID: customerID,
+      }),
+    }
+  ).then((data) => {
+    location.reload();
+  });
 }
