@@ -178,15 +178,19 @@ function renderTable(data) {
 
   data.forEach((item) => {
     const row = document.createElement("tr");
-    
+
     row.innerHTML = `
         <td style="text-align: center;">${item.addressID}</td>
-        <td>${item.detailAddress}, ${item.communeName}, ${item.districtName}, ${item.provinceName} ${item.status === 1 ? '<span class="default-status">Mặc định</span>' : ""}</td>
+        <td>${item.detailAddress}, ${item.communeName}, ${item.districtName}, ${
+      item.provinceName
+    } ${
+      item.status === 1 ? '<span class="default-status">Mặc định</span>' : ""
+    }</td>
         <td style="text-align: center;">
           <p class="inline-p" style="margin-right: 5px;"><a style="text-decoration: none; color: blue;" href="">Cập nhật</a></p>
           <p class="inline-p" style="margin-left: 5px;"><a style="text-decoration: none; color: blue;" href="">Xóa</a></p>
           <br>
-          <button class="default-button" ${ item.status===1 ? "disabled" : "" }
+          <button class="default-button" ${item.status === 1 ? "disabled" : ""}
               onclick="updateTrangThai('${item.addressID}')">Mặc địch</button>
         </td>
       `;
@@ -209,7 +213,114 @@ function updateTrangThai(value) {
       }),
     }
   ).then((data) => {
-    localStorage.setItem('AddressID', value);
+    localStorage.setItem("AddressID", value);
     location.reload();
   });
 }
+
+const selectProvince = document.getElementById("Province");
+const selectDistrict = document.getElementById("District");
+const selectCommune = document.getElementById("Commune");
+const token = "123510a7-56b9-11ee-b394-8ac29577e80e";
+const shopID = "4556959";
+
+document.addEventListener("DOMContentLoaded", function () {
+  selectProvince.innerHTML = "";
+  selectDistrict.innerHTML = "";
+  selectCommune.innerHTML = "";
+
+  document.getElementById("District").disabled = true;
+  document.getElementById("Commune").disabled = true;
+
+  fetch("https://online-gateway.ghn.vn/shiip/public-api/master-data/province", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Token: token,
+      ShopId: "4556959",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      selectProvince.append(new Option("Vui lòng chọn một thành phố", ""));
+
+      data.data.forEach((item) => {
+        var options = document.createElement("option");
+        options.value = item.ProvinceID;
+        options.text = item.ProvinceName;
+        selectProvince.appendChild(options);
+      });
+    });
+
+  selectProvince.addEventListener("change", function () {
+    var provinceOption = selectProvince.value;
+
+    if (provinceOption.trim() !== "") {
+      selectDistrict.innerHTML = "";
+      document.getElementById("District").disabled = false;
+
+      selectCommune.innerHTML = "";
+      document.getElementById("Commune").disabled = true;
+
+      fetch(
+        `https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${provinceOption}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Token: token,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          selectDistrict.append(new Option("Vui lòng chọn một quận huyện", ""));
+
+          data.data.forEach((item) => {
+            var option = document.createElement("option");
+            option.value = item.DistrictID;
+            option.text = item.DistrictName;
+            selectDistrict.appendChild(option);
+          });
+        });
+    } else {
+      selectDistrict.innerHTML = "";
+      selectCommune.innerHTML = "";
+
+      document.getElementById("District").disabled = true;
+      document.getElementById("Commune").disabled = true;
+    }
+  });
+
+  selectDistrict.addEventListener("change", function () {
+    var districtOption = selectDistrict.value;
+
+    if (districtOption.trim() !== "") {
+      selectCommune.innerHTML = "";
+      document.getElementById("Commune").disabled = false;
+
+      fetch(
+        `https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${districtOption}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Token: token,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          data.data.forEach((item) => {
+            var option = document.createElement("option");
+            option.value = item.WardCode;
+            option.text = item.WardName;
+            selectCommune.appendChild(option);
+          });
+        });
+    } else {
+      selectCommune.innerHTML = "";
+      document.getElementById("Commune").disabled = true;
+    }
+  });
+});

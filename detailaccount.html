@@ -17,6 +17,37 @@
     <link rel="stylesheet" href="css/style.css">
 
     <style>
+        #District[disabled] {
+            cursor: not-allowed;
+            position: relative;
+        }
+
+        #District[disabled]::before {
+            content: '🚫';
+            /* Bạn có thể thay đổi nội dung này thành biểu tượng hoặc hình ảnh khác nếu bạn muốn */
+            position: absolute;
+            right: 10px;
+            /* Điều chỉnh vị trí của biểu tượng */
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #Commune[disabled] {
+            cursor: not-allowed;
+            position: relative;
+        }
+
+        #Commune[disabled]::before {
+            content: '🚫';
+            /* Bạn có thể thay đổi nội dung này thành biểu tượng hoặc hình ảnh khác nếu bạn muốn */
+            position: absolute;
+            right: 10px;
+            /* Điều chỉnh vị trí của biểu tượng */
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+
         .default-button {
             border: 0.5px gray solid;
             background-color: white;
@@ -413,7 +444,8 @@
                                         <th>STT</th>
                                         <th style="font-size: larger;width: 700px;">Địa chỉ của tôi</th>
                                         <th style="text-align: right;">
-                                            <button class="btn btn-secondary">Thêm địa chỉ</button>
+                                            <button class="btn btn-secondary" data-toggle="modal"
+                                                data-target="#addAddressModal">Thêm địa chỉ</button>
                                         </th>
                                     </tr>
                                 </thead>
@@ -421,7 +453,6 @@
 
                                 </tbody>
                             </table>
-
                         </div>
 
                         <div id="tab2" class="tab-content" style="margin-left: -70px;">
@@ -505,6 +536,63 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="addAddressModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label style="color: black;font-weight: bold;" for="Province">Thành phố :</label>
+                                <select style="color: black;font-weight: bold;" class="form-control" id="Province"
+                                    name="Province">
+                                </select>
+                            </div>
+
+                            <!-- Dropdown Select 2 -->
+                            <div class="form-group col-md-4">
+                                <label style="color: black;font-weight: bold;" for="District">Quận / Huyện :</label>
+                                <select style="color: black;font-weight: bold;" class="form-control" id="District"
+                                    name="District">
+
+                                </select>
+                            </div>
+
+                            <!-- Dropdown Select 3 -->
+                            <div class="form-group col-md-4">
+                                <label style="color: black;font-weight: bold;" for="Commune">Xã / Phường :</label>
+                                <select style="color: black;font-weight: bold;" class="form-control" id="Commune"
+                                    name="Commune">
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Input Text -->
+                        <div class="form-group">
+                            <label style="color: black;font-weight: bold;" for="DetailAddress">Địa chỉ :</label>
+                            <input style="color: black;font-weight: bold;" type="text" class="form-control" id="DetailAddress" name="DetailAddress"
+                                placeholder="Vui lòng nhập địa chỉ chi tiết">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" style="float: right;" class="btn btn-secondary">Submit</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- jQuery -->
     <script src="js/jquery.min.js"></script>
