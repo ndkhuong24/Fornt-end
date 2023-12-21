@@ -324,3 +324,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+const form = document.getElementById("form-address");
+
+form.addEventListener("submit", function (event) {
+  event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+
+  var modal = document.getElementById("addAddressModal");
+  modal.modal("hide");
+});
