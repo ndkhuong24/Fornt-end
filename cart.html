@@ -9,11 +9,6 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-
 	<link rel="stylesheet" href="css/style.css">
 
 	<style>
@@ -21,7 +16,6 @@
 			cursor: pointer;
 		}
 
-		/* Reset some default styles */
 		* {
 			margin: 0;
 			padding: 0;
@@ -195,8 +189,8 @@
 
 											<div class="account-option" id="dangNhapOption">
 												<div style="margin-top: 10px;"> <a href="login.html"
-														style="margin-left: 15px;color: black;"> <img
-															style="width: 22px;margin-top: -3px;margin-left: 10px;"
+														style="margin-left: 15px;color: black;text-decoration: none;">
+														<img style="width: 22px;margin-top: -3px;margin-left: 10px;"
 															src="images/login.png" alt=""> Đăng nhập </a>
 												</div>
 											</div>
@@ -205,16 +199,17 @@
 
 											<div class="account-option" id="dangKiOption">
 												<div style="margin-top: 10px;margin-bottom: 7px;margin-left: 18px;"> <a
-														href="signup.html" style="margin-left: 15px;color: black;"> <img
-															style="width: 22px;margin-top: -5px;"
+														href="signup.html"
+														style="margin-left: 15px;color: black; text-decoration: none;">
+														<img style="width: 22px;margin-top: -5px;"
 															src="images/register.png" alt=""> Đăng Ký </a>
 												</div>
 											</div>
 
 											<div class="account-option hidden" id="thongTinOption">
 												<div style="margin-top: 10px;"> <a href="detailaccount.html"
-														style="margin-left: -5px;color: black;"> <img
-															style="width: 25px;margin-top: -3px;margin-left: 33px;"
+														style="margin-left: -5px;color: black; text-decoration: none;">
+														<img style="width: 25px;margin-top: -3px;margin-left: 33px;"
 															src="images/ttcn.jpg"> Thông Tin </a>
 												</div>
 											</div>
@@ -224,8 +219,8 @@
 											<div class="account-option hidden" id="dangXuatOption">
 												<div style="margin-top: 10px;margin-bottom: 7px;margin-left: 18px;"> <a
 														data-toggle="modal" data-target="#logoutModal"
-														style="margin-left: 10px;color: black;"> <img
-															style="width: 18px;margin-top: -5px;"
+														style="margin-left: 10px;color: black; text-decoration: none;">
+														<img style="width: 18px;margin-top: -5px;"
 															src="images/logout.png"> Đăng Xuất </a>
 												</div>
 											</div>
@@ -241,14 +236,14 @@
 						<div class="col-sm-12 text-left ">
 							<div class="col-sm-12 text-left">
 								<ul>
-									<li><a href="index.html">Trang Chủ</a></li>
+									<li><a style="text-decoration: none;" href="index.html">Trang Chủ</a></li>
 									<li>
-										<a href="nike.html">Sản Phẩm</a>
+										<a style="text-decoration: none;" href="nike.html">Sản Phẩm</a>
 									</li>
-									<li><a href="about.html">Giới Thiệu</a></li>
-									<li><a href="contact.html">Liên Hệ</a></li>
+									<li><a style="text-decoration: none;" href="about.html">Giới Thiệu</a></li>
+									<li><a style="text-decoration: none;" href="contact.html">Liên Hệ</a></li>
 									<li class="cart">
-										<a href="cart.html">
+										<a style="text-decoration: none;" href="cart.html">
 											<div class="cart-icon">
 												<img src="images/shopping-cart.png" style="width: 35px;" alt="">
 												<span class="item-count" id="cart-count"></span>
@@ -266,7 +261,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col">
-						<p class="bread"><span><a href="index.html">Trang Chủ</a></span> / <span> Cart</span></p>
+						<p class="bread"><span><a style="text-decoration: none;" href="index.html">Trang Chủ</a></span>
+							/ <span> Cart</span></p>
 					</div>
 				</div>
 			</div>
@@ -391,29 +387,13 @@
 		</div>
 	</div>
 
-	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
-	<!-- popper -->
-	<script src="js/popper.min.js"></script>
-	<!-- bootstrap 4.1 -->
-	<script src="js/bootstrap.min.js"></script>
-	<!-- jQuery easing -->
-	<script src="js/jquery.easing.1.3.js"></script>
-	<!-- Waypoints -->
-	<script src="js/jquery.waypoints.min.js"></script>
-	<!-- Flexslider -->
-	<script src="js/jquery.flexslider-min.js"></script>
-	<!-- Owl carousel -->
-	<script src="js/owl.carousel.min.js"></script>
-	<!-- Magnific Popup -->
-	<script src="js/jquery.magnific-popup.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 
-	<script src="js/magnific-popup-options.js"></script>
-	<!-- Date Picker -->
-	<script src="js/bootstrap-datepicker.js"></script>
-	<!-- Stellar Parallax -->
-	<script src="js/jquery.stellar.min.js"></script>
-	<!-- Main -->
+	<script src="js/gio-hang.js"></script>
+
 	<script src="js/cart.js"></script>
 
 	<script src="js/search.js"></script>
