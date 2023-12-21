@@ -325,11 +325,33 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-const form = document.getElementById("form-address");
+const saveButton = document.querySelector("#form-address button.btn-primary");
 
-form.addEventListener("submit", function (event) {
-  event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+saveButton.addEventListener("click", function (event) {
+  event.preventDefault(); // Ngăn chặn hành vi mặc định của nút (để tránh submit form)
 
-  var modal = document.getElementById("addAddressModal");
+  const formData = new FormData(document.getElementById("form-address"));
+
+  // Duyệt qua các trường trong form
+  for (const [name, value] of formData.entries()) {
+    if (value === "") {
+      // Trường trống
+      console.log("Còn trống:", name);
+      return;
+    }
+  }
+
+  // Tất cả các trường đều có giá trị
+  console.log("Lưu địa chỉ thành công");
+
+  // Đóng modal
+  const modal = document.getElementById("addAddressModal");
   modal.modal("hide");
+
+  // Xóa hết dữ liệu trên form
+  for (const element of document.querySelectorAll(
+    "#form-address input, #form-address select"
+  )) {
+    element.value = "";
+  }
 });
