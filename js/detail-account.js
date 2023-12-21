@@ -183,9 +183,11 @@ function renderTable(data) {
         <td style="text-align: center;">${item.addressID}</td>
         <td>${item.detailAddress}, ${item.communeName}, ${item.districtName}, ${item.provinceName} ${item.status === 1 ? '<span class="default-status">Mặc định</span>' : ""}</td>
         <td style="text-align: center;">
-          <button class="btn btn-secondary" ${
-            item.status === 1 ? "hidden" : ""
-          } onclick="updateTrangThai('${item.addressID}')">Mặc định</button>
+          <p class="inline-p" style="margin-right: 5px;"><a style="text-decoration: none; color: blue;" href="">Cập nhật</a></p>
+          <p class="inline-p" style="margin-left: 5px;"><a style="text-decoration: none; color: blue;" href="">Xóa</a></p>
+          <br>
+          <button class="default-button" ${ item.status===1 ? "disabled" : "" }
+              onclick="updateTrangThai('${item.addressID}')">Mặc địch</button>
         </td>
       `;
 
