@@ -178,7 +178,7 @@ function renderTable(data) {
 
   data.forEach((item) => {
     const row = document.createElement("tr");
-
+    
     row.innerHTML = `
         <td style="text-align: center;">${item.addressID}</td>
         <td>${item.detailAddress}, ${item.communeName}, ${item.districtName}, ${item.provinceName} ${item.status === 1 ? '<span class="default-status">Mặc định</span>' : ""}</td>
@@ -207,6 +207,7 @@ function updateTrangThai(value) {
       }),
     }
   ).then((data) => {
+    localStorage.setItem('AddressID', value);
     location.reload();
   });
 }
