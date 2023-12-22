@@ -122,7 +122,6 @@ CREATE PROCEDURE [dbo].[GetProductDetail]
     @Id INT = NULL
 AS
 BEGIN
-    -- Nếu tham số @Id không null, lấy bản ghi theo ID
     IF @Id IS NOT NULL
     BEGIN
         SELECT
@@ -136,7 +135,6 @@ BEGIN
 			PD.id = @Id
     END
     ELSE
-    -- Ngược lại, trả về tất cả các bản ghi
     BEGIN
         SELECT
 			PD.id AS ProductID,IC.[path] AS Path,P.[name] AS ProductName,S.[name] AS StyleName,PD.quantity AS Quantity,PD.price AS Price,PD.[status] AS Status
