@@ -1,7 +1,7 @@
-const notification = document.getElementById("notification");
-const notificationText = document.getElementById("notification-text");
-
 function showNotification(message) {
+  var notification = document.getElementById("notification");
+  var notificationText = document.getElementById("notification-text");
+
   notificationText.textContent = message;
   notification.style.display = "block";
 
@@ -10,7 +10,6 @@ function showNotification(message) {
   }, 3000);
 }
 
-// Tạo một đối tượng đại diện cho các route và nội dung tương ứng.
 const routes = "/nike.html";
 
 // Hàm để cập nhật nội dung trang dựa trên URL hiện tại.
@@ -21,14 +20,11 @@ function updateContent() {
   if (routes[path]) {
     contentDiv.textContent = routes[path];
   } else {
-    //  contentDiv.textContent = 'Page not found.';
   }
 }
 
-// Sử dụng sự kiện "popstate" để theo dõi sự thay đổi URL.
 window.addEventListener("popstate", updateContent);
 
-// Ban đầu, gọi hàm updateContent để hiển thị nội dung cho URL ban đầu.
 updateContent();
 
 function onlyOne(checkbox) {
@@ -39,16 +35,13 @@ function onlyOne(checkbox) {
 }
 
 function tinhTongTien() {
-  //lấy số lượng từ ô input:
   var soLuong = parseInt(document.getElementById("quantity").value);
-  //Lấy giá tiền từ các phần tử có class "price":
   var giaTien = parseInt(
     document
       .getElementsByClassName("price")[0]
       .innerHTML.replace(" vnđ", "")
       .replace(".", "")
   );
-  //Tính Tồng Tiền:
   var tongTien = soLuong * giaTien;
   // Hiển Thị Tông Tiền Lên form:
   document.getElementById("tongTien").innerHTML =

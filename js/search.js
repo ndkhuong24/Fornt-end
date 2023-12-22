@@ -1,10 +1,8 @@
 const searchInput = document.getElementById("searchInput");
 const suggestionsDiv = document.getElementById("suggestions");
 
-// Function to fetch search suggestions from the API
 async function fetchSuggestions(query) {
   try {
-    // console.log(query);
     const response = await fetch(`http://localhost:8081/search/${query}`);
     const data = await response.json();
     return data;
@@ -14,7 +12,6 @@ async function fetchSuggestions(query) {
   }
 }
 
-// Function to display suggestions based on user input
 async function showSuggestions() {
   const query = searchInput.value.trim();
   if (query === "") {
