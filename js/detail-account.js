@@ -205,6 +205,27 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+var notification = document.getElementById("notification");
+var notificationText = document.getElementById("notification-text");
+
+function showNotification(message) {
+  notificationText.textContent = message;
+  notification.style.display = "block";
+
+  setTimeout(function () {
+    notification.style.display = "none";
+  }, 3000);
+}
+
 document.getElementById("saveAddress").addEventListener("click", function () {
-  console.log("Hello");
+  var provinceOption = selectProvince.value;
+  var districtOption = selectDistrict.value;
+  var communeOption = selectCommune.value;
+  var detailAddress = document.getElementById("DetailAddress").value;
+
+  if (provinceOption && districtOption && communeOption && detailAddress) {
+    $("#addAddressModal").modal("hide");
+  } else {
+    showNotification("Vui lòng nhập đầy đủ thông tin địa chỉ.");
+  }
 });

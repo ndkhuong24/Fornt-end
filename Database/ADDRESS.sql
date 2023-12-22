@@ -58,10 +58,3 @@ BEGIN
 		THROW;
 	END CATCH;
 END;
-
-
-EXEC UpdateAddressDefault @AddressID = 2, @UserID = 3;
-
-EXEC GetAddressByUserID @UserID=3
-
-

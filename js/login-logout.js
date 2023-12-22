@@ -31,6 +31,8 @@ document.getElementById("logoutButton").addEventListener("click", function () {
 
           localStorage.removeItem("userData-customer");
           localStorage.removeItem("data-customer");
+          localStorage.removeItem("fullname");
+          localStorage.removeItem("id");
         } else {
           console.error("Lỗi khi đăng xuất:");
         }
