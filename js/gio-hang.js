@@ -1,3 +1,15 @@
+const notification = document.getElementById("notification");
+const notificationText = document.getElementById("notification-text");
+
+function showNotification(message) {
+  notificationText.textContent = message;
+  notification.style.display = "block";
+
+  setTimeout(function () {
+    notification.style.display = "none";
+  }, 3000);
+}
+
 // Tạo một đối tượng đại diện cho các route và nội dung tương ứng.
 const routes = "/nike.html";
 

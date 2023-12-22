@@ -325,6 +325,17 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+const notification = document.getElementById("notification");
+const notificationText = document.getElementById("notification-text");
+
+function showNotification(message) {
+  notificationText.textContent = message;
+  notification.style.display = "block";
+  setTimeout(function () {
+    notification.style.display = "none";
+  }, 3000);
+}
+
 document.getElementById("saveAddress").addEventListener("click", function () {
-  console.log("Hello");
+  showNotification("Hello");
 });
