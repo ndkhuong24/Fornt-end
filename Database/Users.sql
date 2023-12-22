@@ -1,5 +1,4 @@
-﻿-- User
-CREATE PROCEDURE GetCustomerById
+CREATE PROCEDURE [dbo].[GetCustomerById]
     @Id INT = NULL
 AS
 BEGIN
@@ -12,5 +11,3 @@ BEGIN
         SELECT id,fullname,email,gender,phone_number FROM [Users];
     END
 END;
-
-EXEC GetCustomerById @Id=1
