@@ -218,13 +218,36 @@ function showNotification(message) {
 }
 
 document.getElementById("saveAddress").addEventListener("click", function () {
-  var provinceOption = selectProvince.value;
-  var districtOption = selectDistrict.value;
-  var communeOption = selectCommune.value;
+  var selectedProvinceIndex = selectProvince.selectedIndex;
+  var provinceOption = selectProvince.options[selectedProvinceIndex].value;
+  var provinceText = selectProvince.options[selectedProvinceIndex].text;
+
+  var selectedDistrictIndex = selectDistrict.selectedIndex;
+  var districtOption = selectDistrict.options[selectedDistrictIndex].value;
+  var districtText = selectDistrict.options[selectedDistrictIndex].text;
+
+  var selectedCommuneIndex = selectCommune.selectedIndex;
+  var communeOption = selectCommune.options[selectedCommuneIndex].value;
+  var communeText = selectCommune.options[selectedCommuneIndex].text;
+
   var detailAddress = document.getElementById("DetailAddress").value;
 
   if (provinceOption && districtOption && communeOption && detailAddress) {
-    $("#addAddressModal").modal("hide");
+    var userAddress = {
+      ProvinceID: provinceOption,
+      ProvinceName: provinceText,
+      DistrictID: districtOption,
+      DistrictName: districtText,
+      CommuneID: communeOption,
+      CommuneName: communeText,
+      DetailAddress: detailAddress,
+      Status: 1,
+    };
+    console.log(userAddress);
+    var userID = customerID;
+    console.log(userID);
+
+    // $("#addAddressModal").modal("hide");
   } else {
     showNotification("Vui lòng nhập đầy đủ thông tin địa chỉ.");
   }
