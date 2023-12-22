@@ -31,26 +31,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-function fetchdata() {
-  fetch(
-    `http://localhost:5192/api/ProductDetail/GetProductDetailAndCart/` + itemId
-  )
+function fetchData(itemId) {
+  fetch(`http://localhost:8081/api/Product3/${itemId}`)
     .then((response) => response.json())
     .then((data) => {
       const row = document.getElementById("detail");
       const formattedPrice = new Intl.NumberFormat("vi-VN", {
         style: "currency",
         currency: "VND",
-      }).format(data.price);
+      }).format(data.minPrice);
 
       const priceWithVND = formattedPrice.replace("₫", "VND");
       const nameProduct = document.getElementById("nameProduct");
-      nameProduct.innerHTML += `<span>${data.productName}</span>`;
+      nameProduct.innerHTML += `<span>${data.name}</span>`;
 
       row.innerHTML += `
-      
       <div class="product-desc">
-        <h3 style="font-weight:600">${data.productName}</h3>
+        <h3 style="font-weight:600">${data.name}</h3>
         <hr>
         <table>
             <thead>
@@ -61,7 +58,7 @@ function fetchdata() {
                         </p>
                     </th>
                     <th style="font-weight:500;font-size:smaller"> <label style="margin-left:30px;">Mã SP : </label>
-                        ${data.productCode}
+                        ${data.code}
                         <br /><label style="margin-left:30px;"> Trạng thái : </label><span
                             style="color: green;font-weight:600"> ${
                               data.status === 1 ? "CÒN HÀNG" : "HẾT HÀNG"
@@ -80,15 +77,17 @@ function fetchdata() {
         <div class="size-wrap">
             <div class="block-26 mb-4">
                 <h4 style="font-weight:500">Size</h4>
-                <div
-                    style="border: 2px solid rgb(0, 0, 0);color:red;width:40px;height:37px;text-align:center;border-radius:5px;font-weight:500;font-size:large">
-                    ${data.sizeName} </div> <br>
+                <div id="size">
+               </div> <br>
+                <br>  
                 <h4 style="font-weight:500">Màu Sắc</h4>
-                <ul>
-                    <li style="border-radius:20px"><a style="background-color:${
-                      data.colorName
-                    } ;border-radius:20px;border:2px solid"></a></li>
-                </ul>
+               <div id=color></div>
+               <br> <br>
+               <h4 style="font-weight:500">Material</h4>
+               <div id=material></div> 
+               <br> 
+               <h4 style="font-weight:500"> Sole</h4>
+               <div id=sole></div>   
             </div>
         </div>
         <div class="row">
@@ -109,7 +108,7 @@ function fetchdata() {
               height:30px;
               margin-left:5px;
               transition: background-color 0.3s;" class="btn btn-success btn-addtocart" onclick="cart.add(${
-                data.productDetailID
+                data.id
               },document.getElementById('quantity').value)"> THÊM
                         VÀO GIỎ HÀNG</a></p>
             </div>
@@ -128,24 +127,86 @@ function fetchdata() {
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab" style="font-weight:500;margin-top: 20px;">
-                  <label>Kiểu Dáng: </label> ${data.styleName} <br>
-                  <label>Danh Mục : </label> ${data.categoryName} <br>
-                  <label>Thương Hiệu : </label> ${data.brandName} <br>
-                  <label>Đế Giày : </label> ${data.soleName} <br>
-                  <label>Chất Liệu : </label> ${data.materialName} <br>
-                  </div>
-                <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab" style="font-weight:500;margin-top: 20px;">
-                  <label>Kiểu Dáng: </label> ${data.styleName}
-                </div>
+                  <label>Kiểu Dáng: </label> ${data.style} <br>
+                  <label>Danh Mục : </label> ${data.category} <br>
+                  <label>Thương Hiệu : </label> ${data.brand} <br>
             </div>
         </div>
     </div>
 
       `;
+
+      fetch(`http://localhost:8081/api/Size/findByProduct/${itemId}`)
+        .then((response) => response.json())
+        .then((sizeData) => {
+          const sizeRow = document.getElementById("size");
+          sizeData.forEach((item) => {
+            sizeRow.innerHTML += `
+              <div style="border: 2px solid rgb(0, 0, 0);color:red;width:50px;height:37px;text-align:center;border-radius:5px;font-weight:500;font-size:large;float:left">
+                ${item.name}
+              </div>
+            `;
+          });
+        })
+        .catch((sizeError) => {
+          console.error("Error fetching sizes:", sizeError);
+        });
+
+        fetch(`http://localhost:8081/api/Color/findByProduct/${itemId}`)
+        .then((response) => response.json())
+        .then((colorData) => {
+          const colorRow = document.getElementById("color");
+          colorData.forEach((item) => {
+            colorRow.innerHTML += `
+            <ul>
+            <li style="border-radius:20px"><a style="background-color:${
+              item.name
+            } ;border-radius:20px;border:2px solid"></a></li>
+        </ul>
+            `;
+          });
+        })
+        .catch((colorError) => {
+          console.error("Error fetching color:", colorError);
+        });
+
+        fetch(`http://localhost:8081/api/Material/findByProduct/${itemId}`)
+        .then((response) => response.json())
+        .then((materialData) => {
+          const materialRow = document.getElementById("material");
+          materialData.forEach((item) => {
+            materialRow.innerHTML += `
+            <input type="checkbox" value="${item.name}">${item.name}
+            `;
+          });
+        })
+        .catch((materialError) => {
+          console.error("Error fetching material:", materialError);
+        });
+
+        fetch(`http://localhost:8081/api/Sole/findByProduct/${itemId}`)
+        .then((response) => response.json())
+        .then((soleData) => {
+          const soleRow = document.getElementById("sole");
+          soleData.forEach((item) => {
+            soleRow.innerHTML += `
+            <input type="checkbox" value="${item.name}">${item.name}
+            `;
+          });
+        })
+        .catch((soleError) => {
+          console.error("Error fetching sole:", soleError);
+        });
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
     });
+
+    
 }
 
-fetchdata();
+
+fetchData(itemId);
 
 function getCookie(name) {
   const value = `; ${document.cookie}`;

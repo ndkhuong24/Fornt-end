@@ -1,36 +1,52 @@
-const apiUrl = "http://localhost:5192/api/ProductDetail/getAll";
+const apiUrl = "http://localhost:8081/api/Product3/getAll";
 
 const perPage = 8;
 let currentPage = 1;
 
 const row = document.querySelector(".row.row-pb-md");
 
-let data = [];
 function renderTable(data, page) {
   const startIndex = (page - 1) * perPage;
   const endIndex = page * perPage;
   row.innerHTML = "";
   for (let i = startIndex; i < endIndex && i < data.length; i++) {
     const item = data[i];
-    const formattedPrice = new Intl.NumberFormat("vi-VN", {
+
+    // Format minPrice with VND currency symbol
+    const formattedMinPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
-    }).format(item.price);
+    }).format(item.minPrice);
 
-    const priceWithVND = formattedPrice.replace("₫", "VND");
+    // Format maxPrice with VND currency symbol
+    const formattedMaxPrice = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(item.maxPrice);
+
+
+    // Check if minPrice equals maxPrice
+    let priceToShow = formattedMinPrice;
+    if (item.minPrice !== item.maxPrice) {
+      priceToShow += ` - ${formattedMaxPrice} `;
+    }
+
+    // Replace the currency symbol for both minPrice and maxPrice
+    priceToShow = priceToShow.replace(/₫/g, "VND");
+
     row.innerHTML += `
-    <div class="col-lg-3 mb-4 text-center" >
-      <div class="product-entry border">
-      <a href="product-detail.html?id=${item.id}" class="prod-img">
-      <img src="http://localhost:5192/${item.path}" class="img-fluid" alt="">
-    </a>
-        <div class="desc">
-          <h2><a>${item.productName}</a></h2>
-          <span class="price" style="color:red;font-weight:500">${priceWithVND}</span>
+      <div class="col-lg-3 mb-4 text-center">
+        <div class="product-entry border">
+          <a href="product-detail.html?id=${item.id}" class="prod-img">
+            <img src="https://bizweb.dktcdn.net/thumb/1024x1024/100/427/145/products/nike-air-jordan-low-panda-dc0774-101-japanorderstore-0909665979-3.jpg?v=1683203717147" class="img-fluid" alt="">
+          </a>
+          <div class="desc">
+            <h2><a>${item.name}</a></h2>
+            <span class="price" style="color:red;font-weight:500">${priceToShow}</span>
+          </div>
         </div>
       </div>
-    </div>
-  `;
+    `;
   }
 }
 let totalPages = 1;
