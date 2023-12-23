@@ -211,11 +211,24 @@ var notificationText = document.getElementById("notification-text");
 function showNotification(message) {
   notificationText.textContent = message;
   notification.style.display = "block";
-
   setTimeout(function () {
     notification.style.display = "none";
   }, 3000);
 }
+
+var statusCheckbox = document.getElementById("statusCheckbox");
+let checkboxValue = 0;
+
+statusCheckbox.addEventListener("change", function () {
+  // Lấy giá trị của checkbox khi nó thay đổi
+  var isChecked = statusCheckbox.checked;
+
+  // Lấy giá trị value của checkbox
+  var checkboxValueNow = isChecked ? statusCheckbox.value : 0;
+
+  // Cập nhật giá trị của checkboxValue
+  checkboxValue = checkboxValueNow;
+});
 
 document.getElementById("saveAddress").addEventListener("click", function () {
   var selectedProvinceIndex = selectProvince.selectedIndex;
@@ -241,13 +254,22 @@ document.getElementById("saveAddress").addEventListener("click", function () {
       CommuneID: communeOption,
       CommuneName: communeText,
       DetailAddress: detailAddress,
-      Status: 1,
+      Status: parseInt(checkboxValue),
     };
-    console.log(userAddress);
     var userID = customerID;
-    console.log(userID);
 
-    // $("#addAddressModal").modal("hide");
+    console.log(userAddress);
+
+    // fetch(`http://localhost:5192/api/User/Address/add/${userID}`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(userAddress),
+    // }).then((data) => {
+    //   $("#addAddressModal").modal("hide");
+    //   location.reload();
+    // });
   } else {
     showNotification("Vui lòng nhập đầy đủ thông tin địa chỉ.");
   }

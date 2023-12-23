@@ -123,14 +123,20 @@ CREATE TABLE Authority (
 	user_id INT,
 	role_id INT,
 )
+CREATE TABLE ConfirmOrders(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	[order_id] INT,
+	[user_id] INT,
+	[status] INT
+)
+
+
 CREATE TABLE Commune(
 	CommuneID VARCHAR(50),
-	CommuneName NVARCHAR(200),
-	DistrictID VARCHAR(50)
+	CommuneName NVARCHAR(200)
 )
 CREATE TABLE District (
 	DistrictName NVARCHAR(200),
-	ProvinceID VARCHAR(50),
 	DistrictID VARCHAR(50)
 )
 CREATE TABLE Province(
@@ -141,12 +147,23 @@ CREATE TABLE [Address](
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	[user_id] INT,
 	detail_address nvarchar(MAX),
-	province_id INT,
+	province_id VARCHAR(50),
+	district_id VARCHAR(50),
+	commune_id VARCHAR(50),
 	[status] INT
 )
-CREATE TABLE ConfirmOrders(
-	id INT IDENTITY(1,1) PRIMARY KEY,
-	[order_id] INT,
-	[user_id] INT,
-	[status] INT
-)
+
+DROP TABLE Commune
+DROP TABLE District
+DROP TABLE Province
+DROP TABLE Address
+
+DELETE FROM Commune
+DELETE FROM District
+DELETE FROM Province
+DELETE FROM Address
+
+SELECT * FROM Commune
+SELECT * FROM District
+SELECT * FROM Province
+SELECT * FROM Address
