@@ -1,3 +1,14 @@
+var notification = document.getElementById("notification");
+var notificationText = document.getElementById("notification-text");
+
+function showNotification(message) {
+  notificationText.textContent = message;
+  notification.style.display = "block";
+  setTimeout(function () {
+    notification.style.display = "none";
+  }, 3000);
+}
+
 function openTab(tabId) {
   var tabContents = document.getElementsByClassName("tab-content");
   for (var i = 0; i < tabContents.length; i++) {
@@ -46,7 +57,18 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch(`http://localhost:5192/api/User/Address/${customerID}`)
     .then((response) => response.json())
     .then((data) => {
-      renderTable(data);
+      if (data.status === 404) {
+        var table = document.getElementById("data-table");
+        var tbody = table.querySelector("tbody");
+
+        var row = document.createElement("tr");
+        row.innerHTML = `
+            <td style="padding-top:20px;padding-bottom:20px;text-align:center" colspan="3">Không có dữ liệu</td>
+        `;
+        tbody.appendChild(row);
+      } else {
+        renderTable(data);
+      }
     });
 });
 
@@ -204,17 +226,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-
-var notification = document.getElementById("notification");
-var notificationText = document.getElementById("notification-text");
-
-function showNotification(message) {
-  notificationText.textContent = message;
-  notification.style.display = "block";
-  setTimeout(function () {
-    notification.style.display = "none";
-  }, 3000);
-}
 
 var statusCheckbox = document.getElementById("statusCheckbox");
 let checkboxValue = 0;
