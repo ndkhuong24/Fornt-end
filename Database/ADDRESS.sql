@@ -243,17 +243,101 @@ END;*/
 --	COMMIT
 --END;
 
+CREATE PROCEDURE InsertAddress
+(
+  @ProvinceID NVARCHAR(100),
+  @ProvinceName NVARCHAR(100),
+  @DistrictID NVARCHAR(100),
+  @DistrictName NVARCHAR(100),
+  @CommuneID NVARCHAR(100),
+  @CommuneName NVARCHAR(100),
+  @DetailAddress NVARCHAR(255),
+  @Status INT,
+  @UserID INT
+)
+AS
+BEGIN
+    BEGIN TRANSACTION
 
+    -- Check if there is a duplicate entry based on specified conditions
+    IF EXISTS (
+        SELECT 1
+        FROM [Address]
+        WHERE detail_address = @DetailAddress
+          AND user_id = @UserID
+          AND province_id = @ProvinceID
+          AND district_id = @DistrictID
+          AND commune_id = @CommuneID
+    )
+    BEGIN
+        -- Rollback the transaction if there is a duplicate entry
+        ROLLBACK;
+        PRINT N'Đã tồn tại địa chỉ này, vui lòng chọn một địa chỉ khác';
+        RETURN; -- Exit the stored procedure
+    END
 
+    -- Check the value of @Status
+    IF @Status = 1
+    BEGIN
+        -- Update existing addresses with the same user_id to set status to 0
+        UPDATE [Address]
+		SET [status] = 0
+		WHERE user_id = @UserID;
 
+        -- Check if the update was successful
+        IF @@ERROR = 0
+        BEGIN
+            -- Insert the new address
+            INSERT INTO [Address] ([user_id], detail_address, province_id, district_id, commune_id, [status])
+            VALUES (@UserID, @DetailAddress, @ProvinceID, @DistrictID, @CommuneID, @Status);
+        END
+        ELSE
+        BEGIN
+            -- Rollback the transaction if the update fails
+            ROLLBACK;
+            PRINT 'Update failed. Transaction rolled back.';
+            RETURN; -- Exit the stored procedure
+        END
+    END
+    ELSE
+    BEGIN
+        -- Insert the new address
+		INSERT INTO [Address] ([user_id], detail_address, province_id, district_id, commune_id, [status])
+		VALUES (@UserID, @DetailAddress, @ProvinceID, @DistrictID, @CommuneID, @Status);
+    END;
+
+    -- Insert Province if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM Province WHERE ProvinceID = @ProvinceID)
+    BEGIN
+        INSERT INTO Province (ProvinceID, ProvinceName)
+        VALUES (@ProvinceID, @ProvinceName);
+    END
+
+    -- Insert District if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM District WHERE DistrictID = @DistrictID)
+    BEGIN
+        INSERT INTO District (DistrictID, DistrictName)
+        VALUES (@DistrictID, @DistrictName);
+    END
+
+    -- Insert Commune if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM Commune WHERE CommuneID = @CommuneID)
+    BEGIN
+        INSERT INTO Commune (CommuneID, CommuneName)
+        VALUES (@CommuneID, @CommuneName);
+    END
+
+    -- Commit the transaction if everything is successful
+    COMMIT;
+END;
 
 EXEC InsertAddress
-  @ProvinceID = 'YourProvinceID',
-  @ProvinceName = 'YourProvinceName',
-  @DistrictID = 'YourDistrictID',
-  @DistrictName = 'YourDistrictName',
-  @CommuneID = 'YourCommuneID',
-  @CommuneName = 'YourCommuneName',
-  @DetailAddress = 'YourDetailAddress',
-  @Status = 1,  -- Set the appropriate status value (1 for update, 0 for insert)
+  @ProvinceID = '1111',
+  @ProvinceName = '1111',
+  @DistrictID = '1111',
+  @DistrictName = '1111',
+  @CommuneID = '1111',
+  @CommuneName = '1111',
+  @DetailAddress = '1111',
+  @Status = 0,
   @UserID = 1;

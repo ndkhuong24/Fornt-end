@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var row = document.createElement("tr");
         row.innerHTML = `
-            <td style="padding-top:20px;padding-bottom:20px;text-align:center" colspan="3">Không có dữ liệu</td>
+            <td style="padding-top:20px;padding-bottom:20px;text-align:center;color:blue" colspan="3">Không có dữ liệu</td>
         `;
         tbody.appendChild(row);
       } else {
@@ -231,57 +231,93 @@ var statusCheckbox = document.getElementById("statusCheckbox");
 let checkboxValue = 0;
 
 statusCheckbox.addEventListener("change", function () {
-  // Lấy giá trị của checkbox khi nó thay đổi
   var isChecked = statusCheckbox.checked;
-
-  // Lấy giá trị value của checkbox
   var checkboxValueNow = isChecked ? statusCheckbox.value : 0;
-
-  // Cập nhật giá trị của checkboxValue
   checkboxValue = checkboxValueNow;
 });
 
+function getCheckboxValue() {
+  return parseInt(checkboxValue);
+}
+
 document.getElementById("saveAddress").addEventListener("click", function () {
-  var selectedProvinceIndex = selectProvince.selectedIndex;
-  var provinceOption = selectProvince.options[selectedProvinceIndex].value;
-  var provinceText = selectProvince.options[selectedProvinceIndex].text;
+  const selectedProvinceIndex = selectProvince.selectedIndex;
+  const provinceOption = selectProvince.options[selectedProvinceIndex].value;
+  const provinceText = selectProvince.options[selectedProvinceIndex].text;
 
-  var selectedDistrictIndex = selectDistrict.selectedIndex;
-  var districtOption = selectDistrict.options[selectedDistrictIndex].value;
-  var districtText = selectDistrict.options[selectedDistrictIndex].text;
-
-  var selectedCommuneIndex = selectCommune.selectedIndex;
-  var communeOption = selectCommune.options[selectedCommuneIndex].value;
-  var communeText = selectCommune.options[selectedCommuneIndex].text;
-
-  var detailAddress = document.getElementById("DetailAddress").value;
-
-  if (provinceOption && districtOption && communeOption && detailAddress) {
-    var userAddress = {
-      ProvinceID: provinceOption,
-      ProvinceName: provinceText,
-      DistrictID: districtOption,
-      DistrictName: districtText,
-      CommuneID: communeOption,
-      CommuneName: communeText,
-      DetailAddress: detailAddress,
-      Status: parseInt(checkboxValue),
-    };
-    var userID = customerID;
-
-    console.log(userAddress);
-
-    // fetch(`http://localhost:5192/api/User/Address/add/${userID}`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(userAddress),
-    // }).then((data) => {
-    //   $("#addAddressModal").modal("hide");
-    //   location.reload();
-    // });
-  } else {
-    showNotification("Vui lòng nhập đầy đủ thông tin địa chỉ.");
+  if (!provinceOption || !provinceText) {
+    showNotification("Vui lòng chọn thành phố.");
+    return;
   }
+
+  const selectedDistrictIndex = selectDistrict.selectedIndex;
+  const districtOption = selectDistrict.options[selectedDistrictIndex].value;
+  const districtText = selectDistrict.options[selectedDistrictIndex].text;
+
+  if (!districtOption || !districtText) {
+    showNotification("Vui lòng chọn quận / huyện.");
+    return;
+  }
+
+  const selectedCommuneIndex = selectCommune.selectedIndex;
+  const communeOption = selectCommune.options[selectedCommuneIndex].value;
+  const communeText = selectCommune.options[selectedCommuneIndex].text;
+
+  const detailAddress = document.getElementById("DetailAddress").value;
+
+  if (!detailAddress) {
+    showNotification("Vui lòng nhập địa chỉ.");
+    return;
+  }
+
+  if (!communeOption) {
+    communeOption = "";
+  }
+  if (!communeText) {
+    communeText = "";
+  }
+
+  const userAddress = {
+    ProvinceID: provinceOption,
+    ProvinceName: provinceText,
+    DistrictID: districtOption,
+    DistrictName: districtText,
+    CommuneID: communeOption,
+    CommuneName: communeText,
+    DetailAddress: detailAddress,
+    Status: getCheckboxValue(),
+  };
+  console.log(userAddress);
+
+  // if (provinceOption && districtOption && communeOption && detailAddress) {
+  //   const userAddress = {
+  //     ProvinceID: provinceOption,
+  //     ProvinceName: provinceText,
+  //     DistrictID: districtOption,
+  //     DistrictName: districtText,
+  //     CommuneID: communeOption,
+  //     CommuneName: communeText,
+  //     DetailAddress: detailAddress,
+  //     Status: getCheckboxValue(),
+  //   };
+
+  //   const userID = customerID;
+
+  //   console.log(userAddress);
+  //   console.log(userID);
+
+  //   fetch(`http://localhost:5192/api/User/Address/add/${userID}`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(userAddress),
+  //   }).then((data) => {
+  //     $("#addAddressModal").modal("hide");
+  //     location.reload();
+  //   });
+  // } else {
+  //   showNotification("Vui lòng nhập đầy đủ thông tin địa chỉ.");
+  //   return;
+  // }
 });
