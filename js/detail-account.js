@@ -213,12 +213,14 @@ document.addEventListener("DOMContentLoaded", function () {
       )
         .then((response) => response.json())
         .then((data) => {
-          data.data.forEach((item) => {
-            var option = document.createElement("option");
-            option.value = item.WardCode;
-            option.text = item.WardName;
-            selectCommune.appendChild(option);
-          });
+          if (data.data != null) {
+            data.data.forEach((item) => {
+              var option = document.createElement("option");
+              option.value = item.WardCode;
+              option.text = item.WardName;
+              selectCommune.appendChild(option);
+            });
+          }
         });
     } else {
       selectCommune.innerHTML = "";
@@ -259,10 +261,6 @@ document.getElementById("saveAddress").addEventListener("click", function () {
     return;
   }
 
-  const selectedCommuneIndex = selectCommune.selectedIndex;
-  const communeOption = selectCommune.options[selectedCommuneIndex].value;
-  const communeText = selectCommune.options[selectedCommuneIndex].text;
-
   const detailAddress = document.getElementById("DetailAddress").value;
 
   if (!detailAddress) {
@@ -270,12 +268,19 @@ document.getElementById("saveAddress").addEventListener("click", function () {
     return;
   }
 
-  if (!communeOption) {
+  const selectedCommuneIndex = selectCommune.selectedIndex;
+  let communeOption;
+  let communeText;
+
+  if (selectedCommuneIndex === -1) {
     communeOption = "";
-  }
-  if (!communeText) {
     communeText = "";
+  } else {
+    communeOption = selectCommune.options[selectedCommuneIndex].value;
+    communeText = selectCommune.options[selectedCommuneIndex].text;
   }
+
+  const userID = customerID;
 
   const userAddress = {
     ProvinceID: provinceOption,
@@ -287,37 +292,15 @@ document.getElementById("saveAddress").addEventListener("click", function () {
     DetailAddress: detailAddress,
     Status: getCheckboxValue(),
   };
-  console.log(userAddress);
 
-  // if (provinceOption && districtOption && communeOption && detailAddress) {
-  //   const userAddress = {
-  //     ProvinceID: provinceOption,
-  //     ProvinceName: provinceText,
-  //     DistrictID: districtOption,
-  //     DistrictName: districtText,
-  //     CommuneID: communeOption,
-  //     CommuneName: communeText,
-  //     DetailAddress: detailAddress,
-  //     Status: getCheckboxValue(),
-  //   };
-
-  //   const userID = customerID;
-
-  //   console.log(userAddress);
-  //   console.log(userID);
-
-  //   fetch(`http://localhost:5192/api/User/Address/add/${userID}`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(userAddress),
-  //   }).then((data) => {
-  //     $("#addAddressModal").modal("hide");
-  //     location.reload();
-  //   });
-  // } else {
-  //   showNotification("Vui lòng nhập đầy đủ thông tin địa chỉ.");
-  //   return;
-  // }
+  fetch(`http://localhost:5192/api/User/Address/add/${userID}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userAddress),
+  }).then((data) => {
+    $("#addAddressModal").modal("hide");
+    location.reload();
+  });
 });
