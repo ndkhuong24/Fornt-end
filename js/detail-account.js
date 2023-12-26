@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const customerID = localStorage.getItem("id");
+let addresses;
 
 document.addEventListener("DOMContentLoaded", function () {
   fetch(`http://localhost:5192/api/Users/getById/${customerID}`)
@@ -60,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (data.status === 404) {
         var table = document.getElementById("data-table");
         var tbody = table.querySelector("tbody");
-
         var row = document.createElement("tr");
         row.innerHTML = `
             <td style="padding-top:20px;padding-bottom:20px;text-align:center;color:blue" colspan="3">Không có dữ liệu</td>
@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
         tbody.appendChild(row);
       } else {
         renderTable(data);
+        addresses = data;
       }
     });
 });
@@ -96,7 +97,6 @@ function renderTable(data) {
               onclick="updateTrangThai('${item.addressID}')">Mặc địch</button>
         </td>
       `;
-
     tbody.appendChild(row);
   });
 }
@@ -293,14 +293,37 @@ document.getElementById("saveAddress").addEventListener("click", function () {
     Status: getCheckboxValue(),
   };
 
-  fetch(`http://localhost:5192/api/User/Address/add/${userID}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userAddress),
-  }).then((data) => {
-    $("#addAddressModal").modal("hide");
-    location.reload();
-  });
+  const isDuplicate = addresses.some(
+    (address) =>
+      address.provinceID === userAddress.ProvinceID &&
+      address.districtID === userAddress.DistrictID &&
+      address.communeID === userAddress.CommuneID &&
+      address.detailAddress === userAddress.DetailAddress
+  );
+
+  if (isDuplicate) {
+    showNotification(
+      "Đã tồn tại địa chỉ giống với địa chỉ này. Vui lòng đặt địa chỉ khác"
+    );
+  } else {
+    fetch(`http://localhost:5192/api/User/Address/add/${userID}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userAddress),
+    }).then((data) => {
+      $("#addAddressModal").modal("hide");
+      location.reload();
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  if (addresses === undefined) {
+    console.log("Không có dữ liệu địa chỉ");
+
+    document.getElementById("statusCheckbox").checked = true;
+    document.getElementById("statusCheckbox").disabled = true;
+  }
 });
