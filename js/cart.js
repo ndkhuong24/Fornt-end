@@ -261,19 +261,6 @@
     });
   };
 
-  $(function () {
-    mobileMenuOutsideClick();
-    offcanvasMenu();
-    burgerMenu();
-    contentWayPoint();
-    sliderMain();
-    dropdown();
-    goToTop();
-    loaderPage();
-    owlCrouselFeatureSlide();
-    parallax();
-    datePicker();
-  });
 })();
 
 // Tạo một đối tượng đại diện cho các route và nội dung tương ứng.
@@ -380,6 +367,7 @@ const cart = {
     var tbody = document.getElementById("cart-items");
     tbody.innerHTML = "";
     this.items.forEach(function (item) {
+      console.log(item);
       var row = document.createElement("tr");
 
       // Format currency and replace currency symbol

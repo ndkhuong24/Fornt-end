@@ -269,19 +269,7 @@ function showNotification(message) {
     });
   };
 
-  $(function () {
-    mobileMenuOutsideClick();
-    offcanvasMenu();
-    burgerMenu();
-    contentWayPoint();
-    sliderMain();
-    dropdown();
-    goToTop();
-    loaderPage();
-    owlCrouselFeatureSlide();
-    parallax();
-    datePicker();
-  });
+
 })();
 
 const routes = "/nike.html";
