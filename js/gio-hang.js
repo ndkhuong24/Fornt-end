@@ -10,10 +10,9 @@ function showNotification(message) {
   }, 3000);
 }
 
-const routes = "/nike.html";
-
-// Hàm để cập nhật nội dung trang dựa trên URL hiện tại.
 function updateContent() {
+  var routes = "/nike.html";
+
   const path = window.location.pathname;
   const contentDiv = document.getElementById("content");
 
@@ -64,11 +63,12 @@ productDivs.forEach((div) => {
     total += price;
   }
 });
+
 //Hiện số lượng trong giỏ hàng
 const cart = {
   items: [],
   add(data, quantity) {
-    console.log(data,quantity);
+    // console.log(data, quantity);
     const item = this.items.find((item) => item.id == data.id);
     if (quantity <= 0) {
       showNotification("số lượng ko đc nhỏ hơn 0");
@@ -89,15 +89,15 @@ const cart = {
         showNotification("Thêm thành công");
       }
     } else {
-          if (quantity > data.quantity) {
-            showNotification("Số lượng trong kho ko đủ ");
-            return;
-          }
-          data.qty = parseInt(quantity);
-          this.items.push(data);
-          this.saveToLocalStorage();
-          this.updateCountAndAmount();
-          showNotification("Thêm thành công");
+      if (quantity > data.quantity) {
+        showNotification("Số lượng trong kho ko đủ ");
+        return;
+      }
+      data.qty = parseInt(quantity);
+      this.items.push(data);
+      this.saveToLocalStorage();
+      this.updateCountAndAmount();
+      showNotification("Thêm thành công");
     }
   },
   updateCountAndAmount() {
@@ -127,15 +127,6 @@ const cart = {
   },
 };
 
-// Attach event listeners and initialize the cart
 document.addEventListener("DOMContentLoaded", function () {
   cart.loadFromLocalStorage();
 });
-function showNotification(message) {
-  console.log(message);
-  notificationText.textContent = message;
-  notification.style.display = "block";
-  setTimeout(function () {
-    notification.style.display = "none";
-  }, 3000);
-}
