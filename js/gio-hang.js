@@ -67,8 +67,9 @@ productDivs.forEach((div) => {
 //Hiện số lượng trong giỏ hàng
 const cart = {
   items: [],
-  add(id, quantity) {
-    const item = this.items.find((item) => item.id == id);
+  add(data, quantity) {
+    console.log(data,quantity);
+    const item = this.items.find((item) => item.id == data.id);
     if (quantity <= 0) {
       showNotification("số lượng ko đc nhỏ hơn 0");
       return;
@@ -88,9 +89,6 @@ const cart = {
         showNotification("Thêm thành công");
       }
     } else {
-      fetch(`http://localhost:5192/api/ProductDetail/getById/${id}`)
-        .then((response) => response.json())
-        .then((data) => {
           if (quantity > data.quantity) {
             showNotification("Số lượng trong kho ko đủ ");
             return;
@@ -100,7 +98,6 @@ const cart = {
           this.saveToLocalStorage();
           this.updateCountAndAmount();
           showNotification("Thêm thành công");
-        });
     }
   },
   updateCountAndAmount() {
@@ -134,3 +131,11 @@ const cart = {
 document.addEventListener("DOMContentLoaded", function () {
   cart.loadFromLocalStorage();
 });
+function showNotification(message) {
+  console.log(message);
+  notificationText.textContent = message;
+  notification.style.display = "block";
+  setTimeout(function () {
+    notification.style.display = "none";
+  }, 3000);
+}

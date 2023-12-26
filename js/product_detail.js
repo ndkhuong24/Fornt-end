@@ -107,9 +107,7 @@ function fetchData(itemId) {
               font-weight:600;
               height:30px;
               margin-left:5px;
-              transition: background-color 0.3s;" class="btn btn-success btn-addtocart" onclick="cart.add(${
-                data.id
-              },document.getElementById('quantity').value)"> THÊM
+              transition: background-color 0.3s;" class="btn btn-success btn-addtocart" onclick="getProductDetail()"> THÊM
                         VÀO GIỎ HÀNG</a></p>
             </div>
         </div>
@@ -142,9 +140,7 @@ function fetchData(itemId) {
           const sizeRow = document.getElementById("size");
           sizeData.forEach((item) => {
             sizeRow.innerHTML += `
-              <div style="border: 2px solid rgb(0, 0, 0);color:red;width:50px;height:37px;text-align:center;border-radius:5px;font-weight:500;font-size:large;float:left">
-                ${item.name}
-              </div>
+            <input type="checkbox" name="size" value="${item.name}">${item.name}
             `;
           });
         })
@@ -158,11 +154,7 @@ function fetchData(itemId) {
           const colorRow = document.getElementById("color");
           colorData.forEach((item) => {
             colorRow.innerHTML += `
-            <ul>
-            <li style="border-radius:20px"><a style="background-color:${
-              item.name
-            } ;border-radius:20px;border:2px solid"></a></li>
-        </ul>
+            <input type="checkbox" name="color" value="${item.name}">${item.name}
             `;
           });
         })
@@ -176,7 +168,7 @@ function fetchData(itemId) {
           const materialRow = document.getElementById("material");
           materialData.forEach((item) => {
             materialRow.innerHTML += `
-            <input type="checkbox" value="${item.name}">${item.name}
+            <input type="checkbox" name="material" value="${item.name}">${item.name}
             `;
           });
         })
@@ -190,7 +182,7 @@ function fetchData(itemId) {
           const soleRow = document.getElementById("sole");
           soleData.forEach((item) => {
             soleRow.innerHTML += `
-            <input type="checkbox" value="${item.name}">${item.name}
+            <input type="checkbox" name="sole" value="${item.name}">${item.name}
             `;
           });
         })
@@ -207,6 +199,29 @@ function fetchData(itemId) {
 
 
 fetchData(itemId);
+
+function getProductDetail(){
+  const selectedSizes = Array.from(document.getElementsByName('size'))
+  .filter((checkbox) => checkbox.checked)
+  .map((checkbox) => checkbox.value);
+
+const selectedColors = Array.from(document.getElementsByName('color'))
+  .filter((checkbox) => checkbox.checked)
+  .map((checkbox) => checkbox.value);
+
+const selectedMaterials = Array.from(document.getElementsByName('material'))
+  .filter((checkbox) => checkbox.checked)
+  .map((checkbox) => checkbox.value);
+
+const selectedSoles = Array.from(document.getElementsByName('sole'))
+  .filter((checkbox) => checkbox.checked)
+  .map((checkbox) => checkbox.value);
+  fetch(`http://localhost:8081/api/ProductDetail/getOne/${itemId}/${selectedSizes}/${selectedColors}/${selectedMaterials}/${selectedSoles}`)
+  .then((response) => response.json())
+  .then((data) => {
+    cart.add(data,document.getElementById('quantity').value)
+  })
+}
 
 function getCookie(name) {
   const value = `; ${document.cookie}`;
