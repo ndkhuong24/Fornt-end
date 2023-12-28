@@ -7,12 +7,21 @@ const row = document.querySelector(".row.row-pb-md");
 
 let data = [];
 
+var notification = document.getElementById("notification");
+var notificationText = document.getElementById("notification-text");
+
+function showNotification(message) {
+  notificationText.textContent = message;
+  notification.style.display = "block";
+  setTimeout(function () {
+    notification.style.display = "none";
+  }, 3000);
+}
+
 function renderTable(data, page) {
-  console.log(data);
   const startIndex = (page - 1) * perPage;
   const endIndex = page * perPage;
   row.innerHTML = "";
-  // Lặp qua các mục dựa trên chỉ mục bắt đầu và kết thúc
   for (let i = startIndex; i < endIndex && i < data.length; i++) {
     const item = data[i];
     // Format currency and replace currency symbol
@@ -40,7 +49,6 @@ function renderTable(data, page) {
 let totalPages = 1;
 
 function fetchDataAndPopulateTable() {
-  // Lấy dữ liệu từ API và render trang đầu tiên
   fetch(apiUrl)
     .then((response) => response.json())
     .then((apiData) => {
@@ -365,8 +373,8 @@ document
       console.log("Please enter a search term.");
     }
   });
+
 function searchByName(searchPattern) {
-  // Lấy dữ liệu từ API và render trang đầu tiên
   fetch(`http://localhost:8081/search/${searchPattern}`)
     .then((response) => response.json())
     .then((searhData) => {

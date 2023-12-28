@@ -239,109 +239,16 @@ statusCheckbox.addEventListener("change", function () {
 });
 
 function getCheckboxValue() {
-  if (addresses === undefined) {
-    return 1;
-  } else {
-    return parseInt(checkboxValue);
-  }
+  fetch(`http://localhost:5192/api/User/Address/${customerID}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.length == 0) {
+        return 1;
+      } else {
+        return parseInt(checkboxValue);
+      }
+    });
 }
-
-// document.getElementById("saveAddress").addEventListener("click", function () {
-//   const selectedProvinceIndex = selectProvince.selectedIndex;
-//   const provinceOption = selectProvince.options[selectedProvinceIndex].value;
-//   const provinceText = selectProvince.options[selectedProvinceIndex].text;
-
-//   if (!provinceOption || !provinceText) {
-//     showNotification("Vui lòng chọn thành phố.");
-//     return;
-//   }
-
-//   const selectedDistrictIndex = selectDistrict.selectedIndex;
-//   const districtOption = selectDistrict.options[selectedDistrictIndex].value;
-//   const districtText = selectDistrict.options[selectedDistrictIndex].text;
-
-//   if (!districtOption || !districtText) {
-//     showNotification("Vui lòng chọn quận / huyện.");
-//     return;
-//   }
-
-//   const detailAddress = document.getElementById("DetailAddress").value;
-
-//   if (!detailAddress) {
-//     showNotification("Vui lòng nhập địa chỉ.");
-//     return;
-//   }
-
-//   const selectedCommuneIndex = selectCommune.selectedIndex;
-//   let communeOption;
-//   let communeText;
-
-//   if (selectedCommuneIndex === -1) {
-//     communeOption = "";
-//     communeText = "";
-//   } else {
-//     communeOption = selectCommune.options[selectedCommuneIndex].value;
-//     communeText = selectCommune.options[selectedCommuneIndex].text;
-//   }
-
-//   const userID = customerID;
-
-//   const userAddress = {
-//     ProvinceID: provinceOption,
-//     ProvinceName: provinceText,
-//     DistrictID: districtOption,
-//     DistrictName: districtText,
-//     CommuneID: communeOption,
-//     CommuneName: communeText,
-//     DetailAddress: detailAddress,
-//     Status: getCheckboxValue(),
-//   };
-
-//   const userAddressLowerCase = {
-//     ProvinceID: userAddress.ProvinceID.toLowerCase(),
-//     DistrictID: userAddress.DistrictID.toLowerCase(),
-//     CommuneID: userAddress.CommuneID.toLowerCase(),
-//     DetailAddress: userAddress.DetailAddress.toLowerCase(),
-//   };
-
-//   if (addresses === undefined) {
-//     fetch(`http://localhost:5192/api/User/Address/add/${userID}`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(userAddress),
-//     }).then((data) => {
-//       $("#addAddressModal").modal("hide");
-//       location.reload();
-//     });
-//   } else {
-//     const isDuplicate = addresses.some(
-//       (address) =>
-//         address.provinceID === userAddressLowerCase.ProvinceID &&
-//         address.districtID === userAddressLowerCase.DistrictID &&
-//         address.communeID === userAddressLowerCase.CommuneID &&
-//         address.detailAddress === userAddressLowerCase.DetailAddress
-//     );
-
-//     if (isDuplicate) {
-//       showNotification(
-//         "Đã tồn tại địa chỉ giống với địa chỉ này. Vui lòng đặt địa chỉ khác"
-//       );
-//     } else {
-//       fetch(`http://localhost:5192/api/User/Address/add/${userID}`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(userAddress),
-//       }).then((data) => {
-//         $("#addAddressModal").modal("hide");
-//         location.reload();
-//       });
-//     }
-//   }
-// });
 
 document.getElementById("saveAddress").addEventListener("click", function () {
   const selectedProvinceIndex = selectProvince.selectedIndex;
@@ -437,8 +344,12 @@ function addAddress(userAddress, userID) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  if (addresses === undefined) {
-    document.getElementById("statusCheckbox").checked = true;
-    document.getElementById("statusCheckbox").disabled = true;
-  }
+  fetch(`http://localhost:5192/api/User/Address/${customerID}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.length == 0) {
+        document.getElementById("statusCheckbox").checked = true;
+        document.getElementById("statusCheckbox").disabled = true;
+      }
+    });
 });

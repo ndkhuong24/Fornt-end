@@ -1,4 +1,4 @@
-﻿/*CREATE PROCEDURE GetAddressByUserID @UserID INT AS BEGIN
+﻿CREATE PROCEDURE GetAddressByUserID @UserID INT AS BEGIN
 SELECT
 	[Address].id AS AddressID,
 	Province.ProvinceID AS ProvinceID,
@@ -341,3 +341,30 @@ EXEC InsertAddress
   @DetailAddress = '1111',
   @Status = 0,
   @UserID = 1;
+
+
+CREATE PROCEDURE DeleteAddress
+    @AddressID INT,
+    @UserID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+        -- Kiểm tra xem địa chỉ có tồn tại không trước khi xóa
+        IF EXISTS (SELECT 1 FROM [Address] WHERE id = @AddressID AND user_id = @UserID)
+        BEGIN
+            -- Xóa địa chỉ từ bảng address
+            DELETE FROM [Address] WHERE id = @AddressID AND user_id = @UserID;
+            PRINT 'Dữ liệu đã được xóa thành công.';
+        END
+        ELSE
+        BEGIN
+            PRINT 'Không tìm thấy địa chỉ cần xóa.';
+        END
+    END TRY
+    BEGIN CATCH
+        PRINT 'Đã xảy ra lỗi khi xóa dữ liệu.';
+    END CATCH
+END;
+

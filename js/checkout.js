@@ -1,13 +1,12 @@
 const table = document.getElementById("data-table");
 const tbody = table.querySelector("tbody");
 
-function showNotification(message) {
-  var notification = document.getElementById("notification");
-  var notificationText = document.getElementById("notification-text");
+var notification = document.getElementById("notification");
+var notificationText = document.getElementById("notification-text");
 
+function showNotification(message) {
   notificationText.textContent = message;
   notification.style.display = "block";
-
   setTimeout(function () {
     notification.style.display = "none";
   }, 3000);
