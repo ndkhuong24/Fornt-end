@@ -356,15 +356,56 @@ BEGIN
         BEGIN
             -- Xóa địa chỉ từ bảng address
             DELETE FROM [Address] WHERE id = @AddressID AND user_id = @UserID;
-            PRINT 'Dữ liệu đã được xóa thành công.';
+            PRINT N'Dữ liệu đã được xóa thành công.';
         END
         ELSE
         BEGIN
-            PRINT 'Không tìm thấy địa chỉ cần xóa.';
+            PRINT N'Không tìm thấy địa chỉ cần xóa.';
         END
     END TRY
     BEGIN CATCH
-        PRINT 'Đã xảy ra lỗi khi xóa dữ liệu.';
+        PRINT N'Đã xảy ra lỗi khi xóa dữ liệu.';
     END CATCH
 END;
 
+CREATE PROCEDURE GetAddressById
+    @AddressID INT
+AS
+BEGIN
+    BEGIN TRY
+        SET NOCOUNT ON;
+        BEGIN TRANSACTION;
+
+        DECLARE @AddressCount INT;
+
+        SELECT 
+            @AddressCount = COUNT(*)
+        FROM 
+            [Address]
+        WHERE 
+            [Address].id = @AddressID;
+
+        IF @AddressCount > 0
+        BEGIN
+            SELECT 
+                *
+            FROM 
+                [Address]
+            WHERE 
+                [Address].id = @AddressID;
+        END
+        ELSE
+        BEGIN
+            -- Thông báo khi không tìm thấy địa chỉ
+            PRINT N'Không tìm thấy địa chỉ với ID ' + CAST(@AddressID AS NVARCHAR(MAX));
+        END
+
+        COMMIT;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK;
+        THROW;
+    END CATCH
+END
+
+EXEC GetAddressById @AddressID=32

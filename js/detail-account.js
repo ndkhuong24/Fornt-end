@@ -38,16 +38,18 @@ const customerID = localStorage.getItem("id");
 let addresses;
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Fetch thông tin người dùng
   fetch(`http://localhost:5192/api/Users/getById/${customerID}`)
     .then((response) => response.json())
-    .then((data) => {
-      document.getElementById("fullTenCustomer").value = data.fullName;
+    .then((userData) => {
+      // Đổ dữ liệu người dùng vào các trường input
+      document.getElementById("fullTenCustomer").value = userData.fullName;
+      document.getElementById("gmailCustomer").value = userData.email;
+      document.getElementById("soDienThoaiCustomer").value =
+        userData.phoneNumber;
 
-      document.getElementById("gmailCustomer").value = data.email;
-
-      document.getElementById("soDienThoaiCustomer").value = data.phoneNumber;
-
-      var genderValue = data.gender;
+      // Xác định giới tính
+      var genderValue = userData.gender;
       if (genderValue === 1) {
         document.getElementById("MaleCustomer").checked = true;
       } else {
@@ -55,23 +57,43 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+  // Fetch địa chỉ người dùng
   fetch(`http://localhost:5192/api/User/Address/${customerID}`)
     .then((response) => response.json())
-    .then((data) => {
-      if (data.status === 404) {
+    .then((addressData) => {
+      // Kiểm tra xem có dữ liệu hay không
+      if (addressData.status === 404) {
         var table = document.getElementById("data-table");
         var tbody = table.querySelector("tbody");
         var row = document.createElement("tr");
         row.innerHTML = `
-            <td style="padding-top:20px;padding-bottom:20px;text-align:center;color:blue" colspan="3">Không có dữ liệu</td>
+          <td style="padding-top:20px;padding-bottom:20px;text-align:center;color:blue" colspan="3">Không có dữ liệu</td>
         `;
         tbody.appendChild(row);
       } else {
-        renderTable(data);
-        addresses = data;
+        renderTable(addressData);
+        addresses = addressData;
       }
     });
 });
+
+// Hàm để render bảng dữ liệu địa chỉ
+function renderTable(data) {
+  var table = document.getElementById("data-table");
+  var tbody = table.querySelector("tbody");
+  tbody.innerHTML = ""; // Xóa nội dung cũ trong tbody trước khi thêm dữ liệu mới
+
+  data.forEach((address) => {
+    var row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${address.ProvinceName}</td>
+      <td>${address.DistrictName}</td>
+      <td>${address.CommuneName}</td>
+      <td>${address.DetailAddress}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
 
 const table = document.getElementById("data-table");
 const tbody = table.querySelector("tbody");
@@ -83,41 +105,97 @@ function renderTable(data) {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-        <td style="text-align: center;">${item.addressID}</td>
-        <td>${item.detailAddress}, ${item.communeName}, ${item.districtName}, ${
+      <td style="text-align: center;">${item.addressID}</td>
+      <td>${item.detailAddress}, ${item.communeName}, ${item.districtName}, ${
       item.provinceName
     } ${
       item.status === 1 ? '<span class="default-status">Mặc định</span>' : ""
     }</td>
-        <td style="text-align: center;">
-          <p class="inline-p" style="margin-right: 5px;"><a style="text-decoration: none; color: blue;" href="">Cập nhật</a></p>
-          <p class="inline-p" style="margin-left: 5px;"><a style="text-decoration: none; color: blue;" href="">Xóa</a></p>
+      <td style="text-align: center;">
+          <p class="inline-p" style="margin-right: 5px;"><a style="text-decoration: none; color: blue;" onclick="openUpdateModal('${
+            item.addressID
+          }')">Cập nhật</a></p>
+          <p class="inline-p" style="margin-left: 5px;"><a style="text-decoration: none; color: blue;" onclick="openDeleteModal('${
+            item.addressID
+          }')">Xóa</a></p>
           <br>
-          <button class="default-button" ${item.status === 1 ? "disabled" : ""}
-              onclick="updateTrangThai('${item.addressID}')">Mặc địch</button>
-        </td>
-      `;
+          <button class="default-button" ${
+            item.status === 1 ? "disabled" : ""
+          } onclick="updateTrangThai('${item.addressID}')">Mặc địch</button>
+      </td>
+    `;
     tbody.appendChild(row);
   });
 }
 
-function updateTrangThai(value) {
+function openDeleteModal(addressID) {
+  document.getElementById("addressID").value = addressID;
+
+  var deleteModal = new bootstrap.Modal(
+    document.getElementById("deleteAddress")
+  );
+  deleteModal.show();
+}
+
+function confirmDelete() {
+  var addressIDToDelete = document.getElementById("addressID").value;
+  var userIDToDelete = localStorage.getItem("id");
+
   fetch(
-    `http://localhost:5192/api/User/Address/${customerID}?addressID=${value}`,
+    `http://localhost:5192/api/User/Address/delete/${userIDToDelete}/${addressIDToDelete}`,
     {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        addressID: value,
-        userID: customerID,
-      }),
     }
-  ).then((data) => {
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then((data) => {
+      console.log(data);
+      $("#deleteAddress").modal("hide");
+      location.reload();
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error);
+    });
+}
+
+async function updateTrangThai(value) {
+  try {
+    const customerID = localStorage.getItem("id");
+
+    const response = await fetch(
+      `http://localhost:5192/api/User/Address/${customerID}?addressID=${value}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          addressID: value,
+          userID: customerID,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      showNotification("Không thành công. Đã xảy ra lỗi");
+
+      const errorMessage = await response.text();
+      throw new Error(`Error: ${errorMessage}`);
+    }
+
     localStorage.setItem("AddressID", value);
     location.reload();
-  });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 const selectProvince = document.getElementById("Province");
@@ -238,97 +316,112 @@ statusCheckbox.addEventListener("change", function () {
   checkboxValue = checkboxValueNow;
 });
 
-function getCheckboxValue() {
-  fetch(`http://localhost:5192/api/User/Address/${customerID}`)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.length == 0) {
-        return 1;
-      } else {
-        return parseInt(checkboxValue);
-      }
-    });
+async function getCheckboxValue() {
+  try {
+    var statusValue;
+    const response = await fetch(
+      `http://localhost:5192/api/User/Address/${customerID}`
+    );
+    const data = await response.json();
+
+    if (data.status == 404) {
+      statusValue = 1;
+    } else {
+      statusValue = checkboxValue;
+    }
+
+    return parseInt(statusValue);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    // Handle the error if needed
+    throw error; // Propagate the error
+  }
 }
 
-document.getElementById("saveAddress").addEventListener("click", function () {
-  const selectedProvinceIndex = selectProvince.selectedIndex;
-  const provinceOption = selectProvince.options[selectedProvinceIndex].value;
-  const provinceText = selectProvince.options[selectedProvinceIndex].text;
+document
+  .getElementById("saveAddress")
+  .addEventListener("click", async function () {
+    const selectedProvinceIndex = selectProvince.selectedIndex;
+    const provinceOption = selectProvince.options[selectedProvinceIndex].value;
+    const provinceText = selectProvince.options[selectedProvinceIndex].text;
 
-  if (!provinceOption || !provinceText) {
-    showNotification("Vui lòng chọn thành phố.");
-    return;
-  }
-
-  const selectedDistrictIndex = selectDistrict.selectedIndex;
-  const districtOption = selectDistrict.options[selectedDistrictIndex].value;
-  const districtText = selectDistrict.options[selectedDistrictIndex].text;
-
-  if (!districtOption || !districtText) {
-    showNotification("Vui lòng chọn quận / huyện.");
-    return;
-  }
-
-  const detailAddress = document.getElementById("DetailAddress").value;
-
-  if (!detailAddress) {
-    showNotification("Vui lòng nhập địa chỉ.");
-    return;
-  }
-
-  const selectedCommuneIndex = selectCommune.selectedIndex;
-  let communeOption;
-  let communeText;
-
-  if (selectedCommuneIndex === -1) {
-    communeOption = "";
-    communeText = "";
-  } else {
-    communeOption = selectCommune.options[selectedCommuneIndex].value;
-    communeText = selectCommune.options[selectedCommuneIndex].text;
-  }
-
-  const userID = customerID;
-
-  const userAddress = {
-    ProvinceID: provinceOption,
-    ProvinceName: provinceText,
-    DistrictID: districtOption,
-    DistrictName: districtText,
-    CommuneID: communeOption,
-    CommuneName: communeText,
-    DetailAddress: detailAddress,
-    Status: getCheckboxValue(),
-  };
-
-  const userAddressLowerCase = {
-    ProvinceID: provinceOption.toLowerCase(),
-    DistrictID: districtOption.toLowerCase(),
-    CommuneID: communeOption.toLowerCase(),
-    DetailAddress: detailAddress.toLowerCase(),
-  };
-
-  if (!addresses) {
-    addAddress(userAddress, userID);
-  } else {
-    const isDuplicate = addresses.some(
-      (address) =>
-        address.provinceID.toLowerCase() === userAddressLowerCase.ProvinceID &&
-        address.districtID.toLowerCase() === userAddressLowerCase.DistrictID &&
-        address.communeID.toLowerCase() === userAddressLowerCase.CommuneID &&
-        address.detailAddress.toLowerCase() ===
-          userAddressLowerCase.DetailAddress
-    );
-
-    if (isDuplicate) {
-      showNotification(
-        "Đã tồn tại địa chỉ giống với địa chỉ này. Vui lòng đặt địa chỉ khác"
-      );
-    } else {
-      addAddress(userAddress, userID);
+    if (!provinceOption || !provinceText) {
+      showNotification("Vui lòng chọn thành phố.");
+      return;
     }
-  }
-});
+
+    const selectedDistrictIndex = selectDistrict.selectedIndex;
+    const districtOption = selectDistrict.options[selectedDistrictIndex].value;
+    const districtText = selectDistrict.options[selectedDistrictIndex].text;
+
+    if (!districtOption || !districtText) {
+      showNotification("Vui lòng chọn quận / huyện.");
+      return;
+    }
+
+    const detailAddress = document.getElementById("DetailAddress").value;
+
+    if (!detailAddress) {
+      showNotification("Vui lòng nhập địa chỉ.");
+      return;
+    }
+
+    const selectedCommuneIndex = selectCommune.selectedIndex;
+    let communeOption;
+    let communeText;
+
+    if (selectedCommuneIndex === -1) {
+      communeOption = "";
+      communeText = "";
+    } else {
+      communeOption = selectCommune.options[selectedCommuneIndex].value;
+      communeText = selectCommune.options[selectedCommuneIndex].text;
+    }
+
+    const userID = customerID;
+    const statusValue = await getCheckboxValue();
+
+    const userAddress = {
+      ProvinceID: provinceOption,
+      ProvinceName: provinceText,
+      DistrictID: districtOption,
+      DistrictName: districtText,
+      CommuneID: communeOption,
+      CommuneName: communeText,
+      DetailAddress: detailAddress,
+      Status: statusValue,
+    };
+
+    const userAddressLowerCase = {
+      ProvinceID: provinceOption.toLowerCase(),
+      DistrictID: districtOption.toLowerCase(),
+      CommuneID: communeOption.toLowerCase(),
+      DetailAddress: detailAddress.toLowerCase(),
+    };
+
+    if (!addresses) {
+      addAddress(userAddress, userID);
+    } else {
+      const isDuplicate = addresses.some(
+        (address) =>
+          address.provinceID.toLowerCase() ===
+            userAddressLowerCase.ProvinceID &&
+          address.districtID.toLowerCase() ===
+            userAddressLowerCase.DistrictID &&
+          address.communeID.toLowerCase() === userAddressLowerCase.CommuneID &&
+          address.detailAddress.toLowerCase() ===
+            userAddressLowerCase.DetailAddress
+      );
+
+      if (isDuplicate) {
+        showNotification(
+          "Đã tồn tại địa chỉ giống với địa chỉ này. Vui lòng đặt địa chỉ khác"
+        );
+      } else {
+        addAddress(userAddress, userID);
+      }
+    }
+  });
 
 function addAddress(userAddress, userID) {
   fetch(`http://localhost:5192/api/User/Address/add/${userID}`, {
@@ -337,19 +430,46 @@ function addAddress(userAddress, userID) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(userAddress),
-  }).then((data) => {
-    $("#addAddressModal").modal("hide");
-    location.reload();
-  });
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      $("#addAddressModal").modal("hide");
+      location.reload();
+    })
+    .catch((error) => {
+      console.error("Error adding address:", error);
+      showNotification("Failed to add address. Please try again.");
+    });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  fetch(`http://localhost:5192/api/User/Address/${customerID}`)
+document.addEventListener("DOMContentLoaded", async function () {
+  try {
+    const response = await fetch(
+      `http://localhost:5192/api/User/Address/${customerID}`
+    );
+    const data = await response.json();
+
+    if (data.status === 404) {
+      const statusCheckbox = document.getElementById("statusCheckbox");
+      statusCheckbox.checked = true;
+      statusCheckbox.disabled = true;
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+});
+
+function openUpdateModal(addressID) {
+  document.getElementById("addressID_update").value = addressID_update;
+  fetch(`http://localhost:5192/api/Address/${addressID}`)
     .then((response) => response.json())
     .then((data) => {
-      if (data.length == 0) {
-        document.getElementById("statusCheckbox").checked = true;
-        document.getElementById("statusCheckbox").disabled = true;
-      }
+      // document.get
+      console.log(data);
     });
-});
+
+  var detailAddress = new bootstrap.Modal(
+    document.getElementById("detailAddress")
+  );
+  detailAddress.show();
+}
