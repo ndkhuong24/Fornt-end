@@ -333,7 +333,6 @@ async function getCheckboxValue() {
     return parseInt(statusValue);
   } catch (error) {
     console.error("Error fetching data:", error);
-    // Handle the error if needed
     throw error; // Propagate the error
   }
 }
@@ -459,17 +458,177 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 });
 
+const DetailProvince = document.getElementById("DetailProvince");
+const OptionDetailProvince = DetailProvince.value;
+const DetailDistrict = document.getElementById("DetailDistrict");
+const OptionDetailDistrict = DetailDistrict.value;
+const DetailCommune = document.getElementById("DetailCommune");
+const OptionDetailCommune = DetailCommune.value;
+const DetailAddressUpdate = document.getElementById("DetailAddress_Update");
+
 function openUpdateModal(addressID) {
-  document.getElementById("addressID_update").value = addressID_update;
+  document.getElementById("addressID_update").value = addressID;
+
   fetch(`http://localhost:5192/api/Address/${addressID}`)
     .then((response) => response.json())
     .then((data) => {
-      // document.get
-      console.log(data);
+      DetailAddressUpdate.value = data.detailAddress;
+
+      var province_id = data.provinceID;
+      var district_id = data.districtID;
+      var commune_id = data.communeID;
+
+      fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Token: token,
+            ShopId: "4556959",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          data.data.forEach((item) => {
+            var option = document.createElement("option");
+            option.value = item.ProvinceID;
+            option.text = item.ProvinceName;
+            DetailProvince.appendChild(option);
+          });
+          DetailProvince.value = province_id;
+        });
+
+      fetch(
+        `https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${province_id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Token: token,
+            ShopId: "4556959",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          data.data.forEach((item) => {
+            var option = document.createElement("option");
+            option.value = item.DistrictID;
+            option.text = item.DistrictName;
+            DetailDistrict.appendChild(option);
+          });
+          DetailDistrict.value = district_id;
+        });
+
+      fetch(
+        `https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${district_id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Token: token,
+            ShopId: "4556959",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          data.data.forEach((item) => {
+            var option = document.createElement("option");
+            option.value = item.WardCode;
+            option.text = item.WardName;
+            DetailCommune.appendChild(option);
+          });
+          DetailCommune.value = commune_id;
+        });
     });
 
   var detailAddress = new bootstrap.Modal(
     document.getElementById("detailAddress")
   );
   detailAddress.show();
+}
+
+DetailProvince.addEventListener("change", function () {
+  var selectDetailDistrict = document.getElementById("DetailDistrict");
+  selectDetailDistrict.innerHTML = "";
+
+  var selectCommune = document.getElementById("DetailCommune");
+  selectCommune.innerHTML = "";
+  selectCommune.disabled = true;
+
+  var OptionDetailProvince = document.getElementById("DetailProvince").value;
+
+  fetch(
+    `https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${OptionDetailProvince}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Token: token,
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      data.data.forEach((item) => {
+        var option = document.createElement("option");
+        option.value = item.DistrictID;
+        option.text = item.DistrictName;
+        DetailDistrict.appendChild(option);
+      });
+    });
+});
+
+DetailDistrict.addEventListener("change", function () {
+  var selectCommune = document.getElementById("DetailCommune");
+  selectCommune.innerHTML = "";
+  selectCommune.disabled = false;
+
+  var OptionDetailCommune = document.getElementById("DetailDistrict").value;
+
+  fetch(
+    `https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${OptionDetailCommune}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Token: token,
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      data.data.forEach((item) => {
+        var option = document.createElement("option");
+        option.value = item.WardCode;
+        option.text = item.WardName;
+        DetailCommune.appendChild(option);
+      });
+    });
+});
+
+function capNhatDiaChi() {
+  var selectProvinceDetail = DetailProvince.value;
+  var selectDistrictDetail = DetailDistrict.value;
+  var selectCommuneDetail = DetailCommune.value;
+  var DetailAddress_Update = document.getElementById(
+    "DetailAddress_Update"
+  ).value;
+
+  if (
+    !selectProvinceDetail ||
+    !selectDistrictDetail ||
+    !selectCommuneDetail ||
+    !DetailAddress_Update
+  ) {
+    showNotification("Vui lòng điền đầy đủ thông tin cho các trường!");
+    return;
+  } else {
+    var detail_address_id = document.getElementById("addressID_update").value;
+ 
+    // fetch(``)
+  }
 }
