@@ -17,7 +17,8 @@ FROM
 	JOIN Commune ON District.DistrictID = Commune.DistrictID
 WHERE
 	Users.id = @UserID
-END;*/
+END;
+
 CREATE PROCEDURE GetAddressByUserID 
 	@UserID INT 
 AS 
@@ -80,168 +81,6 @@ BEGIN
 		THROW;
 	END CATCH;
 END;
-
-/*
-CREATE PROCEDURE InsertAddress
-(
-  @ProvinceID NVARCHAR(100),
-  @ProvinceName NVARCHAR(100),
-  @DistrictID NVARCHAR(100),
-  @DistrictName NVARCHAR(100),
-  @CommuneID NVARCHAR(100),
-  @CommuneName NVARCHAR(100),
-  @DetailAddress NVARCHAR(255),
-  @Status INT,
-  @UserID INT
-)
-AS
-BEGIN
-	BEGIN TRANSACTION
-
-    -- Check the value of @Status
-	IF @Status = 1
-    BEGIN
-       -- Update existing addresses with the same user_id to set status to 0
-	   UPDATE [Address]
-	   SET [status] = 0
-	   WHERE [user_id] = @UserID;
-
-	   -- Check if the update was successful
-	   IF @@ERROR = 0
-	   BEGIN
-	       -- Insert the new address
-	       INSERT INTO [Address] (user_id, detail_address, province_id, [status])
-	       VALUES (@UserID, @DetailAddress, @ProvinceID, @Status);
-
-		   INSERT INTO Province(ProvinceID,ProvinceName) VALUES
-		   (@ProvinceID,@ProvinceName)
-
-		   INSERT INTO District(DistrictID,DistrictName,ProvinceID) VALUES
-		   (@DistrictID,@DistrictName,@ProvinceID)
-
-		   INSERT INTO Commune(CommuneID,CommuneName,DistrictID) VALUES
-		   (@CommuneID,@CommuneName,@DistrictID)
-	   END
-	   ELSE
-	   BEGIN
-	       -- Rollback the transaction if the update fails
-	       ROLLBACK;
-	       PRINT 'Update failed. Transaction rolled back.';
-	       RETURN; -- Exit the stored procedure
-	   END
-    END
-    ELSE
-    BEGIN
-        -- Insert the new address
-	   INSERT INTO [Address] (user_id, detail_address, province_id, [status])
-	   VALUES (@UserID, @DetailAddress, @ProvinceID, @Status);
-
-	   INSERT INTO Province(ProvinceID,ProvinceName) VALUES
-	   (@ProvinceID,@ProvinceName)
-
-	   INSERT INTO District(DistrictID,DistrictName,ProvinceID) VALUES
-	   (@DistrictID,@DistrictName,@ProvinceID)
-
-	   INSERT INTO Commune(CommuneID,CommuneName,DistrictID) VALUES
-	   (@CommuneID,@CommuneName,@DistrictID)
-    END;
-
-    -- Commit the transaction if everything is successful
-	COMMIT
-END;*/
-
---CREATE PROCEDURE InsertAddress
---(
---  @ProvinceID NVARCHAR(100),
---  @ProvinceName NVARCHAR(100),
---  @DistrictID NVARCHAR(100),
---  @DistrictName NVARCHAR(100),
---  @CommuneID NVARCHAR(100),
---  @CommuneName NVARCHAR(100),
---  @DetailAddress NVARCHAR(255),
---  @Status INT,
---  @UserID INT
---)
---AS
---BEGIN
---	BEGIN TRANSACTION
-
---    -- Check the value of @Status
---	IF @Status = 1
---    BEGIN
---       -- Update existing addresses with the same user_id to set status to 0
---	   UPDATE [Address]
---	   SET [status] = 0
---	   WHERE [user_id] = @UserID;
-
---	   -- Check if the update was successful
---	   IF @@ERROR = 0
---	   BEGIN
---	       -- Insert the new address
---		   IF NOT EXISTS (SELECT 1 FROM [Address] WHERE detail_address = @DetailAddress AND user_id = @UserID AND province_id = @ProvinceID AND district_id = @DistrictID AND commune_id=@CommuneID)
---		   BEGIN
---				INSERT INTO [Address] ([user_id], detail_address, province_id, district_id, commune_id, [status])
---				VALUES (@UserID, @DetailAddress, @ProvinceID, @DistrictID, @CommuneID, @Status);
---		   END
-
---		   IF NOT EXISTS (SELECT 1 FROM Province WHERE ProvinceID = @ProvinceID)
---		   BEGIN
---				INSERT INTO Province (ProvinceID, ProvinceName)
---				VALUES (@ProvinceID, @ProvinceName);
---		   END
-
---		   IF NOT EXISTS (SELECT 1 FROM District WHERE DistrictID = @DistrictID)
---		   BEGIN
---				INSERT INTO District(DistrictID,DistrictName) VALUES
---				(@DistrictID,@DistrictName)
---		   END
-
---		   IF NOT EXISTS (SELECT 1 FROM Commune WHERE CommuneID = @CommuneID)
---		   BEGIN
---				INSERT INTO Commune(CommuneID,CommuneName) VALUES
---				(@CommuneID,@CommuneName )
---		   END
-		   
---	   END
---	   ELSE
---	   BEGIN
---	       -- Rollback the transaction if the update fails
---	       ROLLBACK;
---	       PRINT 'Update failed. Transaction rolled back.';
---	       RETURN; -- Exit the stored procedure
---	   END
---    END
---    ELSE
---    BEGIN
---		   -- Insert the new address
---		   IF NOT EXISTS (SELECT 1 FROM [Address] WHERE detail_address = @DetailAddress AND user_id = @UserID AND province_id = @ProvinceID AND district_id = @DistrictID AND commune_id=@CommuneID)
---		   BEGIN
---				INSERT INTO [Address] ([user_id], detail_address, province_id, district_id, commune_id, [status])
---				VALUES (@UserID, @DetailAddress, @ProvinceID, @DistrictID, @CommuneID, @Status);
---		   END
-
---		   IF NOT EXISTS (SELECT 1 FROM Province WHERE ProvinceID = @ProvinceID)
---		   BEGIN
---				INSERT INTO Province (ProvinceID, ProvinceName)
---				VALUES (@ProvinceID, @ProvinceName);
---		   END
-
---		   IF NOT EXISTS (SELECT 1 FROM District WHERE DistrictID = @DistrictID)
---		   BEGIN
---				INSERT INTO District(DistrictID,DistrictName) VALUES
---				(@DistrictID,@DistrictName)
---		   END
-
---		   IF NOT EXISTS (SELECT 1 FROM Commune WHERE CommuneID = @CommuneID)
---		   BEGIN
---				INSERT INTO Commune(CommuneID,CommuneName) VALUES
---				(@CommuneID,@CommuneName )
---		   END
---    END;
-
---    -- Commit the transaction if everything is successful
---	COMMIT
---END;
 
 CREATE PROCEDURE InsertAddress
 (
@@ -331,18 +170,6 @@ BEGIN
     COMMIT;
 END;
 
-EXEC InsertAddress
-  @ProvinceID = '1111',
-  @ProvinceName = '1111',
-  @DistrictID = '1111',
-  @DistrictName = '1111',
-  @CommuneID = '1111',
-  @CommuneName = '1111',
-  @DetailAddress = '1111',
-  @Status = 0,
-  @UserID = 1;
-
-
 CREATE PROCEDURE DeleteAddress
     @AddressID INT,
     @UserID INT
@@ -408,4 +235,63 @@ BEGIN
     END CATCH
 END
 
-EXEC GetAddressById @AddressID=32
+CREATE PROCEDURE UpdateDetailAddress
+(
+    @AddressID INT,
+    @NewProvinceID VARCHAR(50),
+    @NewProvinceName NVARCHAR(100),
+    @NewDistrictID VARCHAR(50),
+    @NewDistrictName NVARCHAR(100),
+    @NewCommuneID VARCHAR(50),
+    @NewCommuneName NVARCHAR(100),
+    @NewDetailAddress NVARCHAR(MAX)
+)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- Kiểm tra xem @AddressID có tồn tại hay không
+        IF NOT EXISTS (SELECT 1 FROM [Address] WHERE id = @AddressID)
+        BEGIN
+            ROLLBACK;
+            THROW 51000, N'ID này không tồn tại', 1;
+        END
+
+        -- Đặt các địa chỉ khác của người dùng thành không phải mặc định
+        UPDATE [Address]
+        SET province_id = @NewProvinceID,
+            district_id = @NewDistrictID,
+            commune_id = @NewCommuneID,
+            detail_address = @NewDetailAddress
+        WHERE id = @AddressID;
+
+        -- Insert Province if it doesn't exist
+        IF NOT EXISTS (SELECT 1 FROM Province WHERE ProvinceID = @NewProvinceID)
+        BEGIN
+            INSERT INTO Province (ProvinceID, ProvinceName)
+            VALUES (@NewProvinceID, @NewProvinceName);
+        END
+
+        -- Insert District if it doesn't exist
+        IF NOT EXISTS (SELECT 1 FROM District WHERE DistrictID = @NewDistrictID)
+        BEGIN
+            INSERT INTO District (DistrictID, DistrictName)
+            VALUES (@NewDistrictID, @NewDistrictName);
+        END
+
+        -- Insert Commune if it doesn't exist
+        IF NOT EXISTS (SELECT 1 FROM Commune WHERE CommuneID = @NewCommuneID)
+        BEGIN
+            INSERT INTO Commune (CommuneID, CommuneName)
+            VALUES (@NewCommuneID, @NewCommuneName);
+        END
+
+        COMMIT;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK;
+        THROW;
+    END CATCH;
+END;

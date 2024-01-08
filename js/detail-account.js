@@ -611,24 +611,62 @@ DetailDistrict.addEventListener("change", function () {
 });
 
 function capNhatDiaChi() {
-  var selectProvinceDetail = DetailProvince.value;
-  var selectDistrictDetail = DetailDistrict.value;
-  var selectCommuneDetail = DetailCommune.value;
+  var selectProvinceDetail = document.getElementById("DetailProvince");
+  var selectDistrictDetail = document.getElementById("DetailDistrict");
+  var selectCommuneDetail = document.getElementById("DetailCommune");
   var DetailAddress_Update = document.getElementById(
     "DetailAddress_Update"
   ).value;
 
+  var selectedProvinceValue = selectProvinceDetail.value;
+  var selectedProvinceText =
+    selectProvinceDetail.options[selectProvinceDetail.selectedIndex].text;
+
+  var selectedDistrictValue = selectDistrictDetail.value;
+  var selectedDistrictText =
+    selectDistrictDetail.options[selectDistrictDetail.selectedIndex].text;
+
+  var selectedCommuneValue = selectCommuneDetail.value;
+  var selectedCommuneText =
+    selectCommuneDetail.options[selectCommuneDetail.selectedIndex].text;
+
   if (
-    !selectProvinceDetail ||
-    !selectDistrictDetail ||
-    !selectCommuneDetail ||
+    !selectedProvinceValue ||
+    !selectedDistrictValue ||
+    !selectedCommuneValue ||
     !DetailAddress_Update
   ) {
     showNotification("Vui lòng điền đầy đủ thông tin cho các trường!");
     return;
   } else {
     var detail_address_id = document.getElementById("addressID_update").value;
- 
-    // fetch(``)
+
+    const dataToUpdate = {
+      AddressID: detail_address_id,
+      ProvinceID: selectedProvinceValue,
+      ProvinceName: selectedProvinceText,
+      DistrictID: selectedDistrictValue,
+      DistrictName: selectedDistrictText,
+      CommuneID: selectedCommuneValue,
+      CommuneName: selectedCommuneText,
+      DetailAddress: DetailAddress_Update,
+    };
+
+    fetch(`http://localhost:5192/api/Address`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataToUpdate),
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        $("#addAddressModal").modal("hide");
+        location.reload();
+      })
+      .catch((error) => {
+        console.error("Error adding address:", error);
+        showNotification("Failed to add address. Please try again.");
+      });
   }
 }
