@@ -148,7 +148,7 @@ function fetchData(itemId) {
           console.error("Error fetching sizes:", sizeError);
         });
 
-        fetch(`http://localhost:8081/api/Color/findByProduct/${itemId}`)
+      fetch(`http://localhost:8081/api/Color/findByProduct/${itemId}`)
         .then((response) => response.json())
         .then((colorData) => {
           const colorRow = document.getElementById("color");
@@ -162,7 +162,7 @@ function fetchData(itemId) {
           console.error("Error fetching color:", colorError);
         });
 
-        fetch(`http://localhost:8081/api/Material/findByProduct/${itemId}`)
+      fetch(`http://localhost:8081/api/Material/findByProduct/${itemId}`)
         .then((response) => response.json())
         .then((materialData) => {
           const materialRow = document.getElementById("material");
@@ -176,7 +176,7 @@ function fetchData(itemId) {
           console.error("Error fetching material:", materialError);
         });
 
-        fetch(`http://localhost:8081/api/Sole/findByProduct/${itemId}`)
+      fetch(`http://localhost:8081/api/Sole/findByProduct/${itemId}`)
         .then((response) => response.json())
         .then((soleData) => {
           const soleRow = document.getElementById("sole");
@@ -193,34 +193,33 @@ function fetchData(itemId) {
     .catch((error) => {
       console.error("Error fetching data:", error);
     });
-
-    
 }
-
 
 fetchData(itemId);
 
-function getProductDetail(){
-  const selectedSizes = Array.from(document.getElementsByName('size'))
-  .filter((checkbox) => checkbox.checked)
-  .map((checkbox) => checkbox.value);
+function getProductDetail() {
+  const selectedSizes = Array.from(document.getElementsByName("size"))
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.value);
 
-const selectedColors = Array.from(document.getElementsByName('color'))
-  .filter((checkbox) => checkbox.checked)
-  .map((checkbox) => checkbox.value);
+  const selectedColors = Array.from(document.getElementsByName("color"))
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.value);
 
-const selectedMaterials = Array.from(document.getElementsByName('material'))
-  .filter((checkbox) => checkbox.checked)
-  .map((checkbox) => checkbox.value);
+  const selectedMaterials = Array.from(document.getElementsByName("material"))
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.value);
 
-const selectedSoles = Array.from(document.getElementsByName('sole'))
-  .filter((checkbox) => checkbox.checked)
-  .map((checkbox) => checkbox.value);
-  fetch(`http://localhost:8081/api/ProductDetail/getOne/${itemId}/${selectedSizes}/${selectedColors}/${selectedMaterials}/${selectedSoles}`)
-  .then((response) => response.json())
-  .then((data) => {
-    cart.add(data,document.getElementById('quantity').value)
-  })
+  const selectedSoles = Array.from(document.getElementsByName("sole"))
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.value);
+  fetch(
+    `http://localhost:8081/api/ProductDetail/getOne/${itemId}/${selectedSizes}/${selectedColors}/${selectedMaterials}/${selectedSoles}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      cart.add(data, document.getElementById("quantity").value);
+    });
 }
 
 function getCookie(name) {
